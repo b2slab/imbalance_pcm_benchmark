@@ -18,6 +18,7 @@ np.random.seed(8)
 random.seed(8)
 
 def prot_comp_composite(row):
+    """Creates a composite column from the protein and compound IDs"""
     composi = row["DeepAffinity Compound ID"] + "," + row["DeepAffinity Protein ID"]
     return composi
 
@@ -51,11 +52,14 @@ def batch_generator(batch_size, df, sample_indexes):
             dict_comp.pop("fingerprint", None)
             lista_dicts.append(dict_comp)   
         yield(lista_dicts)        
-        
-def computing_active_inactive_ratio(df, prot_id):
+
+def computing_active_inactive_ratio(df,prot_id):
+    """Computing the ratio of actives respect to the total number of interactions per protein"""
     counting = df.loc[:,["DeepAffinity Protein ID", "label"]].groupby(["DeepAffinity Protein ID", "label"]).size()
     count_df = counting.to_frame(name = 'size').reset_index()
     count_prot = count_df.loc[count_df["DeepAffinity Protein ID"]==prot_id, :]
+    if count_prot.shape[0] == 0:
+        return np.nan
     n_labels = count_prot.shape[0]
     if n_labels == 1:
         label_label = count_prot["label"].values[0]
@@ -108,7 +112,7 @@ def splitting_division(f, group, table, sample_indices, splitting_fold):
 
     
 def training_test_split_semi(df, training_size, test_size, val_size, idx):
-    """From the accumulated sizes of the clusters, we divide data between train, test and validation"""
+    """From the accumulated sizes of the clusters, we divide data between train and validation for the semi_resampling strategy"""
     # Dividing in training, test and validation 
     conditions = [ df['clusters_acc_percent'] < training_size,df['clusters_acc_percent'] > training_size]
     choices = [0,1]
@@ -117,46 +121,22 @@ def training_test_split_semi(df, training_size, test_size, val_size, idx):
     return df
 
 def splitting_division_semi(f, group, table, sample_indices, splitting_fold):
-    """Saving indices of each splitting group to a list that will be fed later to the deep learning model"""
+    """Saving indices of each splitting group to a list that will be fed later to the deep learning model.
+    Specific for the semi_resampling strategy, since there only training and validation need to be splitted."""
     t0 = time.time()
-    #indices_train = [i for i in sample_indices if f[group][table][sample_indices[i]][splitting_fold] == 0.0]
     indices_train = [i for i in sample_indices if f[group][table][i][splitting_fold] == 0.0]
-    #indices_val = [i for i in sample_indices if f[group][table][sample_indices[i]][splitting_fold] == 1.0]
     indices_val = [i for i in sample_indices if f[group][table][i][splitting_fold] == 1.0]
-    #indices_test = [i for i in sample_indices if f[group][table][sample_indices[i]][splitting_fold] == 2.0]
-    #indices_test = [i for i in sample_indices if f[group][table][i][splitting_fold] == 2.0]
     print(time.time() - t0)
-    return indices_train, indices_val#, indices_test
-
-def computing_active_inactive_ratio(df,prot_id):
-    counting = df.loc[:,["DeepAffinity Protein ID", "label"]].groupby(["DeepAffinity Protein ID", "label"]).size()
-    #print(counting)
-    count_df = counting.to_frame(name = 'size').reset_index()
-    #print(count_df)
-    count_prot = count_df.loc[count_df["DeepAffinity Protein ID"]==prot_id, :]
-    #print(count_prot)
-    if count_prot.shape[0] == 0:
-        return np.nan
-    #print(count_prot.shape)
-    n_labels = count_prot.shape[0]
-    if n_labels == 1:
-        label_label = count_prot["label"].values[0]
-        if label_label == 1.0:
-            ratio = 1.0
-        else:
-            ratio = 0.0
-    else:
-        n_actives = count_prot.loc[count_prot["label"]==1.0, "size"].values[0]
-        n_total = n_actives + count_prot.loc[count_prot["label"]==0.0, "size"].values[0]
-        ratio = n_actives/n_total
-    return ratio
-
+    return indices_train, indices_val
 
 def len_seq(row):
+    """Computing the length of a protein sequence in a datframe"""
     leen = len(row["Sequence"])
     return leen
 
 def converting_ratios_to_df(train_ratios, test_ratios, pred_ratios, metrics_list, strategy, prot_df):
+    """Creating a dataframe from the results (ratio of actives from the training set, from the test set,
+    from the predicted test set)"""
     ratios_training_df = pd.DataFrame(train_ratios)
     print(ratios_training_df.info())
     ratios_test_df = pd.DataFrame(test_ratios)
@@ -179,6 +159,7 @@ def converting_ratios_to_df(train_ratios, test_ratios, pred_ratios, metrics_list
 
 #loading predicted data in order to check ratio of predicted in test
 def predictions_ratios_list(fold, pred_test, unique_prots):
+    """Computing the ratio of actives respect to the total number of interactions in the predicted data"""
     only_pred = pred_test.loc[:, ["y_pred", "DeepAffinity Protein ID"]]
     only_pred.rename(columns = {"y_pred":"label"}, inplace=True)
     print(only_pred.info())
@@ -200,6 +181,7 @@ def predictions_ratios_list(fold, pred_test, unique_prots):
     return ratios_pred_list, pred_test
 
 def computing_metrics_per_prot(prot, pred_test):
+    """For each protein, we compute the defined performance metrics and return all the values in a dictionary"""
     dict_prot = {}
     predictions_test_sub = pred_test[pred_test["DeepAffinity Protein ID"] == prot]
     if predictions_test_sub.shape[0] == 0:
@@ -222,6 +204,7 @@ def computing_metrics_per_prot(prot, pred_test):
     return dict_prot
 
 def creating_ratios_list(training_set, fold, f, group, table, sample_indices, unique_prots):
+    """Computing proportion of actives respect to the total number of interactions in a list."""
     prots = list(f[group][table][sample_indices]["da_prot_id"])
     labels = list(f[group][table][sample_indices]["label"])
     data_df = pd.DataFrame({"DeepAffinity Protein ID":prots, "label":labels})
@@ -237,6 +220,8 @@ def creating_ratios_list(training_set, fold, f, group, table, sample_indices, un
     return ratios_list
 
 def computing_random_baseline(ratios_df_completo, strategy, prot, fold):
+    """Computing the random baseline to compare our results with for each strategy and each fold. It is computed from the
+    actives/inactives ratio in training set in each case."""
     subdf = ratios_df_completo[(ratios_df_completo.strategy==strategy) & (ratios_df_completo.fold == fold)]
     if subdf[subdf["DeepAffinity Protein ID"]==prot].shape[0] == 0:
         return None, None
@@ -262,6 +247,7 @@ def computing_random_baseline(ratios_df_completo, strategy, prot, fold):
     return rdm_comps#, comps
 
 def predictions_ratios_list_bsl(strategy, pred_test, unique_prots):
+    """Computing the ratio of actives/inactives predicted by the random baseline."""
     only_pred = pred_test.loc[pred_test.strategy==strategy, ["label", "prot"]]
     only_pred.rename(columns = {"prot":"DeepAffinity Protein ID"}, inplace=True)
     print(only_pred.info())
@@ -277,6 +263,7 @@ def predictions_ratios_list_bsl(strategy, pred_test, unique_prots):
     return ratios_pred_list, pred_test
 
 def labelling(row):
+    """Labelling samples in which random_baseline result is >= 0.5 as 1 (Actives) and the rest as 0 (inactives)"""
     if row["random_baseline"] >= 0.5:
         return 1
     else:

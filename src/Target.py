@@ -35,6 +35,7 @@ class Target(object):
         return aa_to_int, len_aas
     
     def predefining_dict(self):
+        """Predefining a dictionary for amino acid sequences"""
         list_aas = ['0', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
         nums = list(range(0, len(list_aas)))
         aa_to_int = dict(zip(list_aas, nums))

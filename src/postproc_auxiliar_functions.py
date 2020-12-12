@@ -1,5 +1,3 @@
-### from __future__ import division, absolute_import
-
 from __future__ import division, absolute_import, print_function
 
 import sys
@@ -21,8 +19,6 @@ absPath = '/home/angela3/imbalance_pcm_benchmark/'
 sys.path.insert(0, absPath)
 absPath
 
-#from src.Target import Target
-
 np.random.seed(8)
 random.seed(8)
 
@@ -30,9 +26,6 @@ random.seed(8)
 import warnings 
 warnings.simplefilter("ignore")
 
-
-#from src.model_auxiliar_functions import *
-#from src.training_auxiliar_functions import *
 from src.Target import Target
 
 def processing_sequences(batch_sequences, max_len, type_padding="post_padding"):
@@ -222,9 +215,8 @@ def get_fpr_tpr_for_thresh(fpr, tpr, thresh):
     return fpr[: p + 1], tpr[: p + 1]
 
 def computing_partial_auc(y_test_scalar, y_prob, fold, hyperas_folder, thresh=0.05):
-    #fpr, tpr, thresh, trapezoid=False):
-    fpr, tpr, _ = metrics.roc_curve(y_test_scalar, y_prob)
     """Computing partial AUC at a given threshold"""
+    fpr, tpr, _ = metrics.roc_curve(y_test_scalar, y_prob)
     fpr_thresh, tpr_thresh = get_fpr_tpr_for_thresh(fpr, tpr, thresh)
     part_auc_notrapez = auc_from_fpr_tpr(fpr_thresh, tpr_thresh)
     part_auc_trapez = auc_from_fpr_tpr(fpr_thresh, tpr_thresh, True)
