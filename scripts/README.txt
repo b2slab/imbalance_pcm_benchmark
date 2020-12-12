@@ -1,1 +1,0 @@
-- We should run first the resampled scripts in order to get the "smote proteins lists" (those proteins can be be processed by SMOTE) for the other scripts.
