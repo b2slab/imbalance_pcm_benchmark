@@ -106,4 +106,4 @@ venv.bak/
 #FOLDERS
 raw_data/
 data/
-
+tests/
