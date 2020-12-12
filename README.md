@@ -1,6 +1,6 @@
 # Introduction
 
-In this study we aim to XXXXXX
+In this study we aim to analyse the effect of different balancing strategies in deep learning proteochemometrics models. The balancing strategies are (1) no resampling, (2) resampling after clustering, (3) resampling before clustering and (4) semi-resampling.
 
 ## Material
 
@@ -13,7 +13,7 @@ The project is coded in Python 3.6.9.
 ## Structure
 
 - Functions are defined in the src/ folder (.py files)
-- The workflow of the analysis is applied through Jupyter Notebooks in the scripts/ folder. ORDEN?
+- The workflow of the analysis is applied through Jupyter Notebooks in the scripts/ folder. 
 The files are preceded by a number that indicates the chronological order of their execution.
 - Intermediate and final results are generated into the folder data/.
 
