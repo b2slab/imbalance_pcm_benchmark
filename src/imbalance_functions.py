@@ -246,10 +246,9 @@ def computing_random_baseline(ratios_df_completo, strategy, prot, fold, protein_
     random.shuffle(rdm_comps) 
     return rdm_comps#, comps
 
-def predictions_ratios_list_bsl(strategy, pred_test, unique_prots):
-    """Computing the ratio of actives/inactives predicted by the random baseline."""
-    only_pred = pred_test.loc[pred_test.strategy==strategy, ["label", "prot"]]
-    only_pred.rename(columns = {"prot":"DeepAffinity Protein ID"}, inplace=True)
+def predictions_ratios_list_bsl(strategy, pred_test, unique_prots, fold):
+    """Computing the proportion of actives respect to the total number of interactions for the random_baseline"""
+    only_pred = pred_test.loc[pred_test.strategy==strategy, ["label", "DeepAffinity Protein ID"]]
     print(only_pred.info())
     
     ratios_pred_list = []
@@ -258,10 +257,35 @@ def predictions_ratios_list_bsl(strategy, pred_test, unique_prots):
         ratios_pred_test["DeepAffinity Protein ID"] = prot
         ratios_pred_test["ratio_test_predicted"] = computing_active_inactive_ratio(only_pred, prot)
         ratios_pred_test["strategy"] = strategy
+        ratios_pred_test["fold"] = str(fold)
         ratios_pred_list.append(ratios_pred_test)
-  
+
     return ratios_pred_list, pred_test
 
+
+def computing_metrics_per_prot_bsl(prot, pred_test):
+    """Computing metrics per protein for the random baseline"""
+    dict_prot = {}
+    predictions_test_sub = pred_test[pred_test["DeepAffinity Protein ID"] == prot]
+    if predictions_test_sub.shape[0] == 0:
+        return None
+    dict_prot["acc"] = metrics.accuracy_score(y_true=predictions_test_sub["y_test"].values, 
+                                 y_pred=predictions_test_sub["label"].values)
+    try: 
+        dict_prot["auroc"] = metrics.roc_auc_score(y_true = predictions_test_sub["y_test"].values, 
+                                               y_score = predictions_test_sub["random_baseline"].values)
+    except ValueError:
+        print("Only one class present in y_true.")
+        dict_prot["auroc"] = np.nan
+    dict_prot["f1"] = metrics.f1_score(y_true=predictions_test_sub["y_test"].values, 
+                                       y_pred=predictions_test_sub["label"].values)
+    dict_prot["DeepAffinity Protein ID"] = prot
+    dict_prot["balanced_acc"] = metrics.balanced_accuracy_score(y_true=predictions_test_sub["y_test"].values, 
+                                                        y_pred=predictions_test_sub["label"].values)
+    dict_prot["mcc"] = metrics.matthews_corrcoef(y_true=predictions_test_sub["y_test"].values, 
+                                         y_pred=predictions_test_sub["label"].values)
+    return dict_prot
+  
 def labelling(row):
     """Labelling samples in which random_baseline result is >= 0.5 as 1 (Actives) and the rest as 0 (inactives)"""
     if row["random_baseline"] >= 0.5:
