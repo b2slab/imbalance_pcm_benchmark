@@ -1,0 +1,346 @@
+CHEMBL_ID	TID	PREF_NAME	PROTEIN_ACCESSION	TARGET_TYPE	ORGANISM	COMPOUNDS	ENDPOINTS
+CHEMBL2535	11173	Glucose transporter	P11166	SINGLE PROTEIN	Homo sapiens	13560	14170
+CHEMBL2071	164	Sulfonylurea receptor 1	Q09428	SINGLE PROTEIN	Homo sapiens	11	14
+CHEMBL2721	11538	Excitatory amino acid transporter 3	P43005	SINGLE PROTEIN	Homo sapiens	218	378
+CHEMBL2865	10446	Sodium/hydrogen exchanger 1	P23791	SINGLE PROTEIN	Oryctolagus cuniculus	1	2
+CHEMBL3313	10059	Vesicular acetylcholine transporter	P81721	SINGLE PROTEIN	Torpedo californica	91	105
+CHEMBL4054	13076	GABA transporter 1	P23978	SINGLE PROTEIN	Rattus norvegicus	120	216
+CHEMBL4767	12943	Vesicular acetylcholine transporter	Q16572	SINGLE PROTEIN	Homo sapiens	238	268
+CHEMBL4790	10952	Vacuolar ATP synthase subunit S1	Q15904	SINGLE PROTEIN	Homo sapiens	33	39
+CHEMBL1075145	103079	Transitional endoplasmic reticulum ATPase	P55072	SINGLE PROTEIN	Homo sapiens	488	700
+CHEMBL5685	101283	Solute carrier family 22 member 1	O15245	SINGLE PROTEIN	Homo sapiens	290	437
+CHEMBL5748	101311	Canalicular multispecific organic anion transporter 1	Q92887	SINGLE PROTEIN	Homo sapiens	372	539
+CHEMBL6120	102767	Solute carrier family 22 member 12	Q96S37	SINGLE PROTEIN	Homo sapiens	479	852
+CHEMBL1781861	104153	Solute carrier organic anion transporter family member 1B2	Q9QZX8	SINGLE PROTEIN	Rattus norvegicus	30	36
+CHEMBL1744524	104105	Sodium/myo-inositol cotransporter 2	Q8WWX8	SINGLE PROTEIN	Homo sapiens	3	3
+CHEMBL1615383	103769	Solute carrier family 12 member 2	P55011	SINGLE PROTEIN	Homo sapiens	5	6
+CHEMBL1293277	103710	Niemann-Pick C1 protein	O15118	SINGLE PROTEIN	Homo sapiens	18616	18901
+CHEMBL1641347	103829	Solute carrier family 22 member 6	Q4U2R8	SINGLE PROTEIN	Homo sapiens	111	205
+CHEMBL2096672	104827	Monoamine transporters; Norepinephrine & serotonin	P31652, Q9WTR4	SELECTIVITY GROUP	Rattus norvegicus	278	298
+CHEMBL2073674	104615	Bile salt export pump	O70127	SINGLE PROTEIN	Rattus norvegicus	114	132
+CHEMBL2073694	104635	Solute carrier family 22 member 4	Q9Z306	SINGLE PROTEIN	Mus musculus	2	2
+CHEMBL1743122	104063	Solute carrier family 22 member 2	O15244	SINGLE PROTEIN	Homo sapiens	126	221
+CHEMBL2073666	104607	Solute carrier family 22 member 8	Q9R1U7	SINGLE PROTEIN	Rattus norvegicus	63	95
+CHEMBL2052039	104581	Long-chain fatty acid transport protein 1	Q60714	SINGLE PROTEIN	Mus musculus	74	77
+CHEMBL2096685	104840	GABA transporter	P31648, P31649, P31650, P31651	PROTEIN FAMILY	Mus musculus	97	190
+CHEMBL1955711	104465	Solute carrier family 22 member 7	Q9Y694	SINGLE PROTEIN	Homo sapiens	32	39
+CHEMBL2111478	105007	GABA transporter	P23978, P31646, P31647, P48056	PROTEIN FAMILY	Rattus norvegicus	79	96
+CHEMBL1075135	103064	Multidrug resistance protein 1a	Q6PSM0	SINGLE PROTEIN	Rattus norvegicus	81	106
+CHEMBL5780	101328	Sodium/nucleoside cotransporter 2	O43868	SINGLE PROTEIN	Homo sapiens	63	84
+CHEMBL2073693	104634	Solute carrier family 22 member 5	O76082	SINGLE PROTEIN	Homo sapiens	73	96
+CHEMBL2073714	104655	Solute carrier family 15 member 1	Q9JIP7	SINGLE PROTEIN	Mus musculus	5	31
+CHEMBL3509593	109682	Equilibrative nucleoside transporter 4	Q7RTT9	SINGLE PROTEIN	Homo sapiens	6	23
+CHEMBL1615384	103770	Solute carrier family 12 member 5	Q9H2X9	SINGLE PROTEIN	Homo sapiens	15	36
+CHEMBL3769299	116742	Sodium-dependent phosphate transport protein 2A	Q06495	SINGLE PROTEIN	Homo sapiens	1	1
+CHEMBL3712851	114812	Solute carrier family 13 member 2	Q13183	SINGLE PROTEIN	Homo sapiens	2	3
+CHEMBL3697	100233	Nucleoside transporter 2	Q9U763	SINGLE PROTEIN	Trypanosoma brucei brucei	17	17
+CHEMBL4148	100162	L-type amino acid transporter 3	O75387	SINGLE PROTEIN	Homo sapiens	7	7
+CHEMBL5196	100786	Fatty acid transport protein 5	Q9Y2P5	SINGLE PROTEIN	Homo sapiens	42	42
+CHEMBL5453	100005	Serotonin transporter	Q9MYX0	SINGLE PROTEIN	Macaca mulatta	67	67
+CHEMBL1075149	103088	Cystine/glutamate transporter	Q9UPY5	SINGLE PROTEIN	Homo sapiens	110	141
+CHEMBL5762	101541	Sodium- and chloride-dependent taurine transporter	P31641	SINGLE PROTEIN	Homo sapiens	62	63
+CHEMBL6174	101472	Cytochrome c oxidase subunit 2	P00403	SINGLE PROTEIN	Homo sapiens	38	49
+CHEMBL6197	102808	Transporter	Q7JHP9	SINGLE PROTEIN	Macaca mulatta	67	67
+CHEMBL5873	102691	Solute carrier family 2, facilitated glucose transporter member 2	P11168	SINGLE PROTEIN	Homo sapiens	59	60
+CHEMBL1075229	102928	Multidrug resistance protein 1	P43245	SINGLE PROTEIN	Rattus norvegicus	69	77
+CHEMBL1743128	104069	Multidrug resistance-associated protein 4	O15439	SINGLE PROTEIN	Homo sapiens	95	147
+CHEMBL1777665	104148	Solute carrier family 22 member 6	O35956	SINGLE PROTEIN	Rattus norvegicus	131	198
+CHEMBL1770047	104139	Low affinity sodium-glucose cotransporter	Q9NY91	SINGLE PROTEIN	Homo sapiens	30	30
+CHEMBL1667673	103865	ATP binding cassette transporter Abc1p	Q09GQ4	SINGLE PROTEIN	Issatchenkia orientalis	26	50
+CHEMBL2073678	104619	Solute carrier family 15 member 2	Q9ES07	SINGLE PROTEIN	Mus musculus	6	6
+CHEMBL2073696	104637	Solute carrier organic anion transporter family member 1A1	Q9QXZ6	SINGLE PROTEIN	Mus musculus	15	20
+CHEMBL2073710	104651	Solute carrier organic anion transporter family member 4C1	Q71MB6	SINGLE PROTEIN	Rattus norvegicus	2	2
+CHEMBL1743126	104067	Multidrug and toxin extrusion protein 1	Q96FL8	SINGLE PROTEIN	Homo sapiens	70	139
+CHEMBL1795182	104262	Chloroquine resistance transporter	Q9N623	SINGLE PROTEIN	Plasmodium falciparum	47	131
+CHEMBL2062351	104586	ATP synthase subunit alpha, mitochondrial	P25705	SINGLE PROTEIN	Homo sapiens	1	3
+CHEMBL2073665	104606	Solute carrier family 22 member 5	Q9Z0E8	SINGLE PROTEIN	Mus musculus	28	35
+CHEMBL2073668	104609	Solute carrier family 22 member 4	Q9H015	SINGLE PROTEIN	Homo sapiens	26	32
+CHEMBL2052034	104576	Solute carrier family 2, facilitated glucose transporter member 9	Q9NRM0	SINGLE PROTEIN	Homo sapiens	2	2
+CHEMBL2096985	104865	Sodium/hydrogen exchanger	P23791, P26432, P50482	PROTEIN FAMILY	Oryctolagus cuniculus	149	151
+CHEMBL2095228	104800	Potassium-transporting ATPase	P18434, P19156	PROTEIN COMPLEX	Sus scrofa	425	474
+CHEMBL1932895	104399	Natural resistance-associated macrophage protein 2	P49281	SINGLE PROTEIN	Homo sapiens	48	60
+CHEMBL1795188	104268	Proton-coupled folate transporter	Q96NT5	SINGLE PROTEIN	Homo sapiens	24	83
+CHEMBL4507	100449	High-affinity choline transporter	Q9GZV3	SINGLE PROTEIN	Homo sapiens	1065	1445
+CHEMBL1075303	102855	Sodium- and chloride-dependent glycine transporter 1	P28571	SINGLE PROTEIN	Mus musculus	21	21
+CHEMBL2986	17068	Dopamine transporter	P27922	SINGLE PROTEIN	Bos taurus	14	17
+CHEMBL1163105	103434	Multidrug resistance protein CDR2	P78595	SINGLE PROTEIN	Candida albicans (strain SC5314 / ATCC MYA-2876) (Yeast)	41	47
+CHEMBL3509585	109674	ATP-binding cassette sub-family G member 2	Q80W57	SINGLE PROTEIN	Rattus norvegicus	4	48
+CHEMBL3585237	109815	Sarcoplasmic/endoplasmic reticulum calcium ATPase 2	P11507	SINGLE PROTEIN	Rattus norvegicus	1	1
+CHEMBL3308921	109109	Monocarboxylate transporter 3 (MCT 3)	O95907	SINGLE PROTEIN	Homo sapiens	1	1
+CHEMBL2216740	105496	Mitochondrial carnitine/acylcarnitine carrier protein	O43772	SINGLE PROTEIN	Homo sapiens	3	3
+CHEMBL3769295	116738	Solute carrier family 13 member 5	Q8CJ44	SINGLE PROTEIN	Rattus norvegicus	1	2
+CHEMBL3714292	116253	Ecto-NOX disulfide-thiol exchanger 2	Q16206	SINGLE PROTEIN	Homo sapiens	1	2
+CHEMBL3763001	116727	Sodium/potassium/calcium exchanger 6, mitochondrial	Q6J4K2	SINGLE PROTEIN	Homo sapiens	4	8
+CHEMBL3879842	116967	Sodium/hydrogen exchanger 3	P26433	SINGLE PROTEIN	Rattus norvegicus	252	268
+CHEMBL2683	12203	Vacuolar H(+)-transporting ATPase 116 kDa subunit, a1 isoform	Q9I8D0	SINGLE PROTEIN	Gallus gallus	5	11
+CHEMBL2781	11096	Sodium/hydrogen exchanger 1	P19634	SINGLE PROTEIN	Homo sapiens	296	370
+CHEMBL304	11944	Norepinephrine transporter	Q9WTR4	SINGLE PROTEIN	Rattus norvegicus	1631	2213
+CHEMBL4604	100240	Equilibrative nucleoside transporter 1	O54698	SINGLE PROTEIN	Rattus norvegicus	7	17
+CHEMBL4785	11392	Multidrug translocase mdfA	P0AEY8	SINGLE PROTEIN	Escherichia coli K-12	30	30
+CHEMBL4973	12640	Excitatory amino acid transporter 2	P43004	SINGLE PROTEIN	Homo sapiens	213	379
+CHEMBL5215	101113	Solute carrier family 2, facilitated glucose transporter member 3	P11169	SINGLE PROTEIN	Homo sapiens	60	61
+CHEMBL5393	100974	ATP-binding cassette sub-family G member 2	Q9UNQ0	SINGLE PROTEIN	Homo sapiens	1041	2146
+CHEMBL5707	101512	Solute carrier family 28 member 3	Q9HAS3	SINGLE PROTEIN	Homo sapiens	23	29
+CHEMBL1075239	102942	Solute carrier family 22 member 12	Q3ZAV1	SINGLE PROTEIN	Rattus norvegicus	1	1
+CHEMBL1772928	104142	ATP-binding cassette sub-family B member 5	Q2M3G0	SINGLE PROTEIN	Homo sapiens	4	4
+CHEMBL1770032	104124	Solute carrier family 22 member 2	Q9R0W2	SINGLE PROTEIN	Rattus norvegicus	59	136
+CHEMBL1770033	104125	Solute carrier family 22 member 3	O88446	SINGLE PROTEIN	Rattus norvegicus	24	35
+CHEMBL1641348	103830	Solute carrier family 22 member 8	Q8TCC7	SINGLE PROTEIN	Homo sapiens	113	180
+CHEMBL2073673	104614	Solute carrier family 22 member 3	O75751	SINGLE PROTEIN	Homo sapiens	37	44
+CHEMBL2073688	104629	Solute carrier organic anion transporter family member 1C1	Q9ERB5	SINGLE PROTEIN	Mus musculus	9	11
+CHEMBL2073705	104646	ATP-binding cassette sub-family G member 2	Q7TMS5	SINGLE PROTEIN	Mus musculus	20	46
+CHEMBL2073709	104650	Monocarboxylate transporter 1	P53987	SINGLE PROTEIN	Rattus norvegicus	109	130
+CHEMBL1743121	104062	Solute carrier organic anion transporter family member 1B3	Q9NPD5	SINGLE PROTEIN	Homo sapiens	2051	2469
+CHEMBL1743125	104066	Solute carrier family 15 member 2	Q16348	SINGLE PROTEIN	Homo sapiens	98	183
+CHEMBL2073661	104602	Multidrug resistance-associated protein 6	O95255	SINGLE PROTEIN	Homo sapiens	13	17
+CHEMBL2073662	104603	Solute carrier family 22 member 2	O70577	SINGLE PROTEIN	Mus musculus	7	8
+CHEMBL2073663	104604	Monocarboxylate transporter 4	O15427	SINGLE PROTEIN	Homo sapiens	44	50
+CHEMBL2073664	104605	Solute carrier family 22 member 1	O08966	SINGLE PROTEIN	Mus musculus	16	31
+CHEMBL2052038	104580	Long-chain fatty acid transport protein 1	Q6PCB7	SINGLE PROTEIN	Homo sapiens	74	75
+CHEMBL2095173	104758	Potassium-transporting ATPase	P20648, P51164	PROTEIN COMPLEX	Homo sapiens	336	493
+CHEMBL2094252	104724	Monoamine transporters; serotonin & dopamine	P23977, P31652	SELECTIVITY GROUP	Rattus norvegicus	922	1148
+CHEMBL2111404	105099	P-glycoprotein 1 and 3 (MDR1a/MDR1b)	P06795, P21447	PROTEIN FAMILY	Mus musculus	14	23
+CHEMBL1903	113	GABA transporter 1	P30531	SINGLE PROTEIN	Homo sapiens	150	178
+CHEMBL2900	12517	Excitatory amino acid transporter 2	P31596	SINGLE PROTEIN	Rattus norvegicus	13	39
+CHEMBL3430875	109632	Multidrug resistance protein 1/Multidrug resistance associated protein 1	P08183, P33527	SELECTIVITY GROUP	Homo sapiens	7	18
+CHEMBL3431938	109669	Glucose transporter	O61059	SINGLE PROTEIN	Leishmania mexicana	13429	14035
+CHEMBL4228	100342	GABA transporter 2	P31651	SINGLE PROTEIN	Mus musculus	209	323
+CHEMBL2073667	104608	Solute carrier family 22 member 4	Q9R141	SINGLE PROTEIN	Rattus norvegicus	10	11
+CHEMBL3398	10362	Renal sodium-dependent phosphate transport protein 1	Q62795	SINGLE PROTEIN	Rattus norvegicus	32	33
+CHEMBL4190	100179	Excitatory amino acid transporter 1	P24942	SINGLE PROTEIN	Rattus norvegicus	1	2
+CHEMBL2362986	105698	ATP-binding cassette sub-family A member 1	O95477	SINGLE PROTEIN	Homo sapiens	0	0
+CHEMBL3638333	109938	Sodium- and chloride-dependent glycine transporter 1	Q28039	SINGLE PROTEIN	Bos taurus	50	130
+CHEMBL3638338	109943	Acetyl-coenzyme A transporter 1	O00400	SINGLE PROTEIN	Homo sapiens	144	302
+CHEMBL3769293	116736	Solute carrier family 13 member 5	Q86YT5	SINGLE PROTEIN	Homo sapiens	13	39
+CHEMBL3769300	116743	Sodium-dependent phosphate transport protein 3	O00624	SINGLE PROTEIN	Homo sapiens	1	1
+CHEMBL3774290	116744	Sodium bicarbonate cotransporter 3	Q9Y6M7	SINGLE PROTEIN	Homo sapiens	3	3
+CHEMBL3739246	116688	Urea transporter 2	Q62668	SINGLE PROTEIN	Rattus norvegicus	23	26
+CHEMBL3886063	117212	Transporter	F1LNR9	SINGLE PROTEIN	Rattus norvegicus	3	6
+CHEMBL2337	11682	Glycine transporter 1	P48067	SINGLE PROTEIN	Homo sapiens	1522	2519
+CHEMBL1971	2	Sulfonylurea receptor 2	O60706	SINGLE PROTEIN	Homo sapiens	56	109
+CHEMBL1997	175	Equilibrative nucleoside transporter 1	Q99808	SINGLE PROTEIN	Homo sapiens	330	564
+CHEMBL238	155	Dopamine transporter	Q01959	SINGLE PROTEIN	Homo sapiens	4811	7321
+CHEMBL2125	10948	Vesicular acetylcholine transporter	Q62666	SINGLE PROTEIN	Rattus norvegicus	78	89
+CHEMBL2173	10256	Carnitine/acylcarnitine translocase	P97521	SINGLE PROTEIN	Rattus norvegicus	13	26
+CHEMBL3113	12197	Excitatory amino acid transporter 3	P51907	SINGLE PROTEIN	Rattus norvegicus	7	10
+CHEMBL3184	11185	Carnitine acetylase	P43155	SINGLE PROTEIN	Homo sapiens	12	13
+CHEMBL3195	11597	Glycine transporter 2	P58295	SINGLE PROTEIN	Rattus norvegicus	87	95
+CHEMBL3010	12714	Sodium/potassium-transporting ATPase alpha-1 chain	P06685	SINGLE PROTEIN	Rattus norvegicus	1	1
+CHEMBL3060	11596	Glycine transporter 2	Q9Y345	SINGLE PROTEIN	Homo sapiens	515	534
+CHEMBL3814	11115	Creatine transporter	P28570	SINGLE PROTEIN	Rattus norvegicus	58	104
+CHEMBL3472	12457	Vesicular glutamate transporter 3	Q7TSF2	SINGLE PROTEIN	Rattus norvegicus	56	89
+CHEMBL4131	12713	Sodium/potassium-transporting ATPase alpha-1 chain	P05024	SINGLE PROTEIN	Sus scrofa	9	10
+CHEMBL4149	100163	L-type amino acid transporter 1	Q63016	SINGLE PROTEIN	Rattus norvegicus	16	31
+CHEMBL4302	11398	P-glycoprotein 1	P08183	SINGLE PROTEIN	Homo sapiens	4041	9228
+CHEMBL4697	100665	Hexose transporter 1	O97467	SINGLE PROTEIN	Plasmodium falciparum	13464	14071
+CHEMBL4327	100785	Fatty acid transport protein 4	Q6P1M0	SINGLE PROTEIN	Homo sapiens	53	53
+CHEMBL4459	100160	L-type amino acid transporter 1	Q01650	SINGLE PROTEIN	Homo sapiens	28	59
+CHEMBL4838	100205	Sodium/potassium-transporting ATPase alpha-1 chain	P50997	SINGLE PROTEIN	Canis lupus familiaris	31	33
+CHEMBL6173	101471	Cytochrome c oxidase subunit 1	P00395	SINGLE PROTEIN	Homo sapiens	15	15
+CHEMBL1293189	103636	ATP-binding cassette sub-family B member 9	Q9NP78	SINGLE PROTEIN	Homo sapiens	1	2
+CHEMBL5875	102693	Solute carrier family 2, facilitated glucose transporter member 5	P22732	SINGLE PROTEIN	Homo sapiens	1	2
+CHEMBL1697668	103947	Solute carrier organic anion transporter family member 1B1	Q9Y6L6	SINGLE PROTEIN	Homo sapiens	2095	2566
+CHEMBL1287611	103613	Equilibrative nucleoside transporter 1	Q9JIM1	SINGLE PROTEIN	Mus musculus	2	6
+CHEMBL1287612	103614	Equilibrative nucleoside transporter 2	Q61672	SINGLE PROTEIN	Mus musculus	2	4
+CHEMBL1287613	103615	Sodium/nucleoside cotransporter 2	O88627	SINGLE PROTEIN	Mus musculus	2	4
+CHEMBL1641337	103819	Efflux transporter	Q3S5C3	SINGLE PROTEIN	Salmonella newport	9	20
+CHEMBL2073679	104620	Solute carrier organic anion transporter family member 4A1	Q96BD0	SINGLE PROTEIN	Homo sapiens	11	14
+CHEMBL2073686	104627	Ileal sodium/bile acid cotransporter	Q62633	SINGLE PROTEIN	Rattus norvegicus	15	17
+CHEMBL2073690	104631	Solute carrier organic anion transporter family member 4C1	Q6ZQN7	SINGLE PROTEIN	Homo sapiens	6	7
+CHEMBL2073691	104632	Solute carrier family 15 member 1	P51574	SINGLE PROTEIN	Rattus norvegicus	58	109
+CHEMBL2073702	104643	ATP-binding cassette sub-family C member 11	Q96J66	SINGLE PROTEIN	Homo sapiens	18	24
+CHEMBL2073704	104645	Monocarboxylate transporter 2	O60669	SINGLE PROTEIN	Homo sapiens	9	10
+CHEMBL2073707	104648	Solute carrier organic anion transporter family member 1A3	P70502	SINGLE PROTEIN	Rattus norvegicus	37	65
+CHEMBL2073718	104659	Monocarboxylate transporter 2	Q66HS9	SINGLE PROTEIN	Rattus norvegicus	23	27
+CHEMBL1163109	103438	Multidrug resistance protein CDR1	P43071	SINGLE PROTEIN	Candida albicans	37	48
+CHEMBL1743123	104064	Solute carrier organic anion transporter family member 1A2	P46721	SINGLE PROTEIN	Homo sapiens	70	100
+CHEMBL2062350	104585	ATP synthase subunit beta, mitochondrial	P06576	SINGLE PROTEIN	Homo sapiens	1	3
+CHEMBL2073723	104664	Organic solute transporter subunit alpha	Q8R000	SINGLE PROTEIN	Mus musculus	3	6
+CHEMBL2073724	104665	Organic solute transporter subunit alpha	Q86UW1	SINGLE PROTEIN	Homo sapiens	4	6
+CHEMBL2052040	104582	Natural resistance-associated macrophage protein 1	P49279	SINGLE PROTEIN	Homo sapiens	48	48
+CHEMBL1944490	104440	ATP-binding cassette sub-family C member 8	Q09429	SINGLE PROTEIN	Rattus norvegicus	30	118
+CHEMBL2096990	104870	Monoamine transporters; Norepinephrine & dopamine	P23975, Q01959	SELECTIVITY GROUP	Homo sapiens	173	216
+CHEMBL1914279	104375	Proton-coupled amino acid transporter 1	Q7Z2H8	SINGLE PROTEIN	Homo sapiens	50	100
+CHEMBL2095201	104785	Monoamine transporters; serotonin & dopamine	P31645, Q01959	SELECTIVITY GROUP	Homo sapiens	316	417
+CHEMBL2096972	104852	Sulfonylurea receptor 1, Kir6.2	Q09428, Q14654	PROTEIN COMPLEX	Homo sapiens	99	254
+CHEMBL2046258	104559	Multidrug resistance-associated protein 5	O15440	SINGLE PROTEIN	Homo sapiens	37	50
+CHEMBL4076	11071	Sodium/calcium exchanger 1	P32418	SINGLE PROTEIN	Homo sapiens	386	804
+CHEMBL5032	100029	Dopamine transporter	Q9GJT6	SINGLE PROTEIN	Macaca fascicularis	17	28
+CHEMBL4556	11117	Glycine transporter 1	P28572	SINGLE PROTEIN	Rattus norvegicus	122	213
+CHEMBL3217398	108256	Glucose-6-phosphate translocase	O43826	SINGLE PROTEIN	Homo sapiens	23	25
+CHEMBL3509595	109684	Solute carrier family 15 member 1	P36836	SINGLE PROTEIN	Oryctolagus cuniculus	4	7
+CHEMBL3308931	109213	Multidrug resistance protein Pgh1	Q9NG76	SINGLE PROTEIN	Plasmodium falciparum	19	19
+CHEMBL3308987	109123	ATP synthase subunit alpha	P09219	SINGLE PROTEIN	Bacillus sp.	1	1
+CHEMBL3308988	109124	ATP synthase subunit beta	P07677	SINGLE PROTEIN	Bacillus sp.	1	1
+CHEMBL3308989	109125	ATP synthase subunit c	P00845	SINGLE PROTEIN	Bacillus sp.	1	1
+CHEMBL3713014	114975	Choline transporter-like protein 4	Q53GD3	SINGLE PROTEIN	Homo sapiens	0	0
+CHEMBL3988606	117266	Transitional endoplasmic reticulum ATPase	Q01853	SINGLE PROTEIN	Mus musculus	53	53
+CHEMBL2532	10946	Multidrug resistance-associated protein 1	O35379	SINGLE PROTEIN	Mus musculus	19	42
+CHEMBL3244	12199	Sulfonylurea receptor 2	Q63563	SINGLE PROTEIN	Rattus norvegicus	54	82
+CHEMBL3271	12582	Sodium-dependent vitamin C transporter 2	Q9UGH3	SINGLE PROTEIN	Homo sapiens	6	28
+CHEMBL3079	10748	Thiamine transporter 1	O60779	SINGLE PROTEIN	Homo sapiens	1	2
+CHEMBL3699	100341	GABA transporter 4	P31650	SINGLE PROTEIN	Mus musculus	364	485
+CHEMBL3715	11446	Betaine transporter	P48065	SINGLE PROTEIN	Homo sapiens	49	59
+CHEMBL4605	10561	Oligopeptide transporter small intestine isoform	P46059	SINGLE PROTEIN	Homo sapiens	408	845
+CHEMBL4771	10720	Potassium-transporting ATPase beta chain	P18598	SINGLE PROTEIN	Rattus norvegicus	8	8
+CHEMBL4847	100142	Bile acid transporter	P26435	SINGLE PROTEIN	Rattus norvegicus	45	65
+CHEMBL4979	18036	Sodium/glucose cotransporter 1	P13866	SINGLE PROTEIN	Homo sapiens	1040	1806
+CHEMBL5208	11118	GABA transporter 3	P48066	SINGLE PROTEIN	Homo sapiens	72	87
+CHEMBL5214	101112	Solute carrier family 2, facilitated glucose transporter member 1	P11167	SINGLE PROTEIN	Rattus norvegicus	10	17
+CHEMBL5287	100159	Bile acid transporter	Q14973	SINGLE PROTEIN	Homo sapiens	37	49
+CHEMBL5302	101148	Niemann-Pick C1-like 1 protein	A0MJA5	SINGLE PROTEIN	Macaca mulatta	4	4
+CHEMBL1287628	103630	NADPH oxidase 1	Q9Y5S8	SINGLE PROTEIN	Homo sapiens	249	289
+CHEMBL5918	102723	Canalicular multispecific organic anion transporter 2	O15438	SINGLE PROTEIN	Homo sapiens	35	83
+CHEMBL1075238	102941	Solute carrier family 22 member 5	O70594	SINGLE PROTEIN	Rattus norvegicus	32	40
+CHEMBL1743129	104070	Multidrug resistance protein 3	P21439	SINGLE PROTEIN	Homo sapiens	6	6
+CHEMBL1741183	103979	Ammonium transporter MEP2	P41948	SINGLE PROTEIN	Saccharomyces cerevisiae S288c	18	18
+CHEMBL1743124	104065	Solute carrier organic anion transporter family member 2B1	O94956	SINGLE PROTEIN	Homo sapiens	283	392
+CHEMBL2073671	104612	Solute carrier family 22 member 7	Q5RLM2	SINGLE PROTEIN	Rattus norvegicus	28	33
+CHEMBL2073722	104663	Solute carrier family 22 member 16	Q86VW1	SINGLE PROTEIN	Homo sapiens	4	4
+CHEMBL2538	12860	Potassium-transporting ATPase beta chain	P18434	SINGLE PROTEIN	Sus scrofa	13	22
+CHEMBL3392948	109560	Solute carrier family 40 member 1	Q9NP59	SINGLE PROTEIN	Homo sapiens	289	289
+CHEMBL3232690	108278	NAD-dependent protein deacetylase sirtuin-2	Q5RJQ4	SINGLE PROTEIN	Rattus norvegicus	7	8
+CHEMBL2577	11097	Sodium/hydrogen exchanger 1	P26431	SINGLE PROTEIN	Rattus norvegicus	123	133
+CHEMBL2363064	105759	Monoamine transporter	P23975, P31645, Q01959	PROTEIN FAMILY	Homo sapiens	0	0
+CHEMBL1287616	103618	Sodium/nucleoside cotransporter 2	Q62773	SINGLE PROTEIN	Rattus norvegicus	24	36
+CHEMBL2073681	104622	Canalicular multispecific organic anion transporter 1	Q8VI47	SINGLE PROTEIN	Mus musculus	14	18
+CHEMBL2095186	104770	Sodium/potassium-transporting ATPase	P05023, P05026, P13637, P14415, P50993, P54709, P54710, Q13733	PROTEIN COMPLEX GROUP	Homo sapiens	282	318
+CHEMBL2216739	105495	Carnitine O-palmitoyltransferase 1, muscle isoform	Q92523	SINGLE PROTEIN	Homo sapiens	493	497
+CHEMBL2366461	106605	Cytochrome b6-f complex subunit 4	P00166	SINGLE PROTEIN	Spinacia oleracea	103	179
+CHEMBL3562162	109758	Neutral amino acid transporter B(0)	Q15758	SINGLE PROTEIN	Homo sapiens	41	44
+CHEMBL3769294	116737	Solute carrier family 13 member 5	Q67BT3	SINGLE PROTEIN	Mus musculus	1	2
+CHEMBL3769298	116741	Sodium-dependent phosphate transport protein 1	Q14916	SINGLE PROTEIN	Homo sapiens	1	1
+CHEMBL3774291	116745	Sodium bicarbonate cotransporter 3	Q8BTY2	SINGLE PROTEIN	Mus musculus	3	3
+CHEMBL3712947	114908	Solute carrier family 13 member 3	Q8WWT9	SINGLE PROTEIN	Homo sapiens	2	3
+CHEMBL3739247	116689	Urea transporter 1	P97689	SINGLE PROTEIN	Rattus norvegicus	23	23
+CHEMBL3886122	117214	Sodium/hydrogen exchanger 2	P48763	SINGLE PROTEIN	Rattus norvegicus	2	4
+CHEMBL2370	11894	Norepinephrine transporter	O55192	SINGLE PROTEIN	Mus musculus	61	64
+CHEMBL2573	12502	P-glycoprotein 3	P21447	SINGLE PROTEIN	Mus musculus	232	470
+CHEMBL2206	11074	Peroxisomal carnitine O-octanoyltransferase	Q9UKG9	SINGLE PROTEIN	Homo sapiens	3	3
+CHEMBL3133	11098	Sodium/hydrogen exchanger 2	Q9UBY0	SINGLE PROTEIN	Homo sapiens	19	28
+CHEMBL2799	10997	Dopamine transporter	Q61327	SINGLE PROTEIN	Mus musculus	134	172
+CHEMBL3004	12030	Multidrug resistance-associated protein 1	P33527	SINGLE PROTEIN	Homo sapiens	960	1443
+CHEMBL3013	11913	Choline transporter	Q8BGY9	SINGLE PROTEIN	Mus musculus	45	45
+CHEMBL3919	12274	Potassium-transporting ATPase alpha chain 1	P19156	SINGLE PROTEIN	Sus scrofa	64	69
+CHEMBL3325	100803	Oligopeptide transporter, kidney isoform	Q63424	SINGLE PROTEIN	Rattus norvegicus	86	114
+CHEMBL3467	11031	P-glycoprotein 1	P06795	SINGLE PROTEIN	Mus musculus	151	174
+CHEMBL4271	11009	Synaptic vesicular amine transporter	Q27963	SINGLE PROTEIN	Bos taurus	53	112
+CHEMBL4316	12823	Sodium/glucose cotransporter 2	P53792	SINGLE PROTEIN	Rattus norvegicus	14	16
+CHEMBL4326	100784	Fatty acid transport protein 2	O14975	SINGLE PROTEIN	Homo sapiens	44	44
+CHEMBL4381	100207	Synaptic vesicle protein 2a	Q02563	SINGLE PROTEIN	Rattus norvegicus	150	151
+CHEMBL5551	101230	Sodium/nucleoside cotransporter 1	O00337	SINGLE PROTEIN	Homo sapiens	4	10
+CHEMBL5797	101560	High affinity choline transporter 1	Q9JMD7	SINGLE PROTEIN	Rattus norvegicus	2	2
+CHEMBL5653	101272	Solute carrier family 22 member 6	Q8VC69	SINGLE PROTEIN	Mus musculus	84	141
+CHEMBL5680	102429	Multidrug resistance-associated protein 1	Q8CG09	SINGLE PROTEIN	Rattus norvegicus	2	8
+CHEMBL1075108	103158	Solute carrier family 12 member 5	Q63633	SINGLE PROTEIN	Rattus norvegicus	53	58
+CHEMBL1781859	104151	Solute carrier organic anion transporter family member 1A1	P46720	SINGLE PROTEIN	Rattus norvegicus	133	265
+CHEMBL2073676	104617	Canalicular multispecific organic anion transporter 1	Q63120	SINGLE PROTEIN	Rattus norvegicus	125	238
+CHEMBL2073680	104621	Solute carrier organic anion transporter family member 2A1	Q00910	SINGLE PROTEIN	Rattus norvegicus	44	77
+CHEMBL2073682	104623	Canalicular multispecific organic anion transporter 2	O88563	SINGLE PROTEIN	Rattus norvegicus	20	74
+CHEMBL2073683	104624	Canalicular multispecific organic anion transporter 2	B2RX12	SINGLE PROTEIN	Mus musculus	15	15
+CHEMBL2073700	104641	Solute carrier organic anion transporter family member 1A4	Q9EP96	SINGLE PROTEIN	Mus musculus	15	16
+CHEMBL2073703	104644	Solute carrier organic anion transporter family member 2A1	Q92959	SINGLE PROTEIN	Homo sapiens	15	17
+CHEMBL2073712	104653	Multidrug resistance-associated protein 6	O88269	SINGLE PROTEIN	Rattus norvegicus	8	8
+CHEMBL2073720	104661	Monocarboxylate transporter 8	Q8K1P8	SINGLE PROTEIN	Rattus norvegicus	15	28
+CHEMBL1743127	104068	Multidrug and toxin extrusion protein 2	Q86VL8	SINGLE PROTEIN	Homo sapiens	44	55
+CHEMBL2073670	104611	Solute carrier family 22 member 1	Q63089	SINGLE PROTEIN	Rattus norvegicus	70	176
+CHEMBL2073672	104613	Solute carrier family 22 member 8	O88909	SINGLE PROTEIN	Mus musculus	60	129
+CHEMBL2095152	104737	Sulfonylurea receptors; K-ATP channels	O60706, Q09428, Q14654, Q15842	PROTEIN COMPLEX GROUP	Homo sapiens	323	594
+CHEMBL2111346	105045	Serotonin and norepinephrine transporters (SERT/NET)	P23975, P31645	SELECTIVITY GROUP	Homo sapiens	83	90
+CHEMBL2095199	104783	Potassium-transporting ATPase	P09626, P18598	PROTEIN COMPLEX	Rattus norvegicus	404	425
+CHEMBL6184	102461	Transporter	Q63380	SINGLE PROTEIN	Rattus norvegicus	289	356
+CHEMBL3901	11689	Sarcoplasmic/endoplasmic reticulum calcium ATPase 2	P16615	SINGLE PROTEIN	Homo sapiens	34	39
+CHEMBL3770	10447	Sodium/hydrogen exchanger 2	P50482	SINGLE PROTEIN	Oryctolagus cuniculus	3	6
+CHEMBL2176770	105345	Sulfate anion transporter 1	P58735	SINGLE PROTEIN	Mus musculus	5	11
+CHEMBL1893	162	Synaptic vesicular amine transporter	Q05940	SINGLE PROTEIN	Homo sapiens	10	10
+CHEMBL1075302	102854	Sodium/glucose cotransporter 2	Q923I7	SINGLE PROTEIN	Mus musculus	31	48
+CHEMBL2073708	104649	Ileal sodium/bile acid cotransporter	P70172	SINGLE PROTEIN	Mus musculus	13	16
+CHEMBL4833	10123	Folate transporter 1	P41440	SINGLE PROTEIN	Homo sapiens	35	53
+CHEMBL3562161	109757	Amino acid transporter	Q9Z1J7	SINGLE PROTEIN	Rattus norvegicus	21	21
+CHEMBL2321620	105609	AcrB protein	Q9AEG1	SINGLE PROTEIN	Enterobacter aerogenes	1	1
+CHEMBL3885641	117185	Solute carrier family 12 member 2/member 5	P55011, Q9H2X9	PROTEIN COMPLEX	Homo sapiens	22	22
+CHEMBL1807	29	Sodium/potassium-transporting ATPase alpha-1 chain	P05023	SINGLE PROTEIN	Homo sapiens	7	7
+CHEMBL1838	267	Vesicular amine transporter 1	P54219	SINGLE PROTEIN	Homo sapiens	1	1
+CHEMBL1874	167	Sodium-(potassium)-chloride cotransporter 2	Q13621	SINGLE PROTEIN	Homo sapiens	0	0
+CHEMBL1998	31000	Synaptic vesicle glycoprotein 2A	Q7L0J3	SINGLE PROTEIN	Homo sapiens	0	0
+CHEMBL222	100	Norepinephrine transporter	P23975	SINGLE PROTEIN	Homo sapiens	4567	6924
+CHEMBL3136	11564	Sarcoplasmic/endoplasmic reticulum calcium ATPase 1	O14983	SINGLE PROTEIN	Homo sapiens	41	50
+CHEMBL2778	12909	Ileal bile acid transporter	Q12908	SINGLE PROTEIN	Homo sapiens	354	470
+CHEMBL313	12198	Serotonin transporter	P31652	SINGLE PROTEIN	Rattus norvegicus	4330	5720
+CHEMBL3058	12589	Sodium/hydrogen exchanger 5	Q14940	SINGLE PROTEIN	Homo sapiens	10	16
+CHEMBL3884	20092	Sodium/glucose cotransporter 2	P31639	SINGLE PROTEIN	Homo sapiens	1437	2049
+CHEMBL338	13077	Dopamine transporter	P23977	SINGLE PROTEIN	Rattus norvegicus	3306	5943
+CHEMBL3494	100615	Sodium/calcium exchanger 1	P48766	SINGLE PROTEIN	Cavia porcellus	21	21
+CHEMBL4828	10309	Synaptic vesicular amine transporter	Q01827	SINGLE PROTEIN	Rattus norvegicus	227	436
+CHEMBL5205	100340	GABA transporter 3	P31649	SINGLE PROTEIN	Mus musculus	369	454
+CHEMBL5269	101139	Solute carrier family 22 member 20	Q80UJ1	SINGLE PROTEIN	Mus musculus	45	86
+CHEMBL5336	100953	Cycloheximide resistance protein	Q5ABU7	SINGLE PROTEIN	Candida albicans (strain SC5314 / ATCC MYA-2876) (Yeast)	2	2
+CHEMBL5641	102463	V-type proton ATPase subunit B, brain isoform	P21281	SINGLE PROTEIN	Homo sapiens	1	2
+CHEMBL1287627	103629	Cytochrome b-245 heavy chain	P04839	SINGLE PROTEIN	Homo sapiens	102	166
+CHEMBL5874	102692	Solute carrier family 2, facilitated glucose transporter member 4	P14672	SINGLE PROTEIN	Homo sapiens	11	11
+CHEMBL1697658	103937	Pleiotropic ABC efflux transporter of multiple drugs	P33302	SINGLE PROTEIN	Saccharomyces cerevisiae S288c	23	46
+CHEMBL1781860	104152	Solute carrier organic anion transporter family member 1A4	O35913	SINGLE PROTEIN	Rattus norvegicus	75	114
+CHEMBL2073677	104618	Solute carrier family 22 member 11	Q9NSA0	SINGLE PROTEIN	Homo sapiens	58	79
+CHEMBL2007630	104488	ATP-binding cassette sub-family B member 6, mitochondrial	Q9NP58	SINGLE PROTEIN	Homo sapiens	20	20
+CHEMBL2073689	104630	Solute carrier organic anion transporter family member 3A1	Q99N02	SINGLE PROTEIN	Rattus norvegicus	3	3
+CHEMBL2073697	104638	Solute carrier organic anion transporter family member 1C1	Q9NYB5	SINGLE PROTEIN	Homo sapiens	20	20
+CHEMBL2073701	104642	Solute carrier organic anion transporter family member 4A1	Q99N01	SINGLE PROTEIN	Rattus norvegicus	2	2
+CHEMBL2073711	104652	Multidrug resistance-associated protein 4	Q6QMG6	SINGLE PROTEIN	Rattus norvegicus	2	3
+CHEMBL1250404	103518	Cytochrome c oxidase subunit 2	O78750	SINGLE PROTEIN	Ovis aries	8	8
+CHEMBL1250410	103524	Solute carrier family 2, facilitated glucose transporter member 4	P14142	SINGLE PROTEIN	Mus musculus	3	3
+CHEMBL2095175	104760	Monoamine transporters; Norepininephrine & dopamine	P23977, Q9WTR4	SELECTIVITY GROUP	Rattus norvegicus	489	561
+CHEMBL2095198	104782	Sulfonylurea receptor 2, Kir6.2	O60706, Q14654	PROTEIN COMPLEX	Homo sapiens	119	426
+CHEMBL1926497	104392	NADPH oxidase 5	Q96PH1	SINGLE PROTEIN	Homo sapiens	53	53
+CHEMBL3038487	107913	Kir6.2/SUR1	P70673, Q09429	PROTEIN COMPLEX	Rattus norvegicus	4	4
+CHEMBL2176795	105370	ATP synthase subunit alpha, mitochondrial	P15999	SINGLE PROTEIN	Rattus norvegicus	2	2
+CHEMBL1287614	103616	Equilibrative nucleoside transporter 2	O54699	SINGLE PROTEIN	Rattus norvegicus	12	20
+CHEMBL4693	100660	Sarcoplasmic/endoplasmic reticulum calcium ATP-ase	P04191	SINGLE PROTEIN	Oryctolagus cuniculus	45	51
+CHEMBL6011	101416	Cytochrome c oxidase subunit 1	O78749	SINGLE PROTEIN	Ovis aries	33	40
+CHEMBL3509590	109679	Solute carrier organic anion transporter family member	Q95KY9	SINGLE PROTEIN	Bos taurus	2	21
+CHEMBL3509606	109695	Equilibrative nucleoside transporter 2	Q14542	SINGLE PROTEIN	Homo sapiens	3	8
+CHEMBL3585236	109814	Sarcoplasmic/endoplasmic reticulum calcium ATPase 1	Q64578	SINGLE PROTEIN	Rattus norvegicus	1	1
+CHEMBL2366567	106711	Chloroplast coupling factor 1	P00825, P00833, P05435, P06450, P06451, P06453, P11402, P31853, P69447	PROTEIN COMPLEX	Spinacia oleracea	1	9
+CHEMBL2331047	105643	Sodium/iodide cotransporter	Q63008	SINGLE PROTEIN	Rattus norvegicus	82	83
+CHEMBL2390814	107607	Urea transporter 1	Q13336	SINGLE PROTEIN	Homo sapiens	1	1
+CHEMBL3317335	109456	Sodium-dependent proline transporter	Q99884	SINGLE PROTEIN	Homo sapiens	54	54
+CHEMBL3885598	117142	Kv channel-interacting protein 2/Potassium voltage-gated channel subfamily D member 3	Q9NS61, Q9UK17	PROTEIN COMPLEX	Homo sapiens	1	1
+CHEMBL3885640	117184	Sodium/potassium-transporting ATPase subunit alpha-2/alpha-3	P06686, P06687	PROTEIN COMPLEX	Rattus norvegicus	8	8
+CHEMBL1876	151	Thiazide-sensitive sodium-chloride cotransporter	P55017	SINGLE PROTEIN	Homo sapiens	0	0
+CHEMBL228	121	Serotonin transporter	P31645	SINGLE PROTEIN	Homo sapiens	6282	9333
+CHEMBL3217	11690	Vacuolar ATP synthase subunit B, kidney isoform	P15313	SINGLE PROTEIN	Homo sapiens	5	5
+CHEMBL2601	17000	Adenosine transporter 1	Q9Y0I0	SINGLE PROTEIN	Trypanosoma brucei	37	37
+CHEMBL2933	17093	Potassium-transporting ATPase alpha chain 2	P54707	SINGLE PROTEIN	Homo sapiens	82	83
+CHEMBL4642	12440	Serotonin transporter	Q60857	SINGLE PROTEIN	Mus musculus	107	142
+CHEMBL4360	100467	Monocarboxylate transporter 1	P53985	SINGLE PROTEIN	Homo sapiens	85	133
+CHEMBL4535	100571	GABA transporter 2	Q9NSD5	SINGLE PROTEIN	Homo sapiens	40	49
+CHEMBL4889	12614	GABA transporter 2	P31646	SINGLE PROTEIN	Rattus norvegicus	33	36
+CHEMBL5374	12822	Sodium/glucose cotransporter 1	P53790	SINGLE PROTEIN	Rattus norvegicus	9	10
+CHEMBL5445	100339	GABA transporter 1	P31648	SINGLE PROTEIN	Mus musculus	524	806
+CHEMBL6170	101468	Cytochrome b5	P00167	SINGLE PROTEIN	Homo sapiens	4	5
+CHEMBL6020	102394	Bile salt export pump	O95342	SINGLE PROTEIN	Homo sapiens	146	179
+CHEMBL1681613	103906	Multidrug resistance protein mdtK	P37340	SINGLE PROTEIN	Escherichia coli (strain K12)	5	10
+CHEMBL1641361	103843	ATP-binding cassette sub-family A member 1	P41233	SINGLE PROTEIN	Mus musculus	57	58
+CHEMBL1287615	103617	Sodium/nucleoside cotransporter 1	Q62674	SINGLE PROTEIN	Rattus norvegicus	2	8
+CHEMBL2073684	104625	Solute carrier family 22 member 3	Q9WTW5	SINGLE PROTEIN	Mus musculus	7	10
+CHEMBL2073685	104626	Solute carrier organic anion transporter family member 3A1	Q9UIG8	SINGLE PROTEIN	Homo sapiens	15	19
+CHEMBL2073687	104628	Multidrug resistance-associated protein 7	Q5T3U5	SINGLE PROTEIN	Homo sapiens	29	31
+CHEMBL2073692	104633	Solute carrier organic anion transporter family member 1A5	O88397	SINGLE PROTEIN	Rattus norvegicus	37	48
+CHEMBL2073695	104636	Bile salt export pump	Q9QY30	SINGLE PROTEIN	Mus musculus	23	36
+CHEMBL2073698	104639	Solute carrier organic anion transporter family member 2B1	Q9JHI3	SINGLE PROTEIN	Rattus norvegicus	11	13
+CHEMBL2073699	104640	Solute carrier organic anion transporter family member 2A1	Q9EPT5	SINGLE PROTEIN	Mus musculus	2	2
+CHEMBL2073713	104654	Sodium/bile acid cotransporter	O08705	SINGLE PROTEIN	Mus musculus	5	9
+CHEMBL2073715	104656	Solute carrier family 22 member 21	Q9WTN6	SINGLE PROTEIN	Mus musculus	7	8
+CHEMBL2073716	104657	Solute carrier family 22 member 7	Q91WU2	SINGLE PROTEIN	Mus musculus	15	15
+CHEMBL2073717	104658	Monocarboxylate transporter 10	Q91Y77	SINGLE PROTEIN	Rattus norvegicus	46	73
+CHEMBL2073721	104662	Solute carrier family 22 member 9	Q8IVM8	SINGLE PROTEIN	Homo sapiens	14	14
+CHEMBL2176793	105368	Sodium-dependent multivitamin transporter	O70247	SINGLE PROTEIN	Rattus norvegicus	2	2
+CHEMBL3286066	108368	Solute carrier family 2, facilitated glucose transporter member 4	P19357	SINGLE PROTEIN	Rattus norvegicus	41	60
+CHEMBL3273	12588	Sodium/hydrogen exchanger 3	P48764	SINGLE PROTEIN	Homo sapiens	245	253
+CHEMBL3085	11560	Excitatory amino acid transporter 1	P43003	SINGLE PROTEIN	Homo sapiens	202	392
+CHEMBL3091264	107975	Multidrug and toxin extrusion protein 1	Q8K0H1	SINGLE PROTEIN	Mus musculus	1	1
+CHEMBL2163171	105211	Urea transporter 1	Q8VHL0	SINGLE PROTEIN	Mus musculus	21	26
+CHEMBL1671612	103899	Cytochrome b-c1 complex subunit 7	P14927	SINGLE PROTEIN	Homo sapiens	20	31
+CHEMBL3309025	109163	Probable phospholipid ABC transporter-binding protein MlaB	P64602	SINGLE PROTEIN	Escherichia coli (strain K12)	1	1
+CHEMBL2366457	106601	Cytochrome b-245 light chain	O46521	SINGLE PROTEIN	Bos taurus	5	5
+CHEMBL3351189	109513	Sodium-dependent neutral amino acid transporter B(0)AT2	Q9H2J7	SINGLE PROTEIN	Homo sapiens	39	42
+CHEMBL2321610	105599	Niemann-Pick C1 protein	O35604	SINGLE PROTEIN	Mus musculus	5	5

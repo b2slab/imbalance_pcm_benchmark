@@ -1,0 +1,759 @@
+CHEMBL_ID	TID	PREF_NAME	PROTEIN_ACCESSION	TARGET_TYPE	ORGANISM	COMPOUNDS	ENDPOINTS
+CHEMBL2426	10262	Casein kinase I gamma 1	Q9HCP0	SINGLE PROTEIN	Homo sapiens	1346	2039
+CHEMBL2494	10971	CaM kinase IV	Q16566	SINGLE PROTEIN	Homo sapiens	933	1604
+CHEMBL2543	11629	Casein kinase I gamma 2	P78368	SINGLE PROTEIN	Homo sapiens	1406	2110
+CHEMBL1824	188	Receptor protein-tyrosine kinase erbB-2	P04626	SINGLE PROTEIN	Homo sapiens	4852	6706
+CHEMBL1974	12670	Tyrosine-protein kinase receptor FLT3	P36888	SINGLE PROTEIN	Homo sapiens	4650	8101
+CHEMBL2007	12627	Platelet-derived growth factor receptor alpha	P16234	SINGLE PROTEIN	Homo sapiens	1661	4621
+CHEMBL279	10980	Vascular endothelial growth factor receptor 2	P35968	SINGLE PROTEIN	Homo sapiens	11693	17660
+CHEMBL2208	11082	MAP kinase-activated protein kinase 2	P49137	SINGLE PROTEIN	Homo sapiens	3122	4203
+CHEMBL2211	100818	Serine/threonine-protein kinase Aurora-A	P97477	SINGLE PROTEIN	Mus musculus	5	10
+CHEMBL2213	12263	Protein kinase C alpha	P04409	SINGLE PROTEIN	Bos taurus	47	47
+CHEMBL2599	10906	Tyrosine-protein kinase SYK	P43405	SINGLE PROTEIN	Homo sapiens	4865	7930
+CHEMBL299	11635	Protein kinase C alpha	P17252	SINGLE PROTEIN	Homo sapiens	3360	5248
+CHEMBL2815	11902	Nerve growth factor receptor Trk-A	P04629	SINGLE PROTEIN	Homo sapiens	4399	6156
+CHEMBL2835	10919	Tyrosine-protein kinase JAK1	P23458	SINGLE PROTEIN	Homo sapiens	4951	7206
+CHEMBL2855	12454	Protein kinase C alpha	P05696	SINGLE PROTEIN	Rattus norvegicus	21	29
+CHEMBL2896	11018	cGMP-dependent protein kinase 2	Q13237	SINGLE PROTEIN	Homo sapiens	1001	1428
+CHEMBL3020	12133	Protein kinase C beta	P68403	SINGLE PROTEIN	Rattus norvegicus	2	4
+CHEMBL3062	10856	Myosin light chain kinase, smooth muscle	P11799	SINGLE PROTEIN	Gallus gallus	157	167
+CHEMBL3830	30000	Adaptor-associated kinase	Q2M2I8	SINGLE PROTEIN	Homo sapiens	143	204
+CHEMBL3831	30001	MAP/microtubule affinity-regulating kinase 2	Q7KZI7	SINGLE PROTEIN	Homo sapiens	1418	2045
+CHEMBL3530	12919	Dual specificity mitogen-activated protein kinase kinase 7	O14733	SINGLE PROTEIN	Homo sapiens	436	616
+CHEMBL3655	17033	Tyrosine-protein kinase SRC	P00523	SINGLE PROTEIN	Gallus gallus	360	421
+CHEMBL4121	10396	CaM kinase II beta	Q13554	SINGLE PROTEIN	Homo sapiens	1029	1351
+CHEMBL4202	30035	Serine/threonine-protein kinase 2	Q9H2G2	SINGLE PROTEIN	Homo sapiens	911	997
+CHEMBL4224	30013	Dual specificty protein kinase CLK1	P49759	SINGLE PROTEIN	Homo sapiens	897	1011
+CHEMBL4247	100417	ALK tyrosine kinase receptor	Q9UM73	SINGLE PROTEIN	Homo sapiens	3149	4774
+CHEMBL4376	100790	Dual-specificity tyrosine-phosphorylation regulated kinase 2	Q92630	SINGLE PROTEIN	Homo sapiens	887	1491
+CHEMBL4442	12828	Cyclin-dependent kinase 3	Q00526	SINGLE PROTEIN	Homo sapiens	118	160
+CHEMBL4454	100127	Tyrosine-protein kinase FGR	P09769	SINGLE PROTEIN	Homo sapiens	762	1402
+CHEMBL4515	100844	Serine/threonine-protein kinase BUD32	P53323	SINGLE PROTEIN	Saccharomyces cerevisiae S288c	5	5
+CHEMBL4525	30045	Serine/threonine-protein kinase 17A	Q9UEE5	SINGLE PROTEIN	Homo sapiens	1059	1391
+CHEMBL4527	30047	TRAF2- and NCK-interacting kinase	Q9UKE5	SINGLE PROTEIN	Homo sapiens	417	646
+CHEMBL4598	30024	Serine/threonine-protein kinase MST1	Q13043	SINGLE PROTEIN	Homo sapiens	822	1510
+CHEMBL4897	100412	Serine/threonine-protein kinase PLK3	Q9H4B4	SINGLE PROTEIN	Homo sapiens	1284	1546
+CHEMBL4901	100416	Ephrin type-B receptor 3	P54753	SINGLE PROTEIN	Homo sapiens	772	1385
+CHEMBL4948	10371	Dual specificity mitogen-activated protein kinase kinase 5	Q13163	SINGLE PROTEIN	Homo sapiens	121	148
+CHEMBL4954	30009	Ephrin type-A receptor 3	P29320	SINGLE PROTEIN	Homo sapiens	722	1346
+CHEMBL5072	30020	Ephrin type-B receptor 1	P54762	SINGLE PROTEIN	Homo sapiens	345	597
+CHEMBL5285	30034	Mitogen-activated protein kinase kinase kinase 5	Q99683	SINGLE PROTEIN	Homo sapiens	639	1072
+CHEMBL5311	100909	Serine/threonine-protein kinase receptor R3	P37023	SINGLE PROTEIN	Homo sapiens	206	329
+CHEMBL5319	100917	Epithelial discoidin domain-containing receptor 1	Q08345	SINGLE PROTEIN	Homo sapiens	222	305
+CHEMBL5358	100925	Eukaryotic translation initiation factor 2-alpha kinase 4	Q9P2K8	SINGLE PROTEIN	Homo sapiens	144	181
+CHEMBL5388	100969	Serine/threonine-protein kinase tousled-like 1	Q9UKI8	SINGLE PROTEIN	Homo sapiens	143	186
+CHEMBL5395	101170	Meiotic mRNA stability protein kinase SSN3	P39073	SINGLE PROTEIN	Saccharomyces cerevisiae S288c	2	2
+CHEMBL5404	101179	Serine/threonine-protein kinase tousled-like 2	Q86UE8	SINGLE PROTEIN	Homo sapiens	297	503
+CHEMBL5408	100856	Serine/threonine-protein kinase TBK1	Q9UHD2	SINGLE PROTEIN	Homo sapiens	1576	3071
+CHEMBL5543	101014	Dual specificity tyrosine-phosphorylation-regulated kinase 1B	Q9Y463	SINGLE PROTEIN	Homo sapiens	1221	1681
+CHEMBL5552	101231	Serine/threonine-protein kinase 25	O00506	SINGLE PROTEIN	Homo sapiens	299	355
+CHEMBL5432	101188	Mitogen-activated protein kinase kinase kinase kinase 3	Q8IVH8	SINGLE PROTEIN	Homo sapiens	120	159
+CHEMBL5464	100990	Receptor-interacting serine/threonine-protein kinase 1	Q13546	SINGLE PROTEIN	Homo sapiens	162	375
+CHEMBL5469	100995	Protein tyrosine kinase 2 beta	Q14289	SINGLE PROTEIN	Homo sapiens	1689	2337
+CHEMBL5476	101204	Bone morphogenetic protein receptor type-1B	O00238	SINGLE PROTEIN	Homo sapiens	115	124
+CHEMBL5579	101239	Citron Rho-interacting kinase	O14578	SINGLE PROTEIN	Homo sapiens	104	143
+CHEMBL5607	101033	Rhodopsin kinase	Q15835	SINGLE PROTEIN	Homo sapiens	121	128
+CHEMBL5616	101473	Activin receptor type-2A	P27037	SINGLE PROTEIN	Homo sapiens	101	139
+CHEMBL5650	101269	BR serine/threonine-protein kinase 1	Q8TDC3	SINGLE PROTEIN	Homo sapiens	1310	1912
+CHEMBL5659	101278	Serine/threonine-protein kinase RIO3	O14730	SINGLE PROTEIN	Homo sapiens	102	140
+CHEMBL5668	101496	Serine/threonine-protein kinase SRPK2	P78362	SINGLE PROTEIN	Homo sapiens	296	508
+CHEMBL5701	101506	Serine/threonine-protein kinase TAO3	Q9H2K8	SINGLE PROTEIN	Homo sapiens	381	553
+CHEMBL5749	101312	Mitogen-activated protein kinase kinase kinase kinase 1	Q92918	SINGLE PROTEIN	Homo sapiens	132	172
+CHEMBL5759	101538	Mitogen-activated protein kinase 4	P31152	SINGLE PROTEIN	Homo sapiens	97	136
+CHEMBL5912	101607	Serine/threonine-protein kinase 32B	Q9NY57	SINGLE PROTEIN	Homo sapiens	130	171
+CHEMBL6029	102667	Eukaryotic translation initiation factor 2-alpha kinase 1	Q9BQI3	SINGLE PROTEIN	Homo sapiens	181	268
+CHEMBL1075275	102822	Serine/threonine-protein kinase 12	O70126	SINGLE PROTEIN	Mus musculus	1	3
+CHEMBL6083	101434	Receptor-interacting serine/threonine-protein kinase 4	P57078	SINGLE PROTEIN	Homo sapiens	89	95
+CHEMBL4128	12913	Tyrosine-protein kinase TIE-2	Q02763	SINGLE PROTEIN	Homo sapiens	1913	2867
+CHEMBL2553	10929	Ribosomal protein S6 kinase alpha 1	Q15418	SINGLE PROTEIN	Homo sapiens	1171	1999
+CHEMBL2793	11720	Casein kinase I alpha	P48729	SINGLE PROTEIN	Homo sapiens	1616	2055
+CHEMBL1163129	103458	Serine/threonine-protein kinase SBK1	Q52WX2	SINGLE PROTEIN	Homo sapiens	82	82
+CHEMBL2116	10659	AMP-activated protein kinase, alpha-2 subunit	P54646	SINGLE PROTEIN	Homo sapiens	678	1110
+CHEMBL1795174	104254	Mitogen-activated protein kinase 8	Q91Y86	SINGLE PROTEIN	Mus musculus	8	11
+CHEMBL2094266	104731	Protein kinase C (PKC)	P05696, P09215, P09216, P09217, P63319, P68403, Q64617, Q9WTQ0	PROTEIN FAMILY	Rattus norvegicus	241	298
+CHEMBL2111328	105023	Inhibitor of NF-kappa-B kinase (IKK)	O14920, O15111, Q9Y6K9	PROTEIN COMPLEX	Homo sapiens	33	76
+CHEMBL2111355	105108	Pho80/Pho85	P17157, P20052	PROTEIN COMPLEX	Saccharomyces cerevisiae S288c	2	7
+CHEMBL2111377	105067	CDC7/DBF4 (Cell division cycle 7-related protein kinase/Activator of S phase kinase)	O00311, Q9UBU7	PROTEIN COMPLEX	Homo sapiens	150	222
+CHEMBL2111391	105086	Fibroblast growth factor receptor	P16092, P21803, Q03142, Q61851	PROTEIN FAMILY	Mus musculus	37	37
+CHEMBL2111410	104916	Pho80/Pho85/Pho81 complex	P17157, P17442, P20052	PROTEIN COMPLEX	Saccharomyces cerevisiae S288c	1	23
+CHEMBL2034801	104541	Tyrosine-protein kinase ZAP-70	P43404	SINGLE PROTEIN	Mus musculus	5	5
+CHEMBL1907601	104295	Cyclin-dependent kinase 4/cyclin D1	P11802, P24385	PROTEIN COMPLEX	Homo sapiens	1543	1730
+CHEMBL2111448	104965	CDK6/cyclin D3	P30281, Q00534	PROTEIN COMPLEX	Homo sapiens	228	392
+CHEMBL2527	10531	Serine/threonine-protein kinase Chk2	O96017	SINGLE PROTEIN	Homo sapiens	2493	3293
+CHEMBL2171	10235	Dual specificity mitogen-activated protein kinase kinase 6	P52564	SINGLE PROTEIN	Homo sapiens	450	747
+CHEMBL3038451	107877	AMPK alpha1/beta1/gamma2	Q13131, Q9UGJ0, Q9Y478	PROTEIN COMPLEX	Homo sapiens	2	2
+CHEMBL3038454	107880	AMPK alpha1/alpha2	P54646, Q13131	PROTEIN COMPLEX	Homo sapiens	12	12
+CHEMBL3038516	107942	TPR/MET fusion protein	F6ZDS4, P16056	CHIMERIC PROTEIN	Mus musculus	23	51
+CHEMBL5052	101053	Serine/threonine-protein kinase MRCK beta	Q9Y5S2	SINGLE PROTEIN	Homo sapiens	658	1239
+CHEMBL2176844	105419	STE20-like serine/threonine-protein kinase	O54988	SINGLE PROTEIN	Mus musculus	1	1
+CHEMBL2363049	105744	Epidermal growth factor receptor	P00533, P04626, P21860, Q15303	PROTEIN FAMILY	Homo sapiens	1004	2030
+CHEMBL4310	30039	Serine/threonine-protein kinase MST2	Q9JI10	SINGLE PROTEIN	Mus musculus	20	20
+CHEMBL3430911	109668	Serine/threonine-protein kinase Aurora	O14965, Q96GD4, Q9UQB9	PROTEIN FAMILY	Homo sapiens	1	2
+CHEMBL3627582	109904	Testis-specific serine/threonine-protein kinase 6	Q9BXA6	SINGLE PROTEIN	Homo sapiens	4	4
+CHEMBL5490	100070	Rho-associated protein kinase 2	Q62868	SINGLE PROTEIN	Rattus norvegicus	72	83
+CHEMBL5147	100129	Ephrin type-B receptor 4	P54760	SINGLE PROTEIN	Homo sapiens	1789	2604
+CHEMBL4364	100421	Tyrosine-protein kinase SYK	Q64725	SINGLE PROTEIN	Rattus norvegicus	29	70
+CHEMBL3038517	107945	CDK2/CDK4	P11802, P24941	PROTEIN FAMILY	Homo sapiens	6	6
+CHEMBL3721303	116671	Dual specificity mitogen-activated protein kinase kinase 3	O09110	SINGLE PROTEIN	Mus musculus	1	1
+CHEMBL3988629	117283	Casein kinase 2	P19139, P67874	PROTEIN COMPLEX	Rattus norvegicus	6	6
+CHEMBL3885548	117092	Cyclin-A1/Cyclin-dependent kinase 4	P11802, P78396	PROTEIN COMPLEX	Homo sapiens	4	4
+CHEMBL3885602	117146	Mitogen-activated protein kinase 10/Receptor-interacting serine/threonine-protein kinase 1	P53779, Q13546	PROTEIN FAMILY	Homo sapiens	32	33
+CHEMBL3883331	117044	Tropomyosin alpha-3 chain/High affinity nerve growth factor receptor	P04629, P06753	CHIMERIC PROTEIN	Homo sapiens	1	5
+CHEMBL3879830	116955	G protein-coupled receptor kinase 5	P43249	SINGLE PROTEIN	Bos taurus	7	9
+CHEMBL308	12071	Cyclin-dependent kinase 1	P06493	SINGLE PROTEIN	Homo sapiens	2787	3738
+CHEMBL1906	10904	Serine/threonine-protein kinase RAF	P04049	SINGLE PROTEIN	Homo sapiens	2590	3554
+CHEMBL3142	10056	DNA-dependent protein kinase	P78527	SINGLE PROTEIN	Homo sapiens	1375	1683
+CHEMBL2610	10986	CaM kinase II beta	P08413	SINGLE PROTEIN	Rattus norvegicus	2	2
+CHEMBL2634	10844	Tyrosine-protein kinase CSK	P41240	SINGLE PROTEIN	Homo sapiens	1087	1792
+CHEMBL2637	11408	c-Jun N-terminal kinase 3	P53779	SINGLE PROTEIN	Homo sapiens	1982	2451
+CHEMBL2689	11379	Macrophage-stimulating protein receptor	Q04912	SINGLE PROTEIN	Homo sapiens	1191	1794
+CHEMBL3832	30051	ULK3 kinase	Q3U3Q1	SINGLE PROTEIN	Mus musculus	23	23
+CHEMBL3343	11836	Tyrosine-protein kinase BLK	P16277	SINGLE PROTEIN	Mus musculus	33	33
+CHEMBL3616	11617	Protein kinase C eta	P24723	SINGLE PROTEIN	Homo sapiens	944	1634
+CHEMBL3650	10266	Fibroblast growth factor receptor 1	P11362	SINGLE PROTEIN	Homo sapiens	4632	7159
+CHEMBL3669	20084	Glycogen synthase kinase-3 beta	P18266	SINGLE PROTEIN	Rattus norvegicus	24	41
+CHEMBL3984	30033	Tyrosine- and threonine-specific cdc2-inhibitory kinase	Q99640	SINGLE PROTEIN	Homo sapiens	129	205
+CHEMBL4226	30015	Dual specificity protein kinase CLK3	P49761	SINGLE PROTEIN	Homo sapiens	847	1527
+CHEMBL4246	100418	Tyrosine-protein kinase TEC	P42680	SINGLE PROTEIN	Homo sapiens	664	1256
+CHEMBL4375	100789	Serine/threonine-protein kinase SRPK1	Q96SB4	SINGLE PROTEIN	Homo sapiens	1398	2043
+CHEMBL4501	12944	Ribosomal protein S6 kinase 1	P23443	SINGLE PROTEIN	Homo sapiens	3155	4474
+CHEMBL4602	30027	Ephrin type-A receptor 7	Q15375	SINGLE PROTEIN	Homo sapiens	320	560
+CHEMBL4990	11710	MAP kinase-activated protein kinase 2	P49138	SINGLE PROTEIN	Mus musculus	3	3
+CHEMBL5003	101255	Serine/threonine-protein kinase CAK1	P43568	SINGLE PROTEIN	Saccharomyces cerevisiae S288c	2	2
+CHEMBL5146	100128	Breakpoint cluster region protein	P11274	SINGLE PROTEIN	Homo sapiens	22	22
+CHEMBL5330	100947	Mitogen-activated protein kinase kinase kinase kinase 2	Q12851	SINGLE PROTEIN	Homo sapiens	1590	2163
+CHEMBL5382	100963	RAC-beta serine/threonine-protein kinase	Q60823	SINGLE PROTEIN	Mus musculus	1	1
+CHEMBL5426	101182	Myosin light chain kinase family member 4	Q86YV6	SINGLE PROTEIN	Homo sapiens	117	156
+CHEMBL5435	101191	Serine/threonine-protein kinase ULK2	Q8IYT8	SINGLE PROTEIN	Homo sapiens	266	435
+CHEMBL5520	101222	Casein kinase I isoform alpha-like	Q8N752	SINGLE PROTEIN	Homo sapiens	105	137
+CHEMBL5771	101550	ALK tyrosine kinase receptor	P97793	SINGLE PROTEIN	Mus musculus	6	6
+CHEMBL5785	101333	Interferon-induced, double-stranded RNA-activated protein kinase	P19525	SINGLE PROTEIN	Homo sapiens	225	271
+CHEMBL5809	101339	Mitogen-activated protein kinase 3	P21708	SINGLE PROTEIN	Rattus norvegicus	2	2
+CHEMBL5568	101019	Proto-oncogene tyrosine-protein kinase ROS	P08922	SINGLE PROTEIN	Homo sapiens	1338	1997
+CHEMBL5600	100140	Serine/threonine-protein kinase c-TAK1	P27448	SINGLE PROTEIN	Homo sapiens	1471	1942
+CHEMBL1075104	103154	Leucine-rich repeat serine/threonine-protein kinase 2	Q5S007	SINGLE PROTEIN	Homo sapiens	2327	4769
+CHEMBL1163117	103446	Cyclin-dependent kinase-like 3	Q8IVW4	SINGLE PROTEIN	Homo sapiens	84	90
+CHEMBL5940	101612	Serine/threonine-protein kinase MARK1	Q9P0L2	SINGLE PROTEIN	Homo sapiens	783	1392
+CHEMBL1075225	102924	Tyrosine-protein kinase JAK2	Q62689	SINGLE PROTEIN	Rattus norvegicus	1	1
+CHEMBL5970	101399	Mitogen-activated protein kinase kinase kinase 3	Q99759	SINGLE PROTEIN	Homo sapiens	115	122
+CHEMBL1075255	102963	Casein kinase II subunit alpha	P40231	SINGLE PROTEIN	Schizosaccharomyces pombe 972h-	1	1
+CHEMBL6054	102399	PAS domain-containing serine/threonine-protein kinase	Q96RG2	SINGLE PROTEIN	Homo sapiens	1393	2241
+CHEMBL1075295	102846	Protein kinase C theta type	Q02111	SINGLE PROTEIN	Mus musculus	4	4
+CHEMBL2873	11873	Mitogen-activated protein kinase kinase kinase 10	Q02779	SINGLE PROTEIN	Homo sapiens	171	212
+CHEMBL1255154	103565	5'-AMP-activated protein kinase catalytic subunit alpha-2	Q8BRK8	SINGLE PROTEIN	Mus musculus	12	24
+CHEMBL2010622	104490	Leucine-rich repeat serine/threonine-protein kinase 2	Q5S006	SINGLE PROTEIN	Mus musculus	4	8
+CHEMBL2093867	104683	Protein kinase C (PKC)	O94806, P05129, P05771, P17252, P24723, P41743, Q02156, Q04759, Q05513, Q05655, Q15139	PROTEIN FAMILY	Homo sapiens	474	611
+CHEMBL2095191	104775	Casein kinase II	P19784, P67870, P68400	PROTEIN COMPLEX GROUP	Homo sapiens	923	1406
+CHEMBL2097168	104879	Protein kinase C, PKC; classical	P05696, P63319, P68403	PROTEIN FAMILY	Rattus norvegicus	88	135
+CHEMBL2111324	105018	Phosphorylase kinase	P15735, P46019, P46020, Q16816, Q93100	PROTEIN COMPLEX GROUP	Homo sapiens	40	41
+CHEMBL2111439	104955	VEGF-receptor 2 and Fibroblast growth factor receptor 1	P11362, P35968	PROTEIN FAMILY	Homo sapiens	50	50
+CHEMBL1909485	104330	Glycogen synthase kinase 3 beta	B2LUN4	SINGLE PROTEIN	Sus scrofa	50	50
+CHEMBL2201	11048	Dual specificity mitogen-activated protein kinase kinase 4	P47809	SINGLE PROTEIN	Mus musculus	23	23
+CHEMBL3430877	109634	Proto-oncogene tyrosine-protein kinase receptor Ret /Nuclear receptor coactivator 4 fusion protein	P07949, Q13772	CHIMERIC PROTEIN	Homo sapiens	1	1
+CHEMBL4312	30041	Serine/threonine-protein kinase 36	Q9NRP7	SINGLE PROTEIN	Homo sapiens	104	164
+CHEMBL2375201	107581	Tyrosine-protein kinase transmembrane receptor ROR2	Q01974	SINGLE PROTEIN	Homo sapiens	1	1
+CHEMBL3038457	107883	AMPK alpha2/beta2/gamma3	O43741, P54646, Q9UGI9	PROTEIN COMPLEX	Homo sapiens	5	6
+CHEMBL3038471	107897	CDK3/Cyclin E	P24864, Q00526	PROTEIN COMPLEX	Homo sapiens	462	836
+CHEMBL3038494	107920	Casein kinase I delta/epsilon	P48730, P49674	PROTEIN COMPLEX	Homo sapiens	31	31
+CHEMBL4524	30044	Serine/threonine-protein kinase PAK7	Q9P286	SINGLE PROTEIN	Homo sapiens	837	1570
+CHEMBL4851	30048	Serine/threonine-protein kinase 38-like	Q9Y2H1	SINGLE PROTEIN	Homo sapiens	134	192
+CHEMBL5810	101340	Ephrin type-A receptor 1	P21709	SINGLE PROTEIN	Homo sapiens	368	598
+CHEMBL2176784	105359	Serine/threonine-protein kinase MAK	Q04859	SINGLE PROTEIN	Mus musculus	2	2
+CHEMBL6144	102447	G protein-coupled receptor kinase 6	P43250	SINGLE PROTEIN	Homo sapiens	731	1270
+CHEMBL2258	12470	Tyrosine-protein kinase Lyn	P25911	SINGLE PROTEIN	Mus musculus	16	17
+CHEMBL2558	11150	Death-associated protein kinase 1	P53355	SINGLE PROTEIN	Homo sapiens	718	1313
+CHEMBL2959	10918	Tyrosine-protein kinase ITK/TSK	Q08881	SINGLE PROTEIN	Homo sapiens	2117	3134
+CHEMBL1163123	103452	Mitogen-activated protein kinase kinase kinase 6	O95382	SINGLE PROTEIN	Homo sapiens	89	95
+CHEMBL5888	101365	Mitogen-activated protein kinase kinase kinase 14	Q99558	SINGLE PROTEIN	Homo sapiens	622	1706
+CHEMBL3351220	109544	Ribosomal protein S6 kinase alpha-2	Q9WUT3	SINGLE PROTEIN	Mus musculus	27	27
+CHEMBL2321619	105608	Non-receptor tyrosine-protein kinase TYK2	Q9R117	SINGLE PROTEIN	Mus musculus	4	5
+CHEMBL3638340	109945	Cyclin-dependent kinase 4	Q0GMK6	SINGLE PROTEIN	Oryctolagus cuniculus	20	40
+CHEMBL3711487	113448	Beta-adrenergic receptor kinase 2	P26818	SINGLE PROTEIN	Bos taurus	6	6
+CHEMBL3885550	117094	Cyclin-Y/Cyclin-dependent kinase 16	Q00536, Q8ND76	PROTEIN COMPLEX	Homo sapiens	4	4
+CHEMBL3885599	117143	LIM domain kinase 1/2	P53667, P53671	PROTEIN FAMILY	Homo sapiens	2	3
+CHEMBL3885616	117160	Phosphatidylinositol 4,5-bisphosphate 3-kinase catalytic subunit alpha isoform/[Pyruvate dehydrogenase (acetyl-transferring)] kinase isozyme 1, mitochondrial	P42336, Q15118	PROTEIN FAMILY	Homo sapiens	16	16
+CHEMBL3885635	117179	Serine-protein kinase ATM/ATR	Q13315, Q13535	PROTEIN FAMILY	Homo sapiens	1	3
+CHEMBL3883293	117007	MAP kinase-interacting serine/threonine-protein kinase 1/2	Q9BUB5, Q9HBH9	PROTEIN FAMILY	Homo sapiens	14	15
+CHEMBL3883298	117011	Inhibitor of NF-kappa-B kinase alpha/beta	O14920, O15111	PROTEIN COMPLEX	Homo sapiens	13	13
+CHEMBL3883308	117021	Axin-1/Casein kinase I epsilon	O15169, P49674	PROTEIN-PROTEIN INTERACTION	Homo sapiens	1	1
+CHEMBL2336	12536	MAP kinase p38 alpha	P47811	SINGLE PROTEIN	Mus musculus	225	263
+CHEMBL2428	10250	Myosin light chain kinase, smooth muscle	Q15746	SINGLE PROTEIN	Homo sapiens	483	821
+CHEMBL2567	12504	Protein kinase C alpha	P20444	SINGLE PROTEIN	Mus musculus	235	283
+CHEMBL1913	197	Platelet-derived growth factor receptor beta	P09619	SINGLE PROTEIN	Homo sapiens	2779	4075
+CHEMBL267	10434	Tyrosine-protein kinase SRC	P12931	SINGLE PROTEIN	Homo sapiens	6874	9217
+CHEMBL3183	12264	cGMP-dependent protein kinase 1 alpha	P00516	SINGLE PROTEIN	Bos taurus	33	35
+CHEMBL3231	10811	Rho-associated protein kinase 1	Q13464	SINGLE PROTEIN	Homo sapiens	2901	3691
+CHEMBL2598	10901	Protein kinase C iota	P41743	SINGLE PROTEIN	Homo sapiens	1710	2298
+CHEMBL2654	12345	cAMP-dependent protein kinase alpha-catalytic subunit	P00517	SINGLE PROTEIN	Bos taurus	43	43
+CHEMBL2791	11713	Neurotrophic tyrosine kinase receptor type 3	Q6VNS1	SINGLE PROTEIN	Mus musculus	4	19
+CHEMBL2850	11017	Glycogen synthase kinase-3 alpha	P49840	SINGLE PROTEIN	Homo sapiens	2245	2959
+CHEMBL3045	11636	Protein kinase C beta	P05771	SINGLE PROTEIN	Homo sapiens	1489	3831
+CHEMBL3094	11105	MAP kinase-activated protein kinase 5	Q8IW41	SINGLE PROTEIN	Homo sapiens	1637	2361
+CHEMBL3839	11329	Fibroblast growth factor receptor 4	Q03142	SINGLE PROTEIN	Mus musculus	5	5
+CHEMBL3863	10903	Protein kinase C mu	Q15139	SINGLE PROTEIN	Homo sapiens	901	1632
+CHEMBL3893	12684	Pyruvate dehydrogenase kinase isoform 3	Q15120	SINGLE PROTEIN	Homo sapiens	2	2
+CHEMBL3390	12394	cAMP-dependent protein kinase alpha-catalytic subunit	P27791	SINGLE PROTEIN	Rattus norvegicus	39	47
+CHEMBL3582	10878	Protein kinase C epsilon	Q02156	SINGLE PROTEIN	Homo sapiens	812	1187
+CHEMBL3956	12276	Mitogen-activated protein kinase kinase kinase 1	Q13233	SINGLE PROTEIN	Homo sapiens	146	158
+CHEMBL3960	12412	Fibroblast growth factor receptor 1	P16092	SINGLE PROTEIN	Mus musculus	21	31
+CHEMBL3982	30007	Tyrosine-protein kinase FER	P16591	SINGLE PROTEIN	Homo sapiens	1206	1839
+CHEMBL4125	11049	Platelet-derived growth factor receptor beta	Q05030	SINGLE PROTEIN	Rattus norvegicus	40	41
+CHEMBL4134	30010	Ephrin type-A receptor 8	P29322	SINGLE PROTEIN	Homo sapiens	323	567
+CHEMBL4223	30012	Tyrosine-protein kinase FRK	P42685	SINGLE PROTEIN	Homo sapiens	1169	1798
+CHEMBL4309	30038	Serine/threonine-protein kinase NEK6	Q9HC98	SINGLE PROTEIN	Homo sapiens	933	1670
+CHEMBL4439	13004	TGF-beta receptor type I	P36897	SINGLE PROTEIN	Homo sapiens	1200	2509
+CHEMBL4482	100080	Serine/threonine-protein kinase PAK 4	O96013	SINGLE PROTEIN	Homo sapiens	1894	2516
+CHEMBL4577	100853	Homeodomain-interacting protein kinase 3	Q9H422	SINGLE PROTEIN	Homo sapiens	343	561
+CHEMBL4601	30026	Tyrosine-protein kinase BRK	Q13882	SINGLE PROTEIN	Homo sapiens	1330	2071
+CHEMBL4896	100411	PDZ-binding kinase	Q96KB5	SINGLE PROTEIN	Homo sapiens	900	912
+CHEMBL5024	20139	Serine-protein kinase ATR	Q13535	SINGLE PROTEIN	Homo sapiens	271	402
+CHEMBL5044	101045	Serine/threonine-protein kinase Nek5	Q6P3R8	SINGLE PROTEIN	Homo sapiens	99	138
+CHEMBL5084	101058	Casein kinase I isoform gamma-3	Q9Y6M4	SINGLE PROTEIN	Homo sapiens	1285	1955
+CHEMBL5260	101130	Serine/threonine-protein kinase TNNI3K	Q59H18	SINGLE PROTEIN	Homo sapiens	226	311
+CHEMBL5314	100912	Tyrosine-protein kinase receptor TYRO3	Q06418	SINGLE PROTEIN	Homo sapiens	1794	2475
+CHEMBL5320	100918	Myotonin-protein kinase	Q09013	SINGLE PROTEIN	Homo sapiens	408	697
+CHEMBL5416	100976	PITSLRE serine/threonine-protein kinase CDC2L2	Q9UQ88	SINGLE PROTEIN	Homo sapiens	95	134
+CHEMBL5429	101185	Ribosomal protein S6 kinase beta-1	Q8BSK8	SINGLE PROTEIN	Mus musculus	1	2
+CHEMBL5455	100069	Tyrosine-protein kinase FES	P07332	SINGLE PROTEIN	Homo sapiens	1219	1835
+CHEMBL5466	100992	Activin receptor type-2B	Q13705	SINGLE PROTEIN	Homo sapiens	111	150
+CHEMBL5486	101214	Insulin receptor	P15127	SINGLE PROTEIN	Rattus norvegicus	876	1749
+CHEMBL5491	100098	Serine/threonine-protein kinase WEE1	P30291	SINGLE PROTEIN	Homo sapiens	555	966
+CHEMBL5508	101002	Dual specificity tyrosine-phosphorylation-regulated kinase 1A	Q63470	SINGLE PROTEIN	Rattus norvegicus	1347	1374
+CHEMBL5784	101332	NUAK family SNF1-like kinase 1	O60285	SINGLE PROTEIN	Homo sapiens	847	1445
+CHEMBL1075163	103102	Serine/threonine-protein kinase haspin	Q8TF76	SINGLE PROTEIN	Homo sapiens	263	425
+CHEMBL1075166	103105	Beta-adrenergic receptor kinase 2	P35626	SINGLE PROTEIN	Homo sapiens	53	60
+CHEMBL5838	102678	Receptor tyrosine-protein kinase erbB-3	P21860	SINGLE PROTEIN	Homo sapiens	96	102
+CHEMBL5708	101513	Tyrosine-protein kinase transforming protein FPS	P00530	SINGLE PROTEIN	Fujinami sarcoma virus	1	1
+CHEMBL1075033	102987	Calcium dependent protein kinase	A0T123	SINGLE PROTEIN	Triticum aestivum	1	1
+CHEMBL1075195	103140	Serine/threonine-protein kinase TAO2	Q9UL54	SINGLE PROTEIN	Homo sapiens	296	467
+CHEMBL5975	101404	Serine/threonine-protein kinase RIO1	Q9BRS2	SINGLE PROTEIN	Homo sapiens	107	149
+CHEMBL1075288	102839	Focal adhesion kinase 1	P34152	SINGLE PROTEIN	Mus musculus	6	6
+CHEMBL6166	101464	Mitogen-activated protein kinase kinase kinase kinase 4	O95819	SINGLE PROTEIN	Homo sapiens	1752	2244
+CHEMBL4900	100415	Serine/threonine-protein kinase D2	Q9BZL6	SINGLE PROTEIN	Homo sapiens	1690	2308
+CHEMBL3836	30018	LIM domain kinase 1	P53667	SINGLE PROTEIN	Homo sapiens	1366	1718
+CHEMBL1255165	103576	Serine/threonine-protein kinase mTOR	Q9JLN9	SINGLE PROTEIN	Mus musculus	75	89
+CHEMBL2096667	104822	c-Jun N-terminal kinase, JNK	P45983, P45984, P53779	PROTEIN FAMILY	Homo sapiens	306	318
+CHEMBL1795170	104250	Macrophage-stimulating protein receptor	Q62190	SINGLE PROTEIN	Mus musculus	7	7
+CHEMBL2095188	104772	Glycogen synthase kinase-3	P49840, P49841	PROTEIN FAMILY	Homo sapiens	624	690
+CHEMBL2095189	104773	Platelet-derived growth factor receptor	P09619, P16234	PROTEIN COMPLEX	Homo sapiens	472	504
+CHEMBL2094126	104708	Cyclin-dependent kinase 2/cyclin E	O96020, P24864, P24941	PROTEIN COMPLEX	Homo sapiens	1068	1311
+CHEMBL2111289	104912	Dual specificity mitogen-activated protein kinase kinase; MEK1/2	P36507, Q02750	PROTEIN FAMILY	Homo sapiens	104	175
+CHEMBL2111345	105044	AMP-activated protein kinase (AMPK) alpha-1/beta-1/gamma-1	P54619, Q13131, Q9Y478	PROTEIN COMPLEX	Homo sapiens	241	450
+CHEMBL2111382	105074	Ca2+/calmodulin-dependent protein kinase II (CaM kinase II)	P08413, P11275, P11730, P15791	PROTEIN FAMILY	Rattus norvegicus	57	57
+CHEMBL2111431	104942	Epidermal growth factor receptor and ErbB2 (HER1 and HER2)	P00533, P04626	PROTEIN FAMILY	Homo sapiens	165	180
+CHEMBL2111446	104963	cAMP-dependent protein kinase A	P00515, P00517, P05131, P31322	PROTEIN COMPLEX GROUP	Bos taurus	28	41
+CHEMBL1795121	104201	Interferon-induced, double-stranded RNA-activated protein kinase	Q03963	SINGLE PROTEIN	Mus musculus	3	3
+CHEMBL2034795	104535	Tyrosine-protein kinase Fgr	P14234	SINGLE PROTEIN	Mus musculus	5	5
+CHEMBL2034796	104536	Receptor-type tyrosine-protein kinase FLT3	Q00342	SINGLE PROTEIN	Mus musculus	12	12
+CHEMBL2034797	104537	Mitogen-activated protein kinase 9	Q9WTU6	SINGLE PROTEIN	Mus musculus	9	9
+CHEMBL2034799	104539	Proto-oncogene tyrosine-protein kinase receptor Ret	P35546	SINGLE PROTEIN	Mus musculus	6	6
+CHEMBL1907605	104299	Cyclin-dependent kinase 2/cyclin E1	P24864, P24941	PROTEIN COMPLEX	Homo sapiens	802	899
+CHEMBL3430904	109661	Coiled-coil domain-containing protein 6/Tyrosine-protein kinase receptor RET	P07949, Q16204	CHIMERIC PROTEIN	Homo sapiens	5	11
+CHEMBL3301392	108406	JAK2/TYK2	O60674, P29597	PROTEIN COMPLEX	Homo sapiens	6	12
+CHEMBL5213	100103	Cell division control protein 28	P00546	SINGLE PROTEIN	Saccharomyces cerevisiae S288c	7	8
+CHEMBL5148	100131	Casein kinase I alpha	Q8BK63	SINGLE PROTEIN	Mus musculus	3	3
+CHEMBL3038455	107881	AMPK alpha2/beta1/gamma1	P54619, P54646, Q9Y478	PROTEIN COMPLEX	Homo sapiens	47	65
+CHEMBL3038470	107896	CDK2/Cyclin A1	P24941, P78396	PROTEIN COMPLEX	Homo sapiens	10	11
+CHEMBL3038472	107898	CDK4/Cyclin D3	P11802, P30281	PROTEIN COMPLEX	Homo sapiens	82	88
+CHEMBL3038475	107901	CDK9/Cyclin K	O75909, P50750	PROTEIN COMPLEX	Homo sapiens	22	23
+CHEMBL3038502	107928	JNK2/JNK3	P45984, P53779	PROTEIN FAMILY	Homo sapiens	1	1
+CHEMBL4885	19650	cAMP-dependent protein kinase alpha-catalytic subunit	Q95J97	SINGLE PROTEIN	Oryctolagus cuniculus	26	26
+CHEMBL4898	100413	Neurotrophic tyrosine kinase receptor type 2	Q16620	SINGLE PROTEIN	Homo sapiens	1875	2604
+CHEMBL6151	102778	Serine/threonine-protein kinase 31	Q9BXU1	SINGLE PROTEIN	Homo sapiens	1	1
+CHEMBL2801	11622	CaM kinase II delta	Q13557	SINGLE PROTEIN	Homo sapiens	1563	2307
+CHEMBL3476	10751	Inhibitor of nuclear factor kappa B kinase alpha subunit	O15111	SINGLE PROTEIN	Homo sapiens	1449	2707
+CHEMBL4079	10711	G-protein coupled receptor kinase 2	P25098	SINGLE PROTEIN	Homo sapiens	313	342
+CHEMBL2169724	105235	CGMP-dependent protein kinase	Q8MMZ4	SINGLE PROTEIN	Plasmodium falciparum	5	5
+CHEMBL2363062	105757	Janus Kinase (JAK)	O60674, P23458, P29597, P52333	PROTEIN FAMILY	Homo sapiens	0	0
+CHEMBL5025	20155	Tyrosine-protein kinase TEC	Q8CFK4	SINGLE PROTEIN	Mus musculus	21	25
+CHEMBL1075222	102920	Protein-tyrosine kinase 2-beta	P70600	SINGLE PROTEIN	Rattus norvegicus	3	3
+CHEMBL6051	102397	Mitogen-activated protein kinase 1	Q5SC61	SINGLE PROTEIN	Toxoplasma gondii	3	3
+CHEMBL2331061	105657	Serine/threonine-protein kinase B-raf	P28028	SINGLE PROTEIN	Mus musculus	8	8
+CHEMBL3108655	108015	Serine/threonine-protein kinase Nek10	Q6ZWH5	SINGLE PROTEIN	Homo sapiens	1	1
+CHEMBL3301559	108432	Mitogen-activated protein kinase	Q25917	SINGLE PROTEIN	Plasmodium falciparum	400	400
+CHEMBL3407314	109573	LIM domain kinase 1	P53669	SINGLE PROTEIN	Rattus norvegicus	15	15
+CHEMBL3627581	109903	Serine/threonine-protein kinase N3	Q6P5Z2	SINGLE PROTEIN	Homo sapiens	4	4
+CHEMBL3638361	109966	Aurora kinase B-B	Q6GPL3	SINGLE PROTEIN	Xenopus laevis	6	12
+CHEMBL3804748	116790	RAF proto-oncogene serine/threonine-protein kinase	Q99N57	SINGLE PROTEIN	Mus musculus	6	6
+CHEMBL3832943	116899	Casein kinase 2	P19784, P67870, P68400, Q8NEV1	PROTEIN FAMILY	Homo sapiens	18	19
+CHEMBL3832633	116887	Ribosomal protein S6 kinase	O75582, O75676, P23443, P51812, Q15349, Q15418, Q9UBS0, Q9UK32	PROTEIN FAMILY	Homo sapiens	47	88
+CHEMBL3885539	117083	Casein kinase I isoform alpha/subunit beta	P48729, P67870	PROTEIN COMPLEX	Homo sapiens	18	18
+CHEMBL3885566	117110	Dual specificity mitogen-activated protein kinase kinase 1/Mitogen-activated protein kinase 1/RAF proto-oncogene serine/threonine-protein kinase	P04049, P28482, Q02750	PROTEIN FAMILY	Homo sapiens	2	2
+CHEMBL3885627	117171	Protein kinase C iota type/zeta type	P41743, Q05513	PROTEIN FAMILY	Homo sapiens	1	1
+CHEMBL3883304	117017	Aurora kinase A/Targeting protein for Xklp2	O14965, Q9ULW0	PROTEIN COMPLEX	Homo sapiens	22	22
+CHEMBL2292	12090	Dual-specificity tyrosine-phosphorylation regulated kinase 1A	Q13627	SINGLE PROTEIN	Homo sapiens	2753	3415
+CHEMBL2345	12724	Ribosomal protein S6 kinase alpha 3	P51812	SINGLE PROTEIN	Homo sapiens	2380	3560
+CHEMBL2508	10480	Cyclin-dependent kinase 6	Q00534	SINGLE PROTEIN	Homo sapiens	809	1492
+CHEMBL2534	10612	3-phosphoinositide dependent protein kinase-1	O15530	SINGLE PROTEIN	Homo sapiens	2624	3865
+CHEMBL1844	12840	Macrophage colony stimulating factor receptor	P07333	SINGLE PROTEIN	Homo sapiens	2855	3960
+CHEMBL203	9	Epidermal growth factor receptor erbB1	P00533	SINGLE PROTEIN	Homo sapiens	10990	20965
+CHEMBL1955	11752	Vascular endothelial growth factor receptor 3	P35916	SINGLE PROTEIN	Homo sapiens	1958	2756
+CHEMBL1991	10752	Inhibitor of nuclear factor kappa B kinase beta subunit	O14920	SINGLE PROTEIN	Homo sapiens	2995	4833
+CHEMBL2068	30008	Ephrin type-A receptor 2	P29317	SINGLE PROTEIN	Homo sapiens	1996	2684
+CHEMBL2134	10006	Cyclin-dependent kinase 4	P30285	SINGLE PROTEIN	Mus musculus	1	1
+CHEMBL2147	10839	Serine/threonine-protein kinase PIM1	P11309	SINGLE PROTEIN	Homo sapiens	6233	8841
+CHEMBL3234	11785	Tyrosine-protein kinase HCK	P08631	SINGLE PROTEIN	Homo sapiens	1199	2212
+CHEMBL2695	11242	Focal adhesion kinase 1	Q05397	SINGLE PROTEIN	Homo sapiens	2760	4206
+CHEMBL2939	11081	MAP kinase p38 delta	O15264	SINGLE PROTEIN	Homo sapiens	1680	2317
+CHEMBL3886	20007	Mixed lineage kinase 7	Q9NYL2	SINGLE PROTEIN	Homo sapiens	763	807
+CHEMBL3357	19623	Interleukin-1 receptor-associated kinase 1	P51617	SINGLE PROTEIN	Homo sapiens	970	1171
+CHEMBL3424	10879	Protein kinase C epsilon	P09216	SINGLE PROTEIN	Rattus norvegicus	2	2
+CHEMBL3587	11409	Dual specificity mitogen-activated protein kinase kinase 1	Q02750	SINGLE PROTEIN	Homo sapiens	2292	3334
+CHEMBL3980	30005	Serine/threonine-protein kinase 17B	O94768	SINGLE PROTEIN	Homo sapiens	229	349
+CHEMBL3988	30021	Ephrin type-A receptor 4	P54764	SINGLE PROTEIN	Homo sapiens	735	1356
+CHEMBL4004	11361	Phosphorylase kinase gamma subunit 1	Q16816	SINGLE PROTEIN	Homo sapiens	517	952
+CHEMBL4084	20072	Cyclin-dependent kinase 1	P11440	SINGLE PROTEIN	Mus musculus	7	7
+CHEMBL4101	11969	cAMP-dependent protein kinase alpha-catalytic subunit	P17612	SINGLE PROTEIN	Homo sapiens	2117	2878
+CHEMBL4267	100075	TGF-beta receptor type II	P37173	SINGLE PROTEIN	Homo sapiens	202	302
+CHEMBL4362	100419	Tyrosine-protein kinase FGR	Q6P6U0	SINGLE PROTEIN	Rattus norvegicus	1	1
+CHEMBL4365	100422	Tyrosine-protein kinase CSK	P32577	SINGLE PROTEIN	Rattus norvegicus	1	1
+CHEMBL4487	100071	Serine/threonine-protein kinase PAK 2	Q13177	SINGLE PROTEIN	Homo sapiens	853	1471
+CHEMBL4526	30046	Ephrin type-A receptor 6	Q9UF33	SINGLE PROTEIN	Homo sapiens	133	195
+CHEMBL4599	30023	Tyrosine kinase non-receptor protein 2	Q07912	SINGLE PROTEIN	Homo sapiens	1522	2581
+CHEMBL4849	100836	Serine/threonine-protein kinase NEK7	Q8TDX7	SINGLE PROTEIN	Homo sapiens	728	1358
+CHEMBL4937	10967	Casein kinase I epsilon	P49674	SINGLE PROTEIN	Homo sapiens	553	643
+CHEMBL4992	11716	Protein kinase C eta	P23298	SINGLE PROTEIN	Mus musculus	5	5
+CHEMBL5047	101048	Serine/threonine-protein kinase ULK3	Q6PHR2	SINGLE PROTEIN	Homo sapiens	274	448
+CHEMBL5198	100833	Mitogen-activated protein kinase 15	Q8TD08	SINGLE PROTEIN	Homo sapiens	220	290
+CHEMBL5199	100846	Tyrosine-protein kinase TIE-2	Q02858	SINGLE PROTEIN	Mus musculus	3	5
+CHEMBL5222	101120	Tyrosine-protein kinase ABL2	Q4JIM5	SINGLE PROTEIN	Mus musculus	9	9
+CHEMBL5116	101073	Putative uncharacterized serine/threonine-protein kinase SgK110	P0C264	SINGLE PROTEIN	Homo sapiens	87	94
+CHEMBL5122	101079	Discoidin domain-containing receptor 2	Q16832	SINGLE PROTEIN	Homo sapiens	747	1419
+CHEMBL5258	30031	CaM kinase I gamma	Q96NX5	SINGLE PROTEIN	Homo sapiens	267	332
+CHEMBL5332	100949	Mitogen-activated protein kinase 7	Q13164	SINGLE PROTEIN	Homo sapiens	143	205
+CHEMBL5547	101226	Ankyrin repeat and protein kinase domain-containing protein 1	Q8NFD2	SINGLE PROTEIN	Homo sapiens	96	134
+CHEMBL1075155	103095	Serine/threonine-protein kinase 38	Q15208	SINGLE PROTEIN	Homo sapiens	237	253
+CHEMBL5789	101552	Cyclin-dependent kinase-like 1	Q00532	SINGLE PROTEIN	Homo sapiens	224	234
+CHEMBL1075173	103114	Serine/threonine-protein kinase WNK1	Q9H4A3	SINGLE PROTEIN	Homo sapiens	35	37
+CHEMBL5627	101484	Leukocyte tyrosine kinase receptor	P29376	SINGLE PROTEIN	Homo sapiens	872	1308
+CHEMBL5642	102475	Activin receptor type-1C	Q8NER5	SINGLE PROTEIN	Homo sapiens	14	29
+CHEMBL1075098	103148	Insulin-like growth factor 1 receptor	P24062	SINGLE PROTEIN	Rattus norvegicus	1	1
+CHEMBL5684	101282	Muscle, skeletal receptor tyrosine protein kinase	O15146	SINGLE PROTEIN	Homo sapiens	686	1280
+CHEMBL1163124	103453	Mitogen-activated protein kinase kinase kinase 13	O43283	SINGLE PROTEIN	Homo sapiens	84	90
+CHEMBL5914	102711	Mitogen-activated protein kinase kinase kinase 2	Q9Y2U5	SINGLE PROTEIN	Homo sapiens	122	129
+CHEMBL1075215	102911	RAC-alpha serine/threonine-protein kinase	P47196	SINGLE PROTEIN	Rattus norvegicus	6	8
+CHEMBL5961	101390	Ephrin type-B receptor 2	P54763	SINGLE PROTEIN	Mus musculus	6	6
+CHEMBL6000	101405	Serine/threonine-protein kinase RIO2	Q9BVS4	SINGLE PROTEIN	Homo sapiens	284	338
+CHEMBL6030	102669	Eukaryotic translation initiation factor 2-alpha kinase 3	Q9NZJ5	SINGLE PROTEIN	Homo sapiens	281	537
+CHEMBL6149	102770	Serine/threonine-protein kinase SIK3	Q9Y2K2	SINGLE PROTEIN	Homo sapiens	91	99
+CHEMBL4708	10277	Serine/threonine-protein kinase MST2	Q13188	SINGLE PROTEIN	Homo sapiens	1733	2395
+CHEMBL1293259	103692	Ephrin type-A receptor 4	Q03137	SINGLE PROTEIN	Mus musculus	134	268
+CHEMBL3116	11626	Cyclin-dependent kinase 9	P50750	SINGLE PROTEIN	Homo sapiens	1274	1828
+CHEMBL2096663	104818	Pyruvate dehydrogenase kinase	B5DFI9, O54937, Q63065, Q64536	PROTEIN FAMILY	Rattus norvegicus	141	250
+CHEMBL1163126	103455	Serine/threonine-protein kinase ICK	Q9UPZ9	SINGLE PROTEIN	Homo sapiens	91	97
+CHEMBL2095942	104808	Cyclin-dependent kinase 4/cyclin D	P11802, P24385, P30279, P30281	PROTEIN COMPLEX	Homo sapiens	158	167
+CHEMBL2111288	104911	Cyclin-dependent kinase 7/ cyclin H	P50613, P51946	PROTEIN COMPLEX	Homo sapiens	374	566
+CHEMBL2094128	104710	Cyclin-dependent kinase 2/cyclin A	P20248, P24941, P78396	PROTEIN COMPLEX	Homo sapiens	1826	2150
+CHEMBL2111387	105079	NPM/ALK (Nucleophosmin/ALK tyrosine kinase receptor)	P06748, Q9UM73	PROTEIN COMPLEX	Homo sapiens	49	76
+CHEMBL2111414	104922	Tyrosine-protein kinase ABL	P00519, P42684	PROTEIN FAMILY	Homo sapiens	254	309
+CHEMBL2111440	104956	VEGF-receptor 2 and PDGF-receptor beta (KDR and PDGFR beta)	P09619, P35968	SELECTIVITY GROUP	Homo sapiens	25	25
+CHEMBL1795111	104191	BDNF/NT-3 growth factors receptor	Q63604	SINGLE PROTEIN	Rattus norvegicus	71	124
+CHEMBL1795115	104195	Calcium/calmodulin-dependent protein kinase kinase 2	O88831	SINGLE PROTEIN	Rattus norvegicus	3	3
+CHEMBL1932898	104402	Syk protein	Q6P1E0	SINGLE PROTEIN	Mus musculus	39	39
+CHEMBL1907600	104294	Cyclin-dependent kinase 5/CDK5 activator 1	Q00535, Q15078	PROTEIN COMPLEX	Homo sapiens	2183	2881
+CHEMBL1907602	104296	Cyclin-dependent kinase 1/cyclin B1	P06493, P14635	PROTEIN COMPLEX	Homo sapiens	1152	1466
+CHEMBL4282	12666	Serine/threonine-protein kinase AKT	P31749	SINGLE PROTEIN	Homo sapiens	5752	8605
+CHEMBL2185	10781	Serine/threonine-protein kinase Aurora-B	Q96GD4	SINGLE PROTEIN	Homo sapiens	3929	5436
+CHEMBL3301390	108404	JAK1/JAK2/TYK2	O60674, P23458, P29597	PROTEIN COMPLEX	Homo sapiens	8	13
+CHEMBL4722	20014	Serine/threonine-protein kinase Aurora-A	O14965	SINGLE PROTEIN	Homo sapiens	5630	7781
+CHEMBL3038452	107878	AMPK alpha1/beta1/gamma3	Q13131, Q9UGI9, Q9Y478	PROTEIN COMPLEX	Homo sapiens	1	1
+CHEMBL3038500	107926	MAST1/MAST2	Q6P0Q8, Q9Y2H9	PROTEIN FAMILY	Homo sapiens	6	6
+CHEMBL3038503	107929	p38 delta/gamma	O15264, P53778	PROTEIN FAMILY	Homo sapiens	17	17
+CHEMBL3438	10216	Protein kinase C zeta	Q05513	SINGLE PROTEIN	Homo sapiens	1490	2085
+CHEMBL4816	10696	Serine/threonine-protein kinase AKT3	Q9Y243	SINGLE PROTEIN	Homo sapiens	1788	2461
+CHEMBL5819	101349	Serine/threonine-protein kinase Nek4	P51957	SINGLE PROTEIN	Homo sapiens	706	717
+CHEMBL5678	102420	G protein-coupled receptor kinase 5	P34947	SINGLE PROTEIN	Homo sapiens	675	856
+CHEMBL3308999	109135	Aurora kinase B	Q9VKN7	SINGLE PROTEIN	Drosophila melanogaster	1	1
+CHEMBL2331049	105645	Vascular endothelial growth factor receptor 2	Q5GIT4	SINGLE PROTEIN	Danio rerio	39	67
+CHEMBL3608	11784	Epidermal growth factor receptor erbB1	Q01279	SINGLE PROTEIN	Mus musculus	64	74
+CHEMBL3822350	116814	Receptor-interacting serine/threonine-protein kinase 2	G3V783	SINGLE PROTEIN	Rattus norvegicus	1	1
+CHEMBL3721302	116670	G protein-coupled receptor kinase 5	Q8VEB1	SINGLE PROTEIN	Mus musculus	7	36
+CHEMBL3784911	116773	Receptor-interacting serine/threonine-protein kinase 1	Q60855	SINGLE PROTEIN	Mus musculus	3	7
+CHEMBL3734644	116684	Serine/threonine-protein kinase STK11	Q9WTK7	SINGLE PROTEIN	Mus musculus	1	4
+CHEMBL3885535	117079	Calmodulin/Proto-oncogene tyrosine-protein kinase Src	P0DP23, P12931	PROTEIN-PROTEIN INTERACTION	Homo sapiens	2	2
+CHEMBL3885553	117097	Cyclin-dependent kinase 4/6	P11802, Q00534	PROTEIN FAMILY	Homo sapiens	4	7
+CHEMBL3885629	117173	RAC-alpha serine/threonine-protein kinase/Ribosomal protein S6 kinase beta-1	P23443, P31749	PROTEIN FAMILY	Homo sapiens	1	2
+CHEMBL3885636	117180	Serine/threonine-protein kinase PAK 1/PAK 2	Q13153, Q13177	PROTEIN FAMILY	Homo sapiens	18	18
+CHEMBL3885645	117189	Transcription factor ETV6/Tyrosine-protein kinase ABL1	P00519, P41212	CHIMERIC PROTEIN	Homo sapiens	41	41
+CHEMBL3883317	117030	B-raf/RAF proto-oncogene serine/threonine-protein kinase	P04049, P15056	PROTEIN FAMILY	Homo sapiens	6	20
+CHEMBL3879860	116985	Rhodopsin kinase	P28327	SINGLE PROTEIN	Bos taurus	7	9
+CHEMBL2343	12718	Serine/threonine-protein kinase Sgk1	O00141	SINGLE PROTEIN	Homo sapiens	1157	1913
+CHEMBL301	11678	Cyclin-dependent kinase 2	P24941	SINGLE PROTEIN	Homo sapiens	4479	6615
+CHEMBL2431	10695	Serine/threonine-protein kinase AKT2	P31751	SINGLE PROTEIN	Homo sapiens	2717	3969
+CHEMBL1936	238	Stem cell growth factor receptor	P10721	SINGLE PROTEIN	Homo sapiens	2970	7426
+CHEMBL2207	11080	MAP kinase ERK2	P63085	SINGLE PROTEIN	Mus musculus	527	1068
+CHEMBL3187	10803	Insulin receptor	P15208	SINGLE PROTEIN	Mus musculus	64	69
+CHEMBL2938	10880	Protein kinase C gamma	P05129	SINGLE PROTEIN	Homo sapiens	1704	2376
+CHEMBL2968	10920	Tyrosine-protein kinase JAK1	P52332	SINGLE PROTEIN	Mus musculus	7	9
+CHEMBL2999	11908	Serine/threonine-protein kinase PAK 3	O75914	SINGLE PROTEIN	Homo sapiens	698	1313
+CHEMBL3861	10899	Pyruvate dehydrogenase kinase isoform 2	Q15119	SINGLE PROTEIN	Homo sapiens	656	1378
+CHEMBL3920	12665	Protein kinase C theta	Q04759	SINGLE PROTEIN	Homo sapiens	1804	2505
+CHEMBL3516	12413	Vascular endothelial growth factor receptor 1	P35969	SINGLE PROTEIN	Mus musculus	60	60
+CHEMBL3717	11451	Hepatocyte growth factor receptor	P08581	SINGLE PROTEIN	Homo sapiens	5778	8573
+CHEMBL3981	30006	Serine/threonine-protein kinase 10	O94804	SINGLE PROTEIN	Homo sapiens	775	1456
+CHEMBL3987	30019	Ephrin type-A receptor 5	P54756	SINGLE PROTEIN	Homo sapiens	327	571
+CHEMBL4175	11868	Tyrosine-protein kinase CTK	P42679	SINGLE PROTEIN	Homo sapiens	582	602
+CHEMBL4637	100074	AMP-activated protein kinase, alpha-2 subunit	Q09137	SINGLE PROTEIN	Rattus norvegicus	41	93
+CHEMBL4670	100834	MAP kinase-activated protein kinase 3	Q16644	SINGLE PROTEIN	Homo sapiens	1436	2023
+CHEMBL4674	12983	MAP kinase p38 gamma	P53778	SINGLE PROTEIN	Homo sapiens	1806	2563
+CHEMBL4718	100835	MAP kinase-interacting serine/threonine-protein kinase MNK1	Q9BUB5	SINGLE PROTEIN	Homo sapiens	815	1279
+CHEMBL4519	100849	Serine/threonine-protein kinase PLK1	P70032	SINGLE PROTEIN	Xenopus laevis	1	2
+CHEMBL4575	100851	Dual-specificity tyrosine-phosphorylation regulated kinase 3	O43781	SINGLE PROTEIN	Homo sapiens	706	741
+CHEMBL4578	100854	Maternal embryonic leucine zipper kinase	Q14680	SINGLE PROTEIN	Homo sapiens	2070	3571
+CHEMBL5095	101069	Wee1-like protein kinase 2	P0C1S8	SINGLE PROTEIN	Homo sapiens	86	92
+CHEMBL4853	30050	Mitogen-activated protein kinase kinase kinase 4	Q9Y6R4	SINGLE PROTEIN	Homo sapiens	129	187
+CHEMBL4895	100410	Tyrosine-protein kinase receptor UFO	P30530	SINGLE PROTEIN	Homo sapiens	1572	2311
+CHEMBL4899	100414	Mitogen-activated protein kinase kinase kinase 8	P41279	SINGLE PROTEIN	Homo sapiens	360	419
+CHEMBL4974	11645	HPr kinase	O34483	SINGLE PROTEIN	Bacillus subtilis (strain 168)	52	97
+CHEMBL5026	20015	Serine/threonine-protein kinase EEF2K	O00418	SINGLE PROTEIN	Homo sapiens	787	1018
+CHEMBL5036	20158	cGMP-dependent protein kinase	Q8MMZ8	SINGLE PROTEIN	Eimeria tenella	259	275
+CHEMBL5081	101055	Interleukin-1 receptor-associated kinase 3	Q9Y616	SINGLE PROTEIN	Homo sapiens	110	148
+CHEMBL5233	100895	Mitogen-activated protein kinase 1	P63086	SINGLE PROTEIN	Rattus norvegicus	34	39
+CHEMBL5166	100107	Tyrosine-protein kinase V-ABL	P00521	SINGLE PROTEIN	Abelson murine leukemia virus	52	68
+CHEMBL5175	100132	Casein kinase I delta	Q9DC28	SINGLE PROTEIN	Mus musculus	1	4
+CHEMBL5257	30030	Serine/threonine-protein kinase NEK9	Q8TD19	SINGLE PROTEIN	Homo sapiens	532	966
+CHEMBL5316	100914	Serine/threonine-protein kinase PCTAIRE-3	Q07002	SINGLE PROTEIN	Homo sapiens	104	142
+CHEMBL5331	100948	Proto-oncogene tyrosine-protein kinase MER	Q12866	SINGLE PROTEIN	Homo sapiens	952	2035
+CHEMBL5405	101180	Serine/threonine-protein kinase 32C	Q86UX6	SINGLE PROTEIN	Homo sapiens	129	168
+CHEMBL5546	101225	Myosin IIIA	Q8NEV4	SINGLE PROTEIN	Homo sapiens	94	132
+CHEMBL5773	101321	Focal adhesion kinase 1	O35346	SINGLE PROTEIN	Rattus norvegicus	2	18
+CHEMBL5790	101553	Serine/threonine-protein kinase PCTAIRE-2	Q00537	SINGLE PROTEIN	Homo sapiens	100	138
+CHEMBL5794	101557	Serine/threonine-protein kinase Sgk2	Q9HBY8	SINGLE PROTEIN	Homo sapiens	1321	1871
+CHEMBL5570	101021	Macrophage colony-stimulating factor 1 receptor	P09581	SINGLE PROTEIN	Mus musculus	307	437
+CHEMBL5604	101030	Dual specificity testis-specific protein kinase 1	Q15569	SINGLE PROTEIN	Homo sapiens	147	190
+CHEMBL5606	101032	Serine/threonine-protein kinase 11	Q15831	SINGLE PROTEIN	Homo sapiens	361	580
+CHEMBL5638	102473	Serine/threonine-protein kinase Nek11	Q8NG66	SINGLE PROTEIN	Homo sapiens	247	418
+CHEMBL5679	102421	Serine/threonine-protein kinase Nek3	P51956	SINGLE PROTEIN	Homo sapiens	247	418
+CHEMBL5703	101508	Tyrosine-protein kinase Srms	Q9H3Y6	SINGLE PROTEIN	Homo sapiens	953	1375
+CHEMBL5719	101300	Cell division protein kinase 8	P49336	SINGLE PROTEIN	Homo sapiens	707	767
+CHEMBL5753	101316	Uncharacterized aarF domain-containing protein kinase 4	Q96D53	SINGLE PROTEIN	Homo sapiens	117	175
+CHEMBL5901	101596	Cell division protein kinase 5	Q03114	SINGLE PROTEIN	Rattus norvegicus	15	15
+CHEMBL5907	101602	Serine/threonine-protein kinase LATS2	Q9NRM7	SINGLE PROTEIN	Homo sapiens	100	138
+CHEMBL5938	101610	Serine/threonine-protein kinase PLK2	Q9NYY3	SINGLE PROTEIN	Homo sapiens	472	692
+CHEMBL6006	101411	Serine/threonine-protein kinase ULK1	O75385	SINGLE PROTEIN	Homo sapiens	101	107
+CHEMBL6082	101433	Serine/threonine-protein kinase SIK1	P57059	SINGLE PROTEIN	Homo sapiens	642	1225
+CHEMBL6123	101448	Serine/threonine-protein kinase DCLK3	Q9C098	SINGLE PROTEIN	Homo sapiens	97	138
+CHEMBL6150	102774	Serine/threonine-protein kinase 32A	Q8WU08	SINGLE PROTEIN	Homo sapiens	77	77
+CHEMBL5326	20028	Casein kinase II alpha (prime)	O54833	SINGLE PROTEIN	Mus musculus	1	3
+CHEMBL1649049	103845	Tyrosine-protein kinase JAK2	Q62120	SINGLE PROTEIN	Mus musculus	9	10
+CHEMBL1169596	103465	Serine/threonine-protein kinase A-Raf	P10398	SINGLE PROTEIN	Homo sapiens	88	88
+CHEMBL1163104	103433	Serine/threonine-protein kinase OSR1	O95747	SINGLE PROTEIN	Homo sapiens	253	273
+CHEMBL1163127	103456	Mitogen-activated protein kinase kinase kinase 15	Q6ZN16	SINGLE PROTEIN	Homo sapiens	86	92
+CHEMBL2111344	105043	Platelet-derived growth factor receptor (PDGFr)	P20786, Q05030	PROTEIN FAMILY	Rattus norvegicus	54	77
+CHEMBL2111351	105104	Serine/threonine-protein kinase RAF and Dual specificity mitogen-activated protein kinase kinase 1 (Raf/MEK)	P04049, Q02750	PROTEIN FAMILY	Homo sapiens	156	159
+CHEMBL2111356	105109	Mitogen-activated protein kinase 1 and 3 (ERK2 and ERK1)	P21708, P63086	PROTEIN FAMILY	Rattus norvegicus	10	16
+CHEMBL2095227	104799	Vascular endothelial growth factor receptor	P17948, P35916, P35968	PROTEIN FAMILY	Homo sapiens	268	281
+CHEMBL2034802	104542	Proto-oncogene tyrosine-protein kinase ROS	Q78DX7	SINGLE PROTEIN	Mus musculus	6	6
+CHEMBL1907606	104300	Mitogen-activated protein kinase; ERK1/ERK2	P27361, P28482	PROTEIN FAMILY	Homo sapiens	348	429
+CHEMBL2111480	105010	Vascular endothelial growth factor receptor 1 and 2 (Flt-1 and KDR)	P17948, P35968	SELECTIVITY GROUP	Homo sapiens	27	27
+CHEMBL2111454	104976	Mitogen-activated protein kinase 1 and 3 (ERK2 and ERK1)	P63085, Q63844	PROTEIN FAMILY	Mus musculus	22	28
+CHEMBL2111455	104977	CDK6/cyclin D1	P24385, Q00534	PROTEIN COMPLEX	Homo sapiens	63	96
+CHEMBL2708	11870	Mitogen-activated protein kinase kinase kinase 11	Q16584	SINGLE PROTEIN	Homo sapiens	256	326
+CHEMBL3430890	109647	Voltage-gated potassium channel subunit Kv7.1/Misshapen-like kinase 1	P51787, Q8N4C8	PROTEIN COMPLEX	Homo sapiens	2	2
+CHEMBL3301386	108400	CDK6/cyclin D2	P30279, Q00534	PROTEIN COMPLEX	Homo sapiens	2	3
+CHEMBL5651	101270	Serine/threonine-protein kinase 35	Q8TDR2	SINGLE PROTEIN	Homo sapiens	85	92
+CHEMBL4366	100423	Protein kinase C epsilon	P16054	SINGLE PROTEIN	Mus musculus	28	51
+CHEMBL3038469	107895	CDK2/Cyclin A	P20248, P24941	PROTEIN COMPLEX	Homo sapiens	657	685
+CHEMBL2176816	105391	Cyclin-dependent kinase 7	Q03147	SINGLE PROTEIN	Mus musculus	1	1
+CHEMBL5941	101613	Serine/threonine-protein kinase MST4	Q9P289	SINGLE PROTEIN	Homo sapiens	784	1381
+CHEMBL3259478	108319	Tyrosine-protein kinase BTK	P35991	SINGLE PROTEIN	Mus musculus	34	34
+CHEMBL3788	30003	Serine/threonine-protein kinase PLK4	O00444	SINGLE PROTEIN	Homo sapiens	1218	1343
+CHEMBL3835	30017	Serine/threonine-protein kinase NEK2	P51955	SINGLE PROTEIN	Homo sapiens	1964	2771
+CHEMBL3983	30011	Dual specificity protein kinase TTK	P33981	SINGLE PROTEIN	Homo sapiens	1543	2145
+CHEMBL5932	101386	LIM domain kinase 2	P53671	SINGLE PROTEIN	Homo sapiens	335	386
+CHEMBL3325307	109466	Eukaryotic elongation factor 2 kinase	P70531	SINGLE PROTEIN	Rattus norvegicus	1	1
+CHEMBL2417353	107646	Serine/threonine-protein kinase Nek8	Q86SG6	SINGLE PROTEIN	Homo sapiens	12	12
+CHEMBL3137267	108123	PKC alpha and beta-2	P05771, P17252	PROTEIN FAMILY	Homo sapiens	2	3
+CHEMBL3137284	108140	MER intracellular domain/EGFR extracellular domain chimera	P00533, Q12866	CHIMERIC PROTEIN	Homo sapiens	2	2
+CHEMBL2366565	106709	Glycogen synthase kinase-3	B2LUN4, I6LNT8	PROTEIN FAMILY	Sus scrofa	25	25
+CHEMBL3711550	113511	Beta-adrenergic receptor kinase 1	P21146	SINGLE PROTEIN	Bos taurus	6	6
+CHEMBL3804750	116792	Testis-specific serine/threonine-protein kinase 1	Q61241	SINGLE PROTEIN	Mus musculus	2	3
+CHEMBL3885552	117096	Cyclin-dependent kinase 2/G1/S-specific cyclin-D1	P24385, P24941	PROTEIN COMPLEX	Homo sapiens	2	2
+CHEMBL3885630	117174	Ras and Rab interactor 1/Tyrosine-protein kinase ABL1	P00519, Q13671	PROTEIN-PROTEIN INTERACTION	Homo sapiens	230	230
+CHEMBL3883323	117036	Cyclin-C/Cyclin-dependent kinase 19	P24863, Q9BWU1	PROTEIN COMPLEX	Homo sapiens	60	65
+CHEMBL3883328	117041	Casein kinase II alpha'/ beta	P19784, P67870	PROTEIN COMPLEX	Homo sapiens	87	89
+CHEMBL2250	11691	Tyrosine-protein kinase BLK	P51451	SINGLE PROTEIN	Homo sapiens	1413	2046
+CHEMBL2276	12261	c-Jun N-terminal kinase 1	P45983	SINGLE PROTEIN	Homo sapiens	3182	4273
+CHEMBL2349	12735	Phosphorylase kinase gamma subunit 2	P15735	SINGLE PROTEIN	Homo sapiens	1280	1907
+CHEMBL2480	10297	Tyrosine-protein kinase LCK	P06240	SINGLE PROTEIN	Mus musculus	161	193
+CHEMBL1862	8	Tyrosine-protein kinase ABL	P00519	SINGLE PROTEIN	Homo sapiens	4461	12817
+CHEMBL1868	10979	Vascular endothelial growth factor receptor 1	P17948	SINGLE PROTEIN	Homo sapiens	3781	5681
+CHEMBL2073	18033	Tyrosine-protein kinase YES	P07947	SINGLE PROTEIN	Homo sapiens	1482	2205
+CHEMBL2109	10478	Dual specificity mitogen-activated protein kinase kinase 3	P46734	SINGLE PROTEIN	Homo sapiens	145	184
+CHEMBL2148	10849	Tyrosine-protein kinase JAK3	P52333	SINGLE PROTEIN	Homo sapiens	4942	7121
+CHEMBL2777	12037	myosin light chain kinase 2	Q9H1R3	SINGLE PROTEIN	Homo sapiens	150	221
+CHEMBL2803	12214	Tyrosine-protein kinase ZAP-70	P43403	SINGLE PROTEIN	Homo sapiens	1228	1899
+CHEMBL2918	10207	cAMP-dependent protein kinase beta-1 catalytic subunit	P22694	SINGLE PROTEIN	Homo sapiens	121	161
+CHEMBL2971	10938	Tyrosine-protein kinase JAK2	O60674	SINGLE PROTEIN	Homo sapiens	7916	11724
+CHEMBL3024	10907	Serine/threonine-protein kinase PLK1	P53350	SINGLE PROTEIN	Homo sapiens	26127	27212
+CHEMBL3848	12475	Receptor protein-tyrosine kinase erbB-2	P06494	SINGLE PROTEIN	Rattus norvegicus	13	14
+CHEMBL3385	11639	MAP kinase ERK1	P27361	SINGLE PROTEIN	Homo sapiens	2250	3939
+CHEMBL3629	10044	Casein kinase II alpha	P68400	SINGLE PROTEIN	Homo sapiens	2014	3139
+CHEMBL3633	10877	Protein kinase C delta	P09215	SINGLE PROTEIN	Rattus norvegicus	1	1
+CHEMBL3961	10120	MAP kinase p38 beta	Q15759	SINGLE PROTEIN	Homo sapiens	1195	2007
+CHEMBL4141	12685	Pyruvate dehydrogenase kinase isoform 4	Q16654	SINGLE PROTEIN	Homo sapiens	5	5
+CHEMBL4142	10264	Fibroblast growth factor receptor 2	P21802	SINGLE PROTEIN	Homo sapiens	1745	2626
+CHEMBL4203	30036	Dual specificity protein kinase CLK4	Q9HAZ1	SINGLE PROTEIN	Homo sapiens	2257	3484
+CHEMBL4204	30037	MAP kinase signal-integrating kinase 2	Q9HBH9	SINGLE PROTEIN	Homo sapiens	1980	2852
+CHEMBL4273	11019	cGMP-dependent protein kinase 1 beta	Q13976	SINGLE PROTEIN	Homo sapiens	1209	2159
+CHEMBL4484	100018	Casein kinase I delta	Q06486	SINGLE PROTEIN	Rattus norvegicus	28	57
+CHEMBL4522	30042	BMP-2-inducible protein kinase	Q9NSY1	SINGLE PROTEIN	Homo sapiens	143	203
+CHEMBL4523	30043	Serine/threonine-protein kinase PIM2	Q9P1W9	SINGLE PROTEIN	Homo sapiens	4057	5752
+CHEMBL4825	12077	MAP kinase p38 alpha	P70618	SINGLE PROTEIN	Rattus norvegicus	69	69
+CHEMBL5014	20025	Serine/threonine-protein kinase RIPK2	O43353	SINGLE PROTEIN	Homo sapiens	398	695
+CHEMBL5247	100104	Serine/threonine-protein kinase ILK-1	Q13418	SINGLE PROTEIN	Homo sapiens	343	504
+CHEMBL5250	100083	Tyrosine-protein kinase JAK3	Q62137	SINGLE PROTEIN	Mus musculus	13	17
+CHEMBL5256	30029	CaM-kinase kinase alpha	Q8N5S9	SINGLE PROTEIN	Homo sapiens	193	273
+CHEMBL5275	100907	Bone morphogenetic protein receptor type-1A	P36894	SINGLE PROTEIN	Homo sapiens	146	187
+CHEMBL5284	30032	CaM-kinase kinase beta	Q96RR4	SINGLE PROTEIN	Homo sapiens	418	543
+CHEMBL5310	100908	Activin receptor type-1B	P36896	SINGLE PROTEIN	Homo sapiens	354	598
+CHEMBL5334	100951	Non-receptor tyrosine-protein kinase TNK1	Q13470	SINGLE PROTEIN	Homo sapiens	499	917
+CHEMBL5370	100937	Serine/threonine-protein kinase KIN28	P06242	SINGLE PROTEIN	Saccharomyces cerevisiae S288c	2	2
+CHEMBL5381	100962	Insulin-like growth factor 1 receptor	Q60751	SINGLE PROTEIN	Mus musculus	35	35
+CHEMBL5407	100855	Serine/threonine-protein kinase PIM3	Q86V86	SINGLE PROTEIN	Homo sapiens	2726	4138
+CHEMBL5528	100072	Ribosomal protein S6 kinase alpha 1	Q63531	SINGLE PROTEIN	Rattus norvegicus	11	11
+CHEMBL5427	101183	Homeodomain-interacting protein kinase 1	Q86Z02	SINGLE PROTEIN	Homo sapiens	730	1291
+CHEMBL5467	100993	Bone morphogenetic protein receptor type-2	Q13873	SINGLE PROTEIN	Homo sapiens	121	159
+CHEMBL5510	101004	Mitogen-activated protein kinase 3	Q63844	SINGLE PROTEIN	Mus musculus	95	212
+CHEMBL5808	101338	PITSLRE serine/threonine-protein kinase CDC2L1	P21127	SINGLE PROTEIN	Homo sapiens	114	157
+CHEMBL5589	101249	Cyclin-dependent protein kinase PHO85	P17157	SINGLE PROTEIN	Saccharomyces cerevisiae S288c	4	4
+CHEMBL5615	101041	Serine/threonine-protein kinase MRCK gamma	Q6DT37	SINGLE PROTEIN	Homo sapiens	102	140
+CHEMBL5683	101281	Serine/threonine-protein kinase DCLK1	O15075	SINGLE PROTEIN	Homo sapiens	721	770
+CHEMBL5698	101503	NUAK family SNF1-like kinase 2	Q9H093	SINGLE PROTEIN	Homo sapiens	116	163
+CHEMBL5699	101504	Serine/threonine-protein kinase SIK2	Q9H0K1	SINGLE PROTEIN	Homo sapiens	545	970
+CHEMBL5718	101299	Mitogen-activated protein kinase 8	P49185	SINGLE PROTEIN	Rattus norvegicus	26	32
+CHEMBL5728	101309	Cyclin-dependent kinase-like 2	Q92772	SINGLE PROTEIN	Homo sapiens	89	95
+CHEMBL5861	101584	G protein-coupled receptor kinase 4	P32298	SINGLE PROTEIN	Homo sapiens	113	127
+CHEMBL1075224	102922	Glycogen synthase kinase-3 alpha	P18265	SINGLE PROTEIN	Rattus norvegicus	1	1
+CHEMBL6002	101407	Cell division cycle 2-like protein kinase 6	Q9BWU1	SINGLE PROTEIN	Homo sapiens	305	347
+CHEMBL6005	101410	Serine/threonine-protein kinase 33	Q9BYT3	SINGLE PROTEIN	Homo sapiens	351	575
+CHEMBL1075289	102840	Protein-tyrosine kinase 2-beta	Q9QVP9	SINGLE PROTEIN	Mus musculus	18	28
+CHEMBL6167	101465	Serine/threonine-protein kinase LATS1	O95835	SINGLE PROTEIN	Homo sapiens	99	137
+CHEMBL1781858	104150	Casein kinase I isoform alpha	O19175	SINGLE PROTEIN	Sus scrofa	80	80
+CHEMBL3074	11896	Tyrosine-protein kinase SRC	P05480	SINGLE PROTEIN	Mus musculus	89	99
+CHEMBL2094115	104697	MAP kinase p38	O15264, P53778, Q15759, Q16539	PROTEIN FAMILY	Homo sapiens	830	1302
+CHEMBL2111330	105025	Ribosomal protein S6 kinase (P70S6K)	P23443, Q9UBS0	PROTEIN COMPLEX	Homo sapiens	88	90
+CHEMBL2111353	105106	Serine/threonine-protein kinase AKT	P31749, P31751, Q9Y243	PROTEIN FAMILY	Homo sapiens	41	64
+CHEMBL2111428	104939	VEGF-receptor 2 and stem cell growth factor receptor (KDR and KIT)	P10721, P35968	SELECTIVITY GROUP	Homo sapiens	10	10
+CHEMBL2095217	104793	Fibroblast growth factor receptor	P11362, P21802, P22455, P22607	PROTEIN FAMILY	Homo sapiens	242	312
+CHEMBL2111459	104981	Rho-associated protein kinase	O75116, Q13464	PROTEIN FAMILY	Homo sapiens	100	104
+CHEMBL3430900	109657	Interferon-induced guanylate-binding protein 1/Serine/threonine-protein kinase pim-1	P11309, P32455	PROTEIN-PROTEIN INTERACTION	Homo sapiens	44	47
+CHEMBL2221341	105503	Mammalian target of Rapamycin (mTORC1)	P42345, P62942	PROTEIN COMPLEX	Homo sapiens	239	432
+CHEMBL3301389	108403	Focal adhesion kinase 1/vascular endothelial growth factor receptor 3	P35916, Q05397	PROTEIN-PROTEIN INTERACTION	Homo sapiens	2	10
+CHEMBL3038456	107882	AMPK alpha2/beta2/gamma1	O43741, P54619, P54646	PROTEIN COMPLEX	Homo sapiens	10	14
+CHEMBL3038467	107893	CDK1/Cyclin A	P06493, P20248	PROTEIN COMPLEX	Homo sapiens	22	29
+CHEMBL3038473	107899	CDK7/Cyclin H/MNAT1	P50613, P51946, P51948	PROTEIN COMPLEX	Homo sapiens	28	29
+CHEMBL3038477	107903	Casein kinase II alpha/beta	P67870, P68400	PROTEIN COMPLEX	Homo sapiens	1220	1360
+CHEMBL3038491	107917	JAK3/JAK1	P23458, P52333	PROTEIN COMPLEX	Homo sapiens	42	67
+CHEMBL1250377	103510	RAC-alpha serine/threonine-protein kinase	Q01314	SINGLE PROTEIN	Bos taurus	1	4
+CHEMBL2041	100079	Tyrosine-protein kinase receptor RET	P07949	SINGLE PROTEIN	Homo sapiens	2135	4808
+CHEMBL2973	11149	Rho-associated protein kinase 2	O75116	SINGLE PROTEIN	Homo sapiens	3809	5611
+CHEMBL3009	12699	Receptor protein-tyrosine kinase erbB-4	Q15303	SINGLE PROTEIN	Homo sapiens	1653	2268
+CHEMBL4036	12947	Cyclin-dependent kinase 5	Q00535	SINGLE PROTEIN	Homo sapiens	2000	2484
+CHEMBL5380	100961	Inhibitor of nuclear factor kappa-B kinase subunit alpha	Q60680	SINGLE PROTEIN	Mus musculus	4	6
+CHEMBL3711486	113447	Beta-adrenergic receptor kinase 1	Q99MK8	SINGLE PROTEIN	Mus musculus	6	6
+CHEMBL3832945	116901	Casein kinase 2	O54833, P67871, Q60737, Q8CH19	PROTEIN FAMILY	Mus musculus	7	7
+CHEMBL3885504	117048	5'-AMP-activated protein kinase catalytic subunit alpha-2/beta-1/gamma-2	P54646, Q9UGJ0, Q9Y478	PROTEIN COMPLEX	Homo sapiens	1	2
+CHEMBL3885534	117078	LKB1-STRAD-MO25 complex	Q15831, Q7RTN6, Q9Y376	PROTEIN COMPLEX	Homo sapiens	1	1
+CHEMBL3885549	117093	Cyclin-T1/Cyclin-dependent-like kinase 5	O60563, Q00535	PROTEIN COMPLEX	Homo sapiens	2	2
+CHEMBL3885554	117098	Cyclin-dependent kinase 4/G1/S-specific cyclin-E1	P11802, P24864	PROTEIN COMPLEX	Homo sapiens	2	2
+CHEMBL3885614	117158	Peptidyl-prolyl cis-trans isomerase FKBP1B/Serine/threonine-protein kinase mTOR	P42345, P68106	PROTEIN COMPLEX	Homo sapiens	3	3
+CHEMBL3885650	117194	Tyrosine-protein kinase JAK1/JAK3	P52332, Q62137	PROTEIN FAMILY	Mus musculus	3	3
+CHEMBL3883330	117043	EML4-ALK 	Q9HC35, Q9UM73	CHIMERIC PROTEIN	Homo sapiens	58	73
+CHEMBL2468	10051	Death-associated protein kinase 3	O43293	SINGLE PROTEIN	Homo sapiens	1417	1835
+CHEMBL1981	35	Insulin receptor	P06213	SINGLE PROTEIN	Homo sapiens	3383	4827
+CHEMBL3111	17145	Ribosomal protein S6 kinase 2	Q9UBS0	SINGLE PROTEIN	Homo sapiens	50	56
+CHEMBL3123	10778	Death-associated protein kinase 2	Q9UIK4	SINGLE PROTEIN	Homo sapiens	312	552
+CHEMBL3125	10782	Ribosomal protein S6 kinase alpha 4	O75676	SINGLE PROTEIN	Homo sapiens	746	1498
+CHEMBL2749	10574	Platelet-derived growth factor receptor beta	P05622	SINGLE PROTEIN	Mus musculus	454	490
+CHEMBL2828	10368	Casein kinase I delta	P48730	SINGLE PROTEIN	Homo sapiens	1752	2149
+CHEMBL2842	11400	Serine/threonine-protein kinase mTOR	P42345	SINGLE PROTEIN	Homo sapiens	8090	13819
+CHEMBL3014	11977	Tyrosine-protein kinase SRC	Q9WUD9	SINGLE PROTEIN	Rattus norvegicus	51	66
+CHEMBL3906	11843	Ribosomal protein S6 kinase alpha 2	Q15349	SINGLE PROTEIN	Homo sapiens	1020	1804
+CHEMBL3497	100819	Casein kinase I homolog 1	P23291	SINGLE PROTEIN	Saccharomyces cerevisiae S288c	1	1
+CHEMBL3542	100824	Serine/threonine-protein kinase NIM1	Q8IY84	SINGLE PROTEIN	Homo sapiens	104	110
+CHEMBL3604	12635	Protein kinase C gamma	P63319	SINGLE PROTEIN	Rattus norvegicus	114	137
+CHEMBL3778	19639	Interleukin-1 receptor-associated kinase 4	Q9NWZ3	SINGLE PROTEIN	Homo sapiens	3577	4311
+CHEMBL4014	11209	Tyrosine-protein kinase ABL2	P42684	SINGLE PROTEIN	Homo sapiens	732	1368
+CHEMBL4070	12780	Casein kinase II alpha (prime)	P19784	SINGLE PROTEIN	Homo sapiens	644	986
+CHEMBL4237	10850	Ribosomal protein S6 kinase alpha 5	O75582	SINGLE PROTEIN	Homo sapiens	1658	2519
+CHEMBL4627	12959	Myosin light chain kinase	Q32MK0	SINGLE PROTEIN	Homo sapiens	79	79
+CHEMBL4335	12506	MAP kinase p38 beta	Q9WUI1	SINGLE PROTEIN	Mus musculus	37	37
+CHEMBL4363	100420	Tyrosine-protein kinase Lyn	Q07014	SINGLE PROTEIN	Rattus norvegicus	7	7
+CHEMBL4367	100424	Tyrosine-protein kinase TXK	P42681	SINGLE PROTEIN	Homo sapiens	676	1263
+CHEMBL4514	100843	Casein kinase II alpha	P28523	SINGLE PROTEIN	Zea mays	16	16
+CHEMBL4516	100845	Serine/threonine-protein kinase MRCK-A	Q5VT25	SINGLE PROTEIN	Homo sapiens	1474	2073
+CHEMBL4533	100073	AMP-activated protein kinase, alpha-1 subunit	P54645	SINGLE PROTEIN	Rattus norvegicus	6	10
+CHEMBL4576	100852	Homeodomain-interacting protein kinase 2	Q9H2X6	SINGLE PROTEIN	Homo sapiens	1058	1290
+CHEMBL4600	30025	Serine/threonine-protein kinase PAK 1	Q13153	SINGLE PROTEIN	Homo sapiens	1557	2125
+CHEMBL4750	100796	Dual-specificity tyrosine-phosphorylation regulated kinase 1A	Q61214	SINGLE PROTEIN	Mus musculus	19	35
+CHEMBL4766	12683	Pyruvate dehydrogenase kinase isoform 1	Q15118	SINGLE PROTEIN	Homo sapiens	1313	1430
+CHEMBL262	10197	Glycogen synthase kinase-3 beta	P49841	SINGLE PROTEIN	Homo sapiens	5513	7251
+CHEMBL4852	30049	Mitogen-activated protein kinase kinase kinase kinase 5	Q9Y4K4	SINGLE PROTEIN	Homo sapiens	844	922
+CHEMBL5073	30028	CaM kinase I delta	Q8IU85	SINGLE PROTEIN	Homo sapiens	1121	1815
+CHEMBL5121	101078	Mitogen-activated protein kinase 6	Q16659	SINGLE PROTEIN	Homo sapiens	246	299
+CHEMBL5251	100097	Tyrosine-protein kinase BTK	Q06187	SINGLE PROTEIN	Homo sapiens	3283	4668
+CHEMBL5261	101131	Serine/threonine-protein kinase TAO1	Q7L7X3	SINGLE PROTEIN	Homo sapiens	1269	1571
+CHEMBL5274	100906	Tyrosine-protein kinase receptor Tie-1	P35590	SINGLE PROTEIN	Homo sapiens	106	145
+CHEMBL5364	100931	Serine/threonine protein kinase NLK	Q9UBE8	SINGLE PROTEIN	Homo sapiens	318	535
+CHEMBL5415	100975	Serine/threonine-protein kinase SRPK3	Q9UPE1	SINGLE PROTEIN	Homo sapiens	651	1203
+CHEMBL5509	101003	Rho-associated protein kinase 1	Q63644	SINGLE PROTEIN	Rattus norvegicus	2	2
+CHEMBL5515	101217	Protein kinase C-like 1	P43057	SINGLE PROTEIN	Candida albicans	1	1
+CHEMBL5518	101220	Misshapen-like kinase 1	Q8N4C8	SINGLE PROTEIN	Homo sapiens	1366	1942
+CHEMBL5519	101221	Serine/threonine-protein kinase DCLK2	Q8N568	SINGLE PROTEIN	Homo sapiens	661	1248
+CHEMBL5776	101324	Mitogen-activated protein kinase kinase kinase 7	O43318	SINGLE PROTEIN	Homo sapiens	477	729
+CHEMBL5608	101034	NT-3 growth factor receptor	Q16288	SINGLE PROTEIN	Homo sapiens	1287	1734
+CHEMBL6191	102799	SPS1/STE20-related protein kinase YSK4	Q56UN5	SINGLE PROTEIN	Homo sapiens	96	103
+CHEMBL5856	101360	Serine/threonine-protein kinase PFTAIRE-2	Q96Q40	SINGLE PROTEIN	Homo sapiens	85	91
+CHEMBL6003	101408	Testis-specific serine/threonine-protein kinase 1	Q9BXA7	SINGLE PROTEIN	Homo sapiens	1218	1818
+CHEMBL6014	102391	Testis-specific serine/threonine-protein kinase 2	Q96PF2	SINGLE PROTEIN	Homo sapiens	1114	1661
+CHEMBL6070	102879	Probable serine/threonine-protein kinase pknG	P9WI73	SINGLE PROTEIN	Mycobacterium tuberculosis	55	117
+CHEMBL6162	101460	Serine/threonine-protein kinase PFTAIRE-1	O94921	SINGLE PROTEIN	Homo sapiens	114	152
+CHEMBL2743	11970	cAMP-dependent protein kinase, gamma catalytic subunit	P22612	SINGLE PROTEIN	Homo sapiens	9	9
+CHEMBL1075321	103169	Glycogen synthase kinase-3 beta	Q9WV60	SINGLE PROTEIN	Mus musculus	39	58
+CHEMBL1163108	103437	STE20/SPS1-related proline-alanine-rich protein kinase	Q9UEW8	SINGLE PROTEIN	Homo sapiens	89	95
+CHEMBL1163112	103441	Cyclin-dependent kinase-like 5	O76039	SINGLE PROTEIN	Homo sapiens	85	91
+CHEMBL4045	11364	AMP-activated protein kinase, alpha-1 subunit	Q13131	SINGLE PROTEIN	Homo sapiens	1508	1974
+CHEMBL2096618	104811	Bcr/Abl fusion protein	P00519, P11274	CHIMERIC PROTEIN	Homo sapiens	736	1018
+CHEMBL2096907	104844	AMP-activated protein kinase, AMPK	O43741, P54619, P54646, Q13131, Q9UGI9, Q9UGJ0, Q9Y478	PROTEIN COMPLEX GROUP	Homo sapiens	591	795
+CHEMBL2097164	104875	CaM kinase II	Q13554, Q13555, Q13557, Q9UQM7	PROTEIN FAMILY	Homo sapiens	142	149
+CHEMBL2111375	105065	Vascular endothelial growth factor receptor 2 and tyrosine-protein kinase TIE-2 (KDR and TIE2)	P35968, Q02763	SELECTIVITY GROUP	Homo sapiens	12	12
+CHEMBL2111389	105083	CDK9/cyclin T1	O60563, P50750	PROTEIN COMPLEX	Homo sapiens	647	926
+CHEMBL2111409	104915	Vascular endothelial growth factor receptor 2 and 3 (KDR and Flt-4)	P35916, P35968	SELECTIVITY GROUP	Homo sapiens	23	23
+CHEMBL2111434	104948	VEGF-receptor 2 and Fibroblast growth factor receptor 2	P21802, P35968	SELECTIVITY GROUP	Homo sapiens	15	15
+CHEMBL2111444	104961	CDK3/cyclin E	O96020, P24864, Q00526	PROTEIN COMPLEX GROUP	Homo sapiens	178	343
+CHEMBL1938213	104424	Eukaryotic translation initiation factor 2-alpha kinase 1	Q9Z2R9	SINGLE PROTEIN	Mus musculus	4	15
+CHEMBL2034798	104538	Mast/stem cell growth factor receptor Kit	P05532	SINGLE PROTEIN	Mus musculus	8	8
+CHEMBL3301385	108399	Cyclin-dependent kinase 4/cyclin D2	P11802, P30279	PROTEIN COMPLEX	Homo sapiens	2	2
+CHEMBL5483	101211	Insulin receptor-related protein	P14616	SINGLE PROTEIN	Homo sapiens	721	1320
+CHEMBL5443	100077	Cell division cycle 7-related protein kinase	O00311	SINGLE PROTEIN	Homo sapiens	1078	1190
+CHEMBL3038468	107894	CDK1/Cyclin E	P06493, P24864	PROTEIN COMPLEX	Homo sapiens	8	14
+CHEMBL3038492	107918	JAK2/JAK1	O60674, P23458	PROTEIN COMPLEX	Homo sapiens	33	38
+CHEMBL3038493	107919	Casein kinase I/MDM2	P48729, Q00987	PROTEIN COMPLEX	Homo sapiens	5	24
+CHEMBL4092	20110	c-Jun N-terminal kinase 3	P49187	SINGLE PROTEIN	Rattus norvegicus	122	124
+CHEMBL1075167	103106	Homeodomain-interacting protein kinase 4	Q8NE63	SINGLE PROTEIN	Homo sapiens	1089	1484
+CHEMBL3384	11637	Protein kinase N1	Q16512	SINGLE PROTEIN	Homo sapiens	228	279
+CHEMBL2363043	105738	Ephrin receptor	O15197, P21709, P29317, P29320, P29322, P29323, P54753, P54756, P54760, P54762, P54764, Q15375, Q5JZY3, Q9UF33	PROTEIN FAMILY	Homo sapiens	0	0
+CHEMBL5639	102474	Serine/threonine-protein kinase WNK2	Q9Y3S1	SINGLE PROTEIN	Homo sapiens	203	369
+CHEMBL2046265	104566	Hepatocyte growth factor receptor	Q75ZY9	SINGLE PROTEIN	Canis familiaris	7	19
+CHEMBL3559682	109737	Serine/threonine-protein kinase PIM	P11309, Q86V86, Q9P1W9	PROTEIN FAMILY	Homo sapiens	49	50
+CHEMBL3559684	109739	Neurotrophic tyrosine kinase receptor	P04629, Q16288, Q16620	PROTEIN FAMILY	Homo sapiens	0	0
+CHEMBL3337329	109482	Casein kinase I isoform alpha	P67827	SINGLE PROTEIN	Bos taurus	2	2
+CHEMBL3308994	109130	Glycogen synthase kinase 3 beta	Q9IBD2	SINGLE PROTEIN	Danio rerio 	1	4
+CHEMBL2417351	107644	Microtubule-associated serine/threonine-protein kinase 4	O15021	SINGLE PROTEIN	Homo sapiens	6	6
+CHEMBL2311234	105587	Receptor tyrosine-protein kinase erbB-2	P70424	SINGLE PROTEIN	Mus musculus	1	1
+CHEMBL3297640	108392	Serine/threonine-protein kinase pim-1	P06803	SINGLE PROTEIN	Mus musculus	1	3
+CHEMBL3414416	109599	Testis-specific serine/threonine-protein kinase 3	Q96PN8	SINGLE PROTEIN	Homo sapiens	6	6
+CHEMBL3638335	109940	Serine/threonine-protein kinase pim-3	O70444	SINGLE PROTEIN	Rattus norvegicus	58	136
+CHEMBL5197	100825	Serine/threonine-protein kinase SULU	P46549	SINGLE PROTEIN	Caenorhabditis elegans	1	1
+CHEMBL3885503	117047	5'-AMP-activated protein kinase catalytic subunit alpha-1/beta-1/gamma-1	P54645, P80385, P80386	PROTEIN COMPLEX	Rattus norvegicus	2	3
+CHEMBL3885543	117087	Cellular tumor antigen p53/Death-associated protein kinase 1	P04637, P53355	PROTEIN-PROTEIN INTERACTION	Homo sapiens	10	10
+CHEMBL3885551	117095	Cyclin-dependent kinase 1/G1/S-specific cyclin-D1	P06493, P24385	PROTEIN COMPLEX	Homo sapiens	4	4
+CHEMBL3885556	117100	Cyclin-dependent kinase 8/19	P49336, Q9BWU1	PROTEIN FAMILY	Homo sapiens	55	55
+CHEMBL3885637	117181	Serine/threonine-protein kinase PAK 1/PAK 2/PAK 3	O75914, Q13153, Q13177	PROTEIN FAMILY	Homo sapiens	13	13
+CHEMBL3885642	117186	TYK2/JAK1/JAK2	P52332, Q62120, Q9R117	PROTEIN FAMILY	Mus musculus	3	3
+CHEMBL3885649	117193	Tyrosine-protein kinase JAK1/JAK2	P52332, Q62120	PROTEIN FAMILY	Mus musculus	3	3
+CHEMBL3883296	117010	Serine/threonine-protein kinase Chk1/2	O14757, O96017	PROTEIN FAMILY	Homo sapiens	4	5
+CHEMBL3883303	117016	Aurora kinase A/B	O14965, Q96GD4	PROTEIN FAMILY	Homo sapiens	31	33
+CHEMBL3988610	117270	Serine/threonine-protein kinase Sgk1	Q9WVC6	SINGLE PROTEIN	Mus musculus	1	1
+CHEMBL331	12946	Cyclin-dependent kinase 4	P11802	SINGLE PROTEIN	Homo sapiens	1515	2827
+CHEMBL2359	12782	CaM kinase II alpha	P11275	SINGLE PROTEIN	Rattus norvegicus	1	1
+CHEMBL2493	10970	CaM kinase I alpha	Q14012	SINGLE PROTEIN	Homo sapiens	1119	1415
+CHEMBL2560	10876	Protein kinase C delta	P28867	SINGLE PROTEIN	Mus musculus	40	190
+CHEMBL1841	11755	Tyrosine-protein kinase FYN	P06241	SINGLE PROTEIN	Homo sapiens	2972	4558
+CHEMBL1957	234	Insulin-like growth factor I receptor	P08069	SINGLE PROTEIN	Homo sapiens	5170	8322
+CHEMBL258	10140	Tyrosine-protein kinase LCK	P06239	SINGLE PROTEIN	Homo sapiens	5543	8032
+CHEMBL2742	11926	Fibroblast growth factor receptor 3	P22607	SINGLE PROTEIN	Homo sapiens	2802	5550
+CHEMBL2897	11047	Dual specificity mitogen-activated protein kinase kinase 4	P45985	SINGLE PROTEIN	Homo sapiens	161	204
+CHEMBL2964	11046	Dual specificity mitogen-activated protein kinase kinase 2	P36507	SINGLE PROTEIN	Homo sapiens	656	730
+CHEMBL2996	12247	Protein kinase C delta	Q05655	SINGLE PROTEIN	Homo sapiens	1889	2370
+CHEMBL3055	12829	Cyclin-dependent kinase 7	P50613	SINGLE PROTEIN	Homo sapiens	687	768
+CHEMBL3099	11802	Tyrosine-protein kinase ABL	P00520	SINGLE PROTEIN	Mus musculus	44	49
+CHEMBL3797	20137	Serine-protein kinase ATM	Q13315	SINGLE PROTEIN	Homo sapiens	3402	3727
+CHEMBL3829	30002	CaM kinase II gamma	Q13555	SINGLE PROTEIN	Homo sapiens	984	1307
+CHEMBL3834	30016	Tyrosine-protein kinase BMX	P51813	SINGLE PROTEIN	Homo sapiens	760	1406
+CHEMBL3905	11842	Tyrosine-protein kinase Lyn	P07948	SINGLE PROTEIN	Homo sapiens	2026	3522
+CHEMBL3935	20171	Serine/threonine-protein kinase Aurora-C	Q9UQB9	SINGLE PROTEIN	Homo sapiens	845	1521
+CHEMBL3938	30004	Serine/threonine-protein kinase 16	O75716	SINGLE PROTEIN	Homo sapiens	334	418
+CHEMBL3290	11569	Ephrin type-B receptor 2	P29323	SINGLE PROTEIN	Homo sapiens	776	1411
+CHEMBL3337	12469	Vascular endothelial growth factor receptor 2	P35918	SINGLE PROTEIN	Mus musculus	119	122
+CHEMBL3529	12915	Inhibitor of nuclear factor kappa B kinase epsilon subunit	Q14164	SINGLE PROTEIN	Homo sapiens	1463	2722
+CHEMBL3553	12694	Tyrosine-protein kinase TYK2	P29597	SINGLE PROTEIN	Homo sapiens	2327	3163
+CHEMBL3973	11925	Fibroblast growth factor receptor 4	P22455	SINGLE PROTEIN	Homo sapiens	1592	2238
+CHEMBL4040	11638	MAP kinase ERK2	P28482	SINGLE PROTEIN	Homo sapiens	19423	22838
+CHEMBL4090	20128	Protein kinase Pfmrk	P90584	SINGLE PROTEIN	Plasmodium falciparum	130	147
+CHEMBL4147	12415	CaM kinase II alpha	Q9UQM7	SINGLE PROTEIN	Homo sapiens	1146	1635
+CHEMBL4179	11407	c-Jun N-terminal kinase 2	P45984	SINGLE PROTEIN	Homo sapiens	3059	3895
+CHEMBL4225	30014	Dual specificity protein kinase CLK2	P49760	SINGLE PROTEIN	Homo sapiens	1841	2552
+CHEMBL4311	30040	Serine/threonine-protein kinase PAK6	Q9NQU5	SINGLE PROTEIN	Homo sapiens	847	1582
+CHEMBL4630	12967	Serine/threonine-protein kinase Chk1	O14757	SINGLE PROTEIN	Homo sapiens	4436	5881
+CHEMBL4355	20020	Serine/threonine-protein kinase GAK	O14976	SINGLE PROTEIN	Homo sapiens	250	388
+CHEMBL4517	100847	Tyrosine-protein kinase FYN	P39688	SINGLE PROTEIN	Mus musculus	2	2
+CHEMBL4574	100850	BR serine/threonine-protein kinase 2	Q8IWQ3	SINGLE PROTEIN	Homo sapiens	752	1378
+CHEMBL260	10188	MAP kinase p38 alpha	Q16539	SINGLE PROTEIN	Homo sapiens	6987	10553
+CHEMBL4924	10939	Ribosomal protein S6 kinase alpha 6	Q9UK32	SINGLE PROTEIN	Homo sapiens	668	1390
+CHEMBL5082	101056	Serine/threonine-protein kinase 24	Q9Y6E0	SINGLE PROTEIN	Homo sapiens	306	526
+CHEMBL5145	100126	Serine/threonine-protein kinase B-raf	P15056	SINGLE PROTEIN	Homo sapiens	4063	7568
+CHEMBL5560	19907	CaM kinase I alpha	O04417	SINGLE PROTEIN	Zea mays	14	14
+CHEMBL1075161	103100	5'-AMP-activated protein kinase catalytic subunit alpha-1	Q5EG47	SINGLE PROTEIN	Mus musculus	9	26
+CHEMBL1075184	103113	Proto-oncogene serine/threonine-protein kinase mos	P00540	SINGLE PROTEIN	Homo sapiens	2	2
+CHEMBL5585	101245	Hepatocyte growth factor receptor	P16056	SINGLE PROTEIN	Mus musculus	21	34
+CHEMBL5654	101273	Myosin-IIIB	Q8WXR4	SINGLE PROTEIN	Homo sapiens	99	137
+CHEMBL1075133	103062	G protein-coupled receptor kinase 7	Q8WTQ7	SINGLE PROTEIN	Homo sapiens	633	1178
+CHEMBL1075134	103063	Serine/threonine-protein kinase mTOR	P42346	SINGLE PROTEIN	Rattus norvegicus	33	35
+CHEMBL5754	101317	MAP/microtubule affinity-regulating kinase 4	Q96L34	SINGLE PROTEIN	Homo sapiens	591	1011
+CHEMBL6186	102465	Serine/threonine-protein kinase Sgk3	Q96BR1	SINGLE PROTEIN	Homo sapiens	665	1212
+CHEMBL5855	101359	Serine/threonine-protein kinase Nek1	Q96PY6	SINGLE PROTEIN	Homo sapiens	737	1424
+CHEMBL5859	101582	RAC-alpha serine/threonine-protein kinase	P31750	SINGLE PROTEIN	Mus musculus	77	92
+CHEMBL5903	101598	Activin receptor type-1	Q04771	SINGLE PROTEIN	Homo sapiens	532	602
+CHEMBL6012	101417	Inhibitor of nuclear factor kappa-B kinase subunit beta	O88351	SINGLE PROTEIN	Mus musculus	37	72
+CHEMBL6055	102400	Serine/threonine-protein kinase WNK3	Q9BYP7	SINGLE PROTEIN	Homo sapiens	178	343
+CHEMBL3032	10842	Protein kinase N2	Q16513	SINGLE PROTEIN	Homo sapiens	1167	1464
+CHEMBL2096665	104820	Pyruvate dehydrogenase kinase	Q15118, Q15119, Q15120, Q16654	PROTEIN FAMILY	Homo sapiens	218	233
+CHEMBL1163106	103435	Serine/threonine-protein kinase MAK	P20794	SINGLE PROTEIN	Homo sapiens	85	91
+CHEMBL1163128	103457	Microtubule-associated serine/threonine-protein kinase 1	Q9Y2H9	SINGLE PROTEIN	Homo sapiens	84	90
+CHEMBL2021750	104517	TGF-beta receptor type-1	Q64729	SINGLE PROTEIN	Mus musculus	16	17
+CHEMBL2096620	104813	Protein kinase C, PKC; classical/novel	O94806, P05129, P05771, P17252, P24723, Q02156, Q04759, Q05655, Q15139	PROTEIN FAMILY	Homo sapiens	68	71
+CHEMBL2096980	104860	Platelet-derived growth factor receptor	P05622, P26618	PROTEIN COMPLEX	Mus musculus	225	273
+CHEMBL2079848	104669	Activated CDC42 kinase 1	O54967	SINGLE PROTEIN	Mus musculus	41	41
+CHEMBL2094127	104709	Cyclin-dependent kinase 1/cyclin B	O95067, P06493, P14635, Q8WWL7	PROTEIN COMPLEX	Homo sapiens	676	824
+CHEMBL2094138	104720	cAMP-dependent protein kinase (PKA)	P17612, P22612, P22694	PROTEIN FAMILY	Homo sapiens	786	862
+CHEMBL2111326	105020	Cyclin-dependent kinase 2 and 4 (CDK2 and CDK4)	P11802, P24941	SELECTIVITY GROUP	Homo sapiens	15	20
+CHEMBL2111331	105028	KinA/Spo0F (sporulation kinase A/sporulation initiation phosphotransferase F)	P06628, P16497	PROTEIN FAMILY	Bacillus subtilis (strain 168)	75	79
+CHEMBL2111336	105035	VEGF-receptor 2 and tyrosine-protein kinase SRC	P12931, P35968	SELECTIVITY GROUP	Homo sapiens	25	25
+CHEMBL2034793	104533	Cytoplasmic tyrosine-protein kinase BMX	P97504	SINGLE PROTEIN	Mus musculus	6	6
+CHEMBL2034800	104540	Tyrosine-protein kinase receptor Tie-1	Q06806	SINGLE PROTEIN	Mus musculus	6	6
+CHEMBL2111458	104980	Casein kinase I	P48729, P48730, P49674, P78368, Q9HCP0	PROTEIN FAMILY	Homo sapiens	40	42
+CHEMBL2111473	105000	MAP kinase p38	O08911, P47811, Q9WUI1, Q9Z1B7	PROTEIN FAMILY	Mus musculus	38	40
+CHEMBL2872	12038	Mitogen-activated protein kinase kinase kinase 9	P80192	SINGLE PROTEIN	Homo sapiens	441	681
+CHEMBL3430876	109633	Dual specificity mitogen-activated protein kinase kinase MEK1/2	P36506, Q01986	PROTEIN FAMILY	Rattus norvegicus	15	15
+CHEMBL3430888	109645	Kinesin-1 heavy chain/ Tyrosine-protein kinase receptor RET	P07949, P33176	CHIMERIC PROTEIN	Homo sapiens	77	78
+CHEMBL3430907	109664	Aurora kinase B/Inner centromere protein	Q96GD4, Q9NQS7	PROTEIN COMPLEX	Homo sapiens	118	144
+CHEMBL3301391	108405	JAK1/TYK2	P23458, P29597	PROTEIN COMPLEX	Homo sapiens	6	8
+CHEMBL3038453	107879	AMPK alpha1/beta2/gamma1	O43741, P54619, Q13131	PROTEIN COMPLEX	Homo sapiens	6	7
+CHEMBL3038463	107889	AKT/p21CIP1	P31749, P38936	PROTEIN COMPLEX	Homo sapiens	1	2
+CHEMBL3038474	107900	CDK8/Cyclin C	P24863, P49336	PROTEIN COMPLEX	Homo sapiens	151	179
+CHEMBL3038486	107912	IKK epsilon/TBK1	Q14164, Q9UHD2	PROTEIN COMPLEX	Homo sapiens	16	16
+CHEMBL3038499	107925	TAK1/TAB1	O43318, Q15750	PROTEIN COMPLEX	Homo sapiens	192	193
+CHEMBL3038501	107927	JNK1/JNK2	Q91Y86, Q9WTU6	PROTEIN FAMILY	Mus musculus	3	6
+CHEMBL4066	11858	Fibroblast growth factor receptor 3	Q61851	SINGLE PROTEIN	Mus musculus	5	5
+CHEMBL4220	100078	Nerve growth factor receptor Trk-A	P35739	SINGLE PROTEIN	Rattus norvegicus	12	22
+CHEMBL2176779	105354	DNA-dependent protein kinase catalytic subunit	P97313	SINGLE PROTEIN	Mus musculus	2	2
+CHEMBL2176799	105374	Serine/threonine-protein kinase WNK1	P83741	SINGLE PROTEIN	Mus musculus	2	2
+CHEMBL2176843	105418	Glycogen synthase kinase-3 alpha	Q2NL51	SINGLE PROTEIN	Mus musculus	1	3
+CHEMBL2595	10885	Protein kinase C nu	O94806	SINGLE PROTEIN	Homo sapiens	1395	1834
+CHEMBL3537	20147	Casein kinase II alpha	Q60737	SINGLE PROTEIN	Mus musculus	1	3
+CHEMBL4597	30022	Serine/threonine-protein kinase PCTAIRE-1	Q00536	SINGLE PROTEIN	Homo sapiens	293	371
+CHEMBL3559685	109740	RAF serine/threonine protein kinase	P04049, P10398, P15056	PROTEIN FAMILY	Homo sapiens	2	2
+CHEMBL3559691	109746	Cyclin-dependent kinase	O94921, P06493, P11802, P21127, P24941, P49336, P50613, P50750, Q00526, Q00534, Q00535, Q00536, Q00537, Q07002, Q14004, Q15131, Q8IZL9, Q96Q40, Q9BWU1, Q9NYV4	PROTEIN FAMILY	Homo sapiens	36	75
+CHEMBL2363074	105769	SRC	P06239, P06241, P07947, P07948, P08631, P09769, P12931, P42685, P51451, Q9H3Y6	PROTEIN FAMILY	Homo sapiens	0	0
+CHEMBL2417352	107645	Microtubule-associated serine/threonine-protein kinase 3	O60307	SINGLE PROTEIN	Homo sapiens	16	28
+CHEMBL2189160	105490	Serine/threonine-protein kinase TBK1	Q9WUN2	SINGLE PROTEIN	Mus musculus	24	24
+CHEMBL2434817	107667	Mitogen-activated protein kinase kinase kinase 11	Q80XI6	SINGLE PROTEIN	Mus musculus	8	8
+CHEMBL3580528	109813	Serine/threonine-protein kinase PAK 1	P35465	SINGLE PROTEIN	Rattus norvegicus	1	3
+CHEMBL5818	101348	Serine/threonine-protein kinase PRKX	P51817	SINGLE PROTEIN	Homo sapiens	1465	2075
+CHEMBL3808271	116798	Voltage-gated sodium channel Nav1.5 cardiac isoform	Q5YLN7	SINGLE PROTEIN	Canis lupus familiaris	1	2
+CHEMBL3714704	116664	Kinase	B2RXC2	SINGLE PROTEIN	Mus musculus	97	97
+CHEMBL3885565	117109	Dual specificity mitogen-activated protein kinase kinase 1/2	P31938, Q63932	PROTEIN FAMILY	Mus musculus	1	1
+CHEMBL3885603	117147	Mitogen-activated protein kinase 9/10	Q61831, Q9WTU6	PROTEIN FAMILY	Mus musculus	1	2
+CHEMBL3883309	117022	Axin-1/Glycogen synthase kinase-3 beta	O15169, P49841	PROTEIN-PROTEIN INTERACTION	Homo sapiens	1	1

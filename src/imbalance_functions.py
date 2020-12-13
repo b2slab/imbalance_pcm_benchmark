@@ -219,7 +219,7 @@ def creating_ratios_list(training_set, fold, f, group, table, sample_indices, un
         ratios_list.append(ratioss)
     return ratios_list
 
-def computing_random_baseline(ratios_df_completo, strategy, prot, fold):
+def computing_random_baseline(ratios_df_completo, strategy, prot, fold, protein_type):
     """Computing the random baseline to compare our results with for each strategy and each fold. It is computed from the
     actives/inactives ratio in training set in each case."""
     subdf = ratios_df_completo[(ratios_df_completo.strategy==strategy) & (ratios_df_completo.fold == fold)]
