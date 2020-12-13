@@ -41,7 +41,7 @@ The files are preceded by a number that indicates the chronological order of the
    - 01_training_model.ipynb
    - 02_computing_ratios.ipynb
    
-- **semi_resampling*
+- **semi_resampling**
    - 00_preparing_data.ipynb
    - 01_training_model.ipynb
    - 02_computing_ratios.ipynb
@@ -56,5 +56,5 @@ The runs have been executed on a machine from the B2SLab (Universitat Politecnic
 
 ## Considerations
 - The absPath variable at the beginning of each notebook and src file should be changed once the repository is cloned to the correct path in each case.
-- Execution without GPU of notebooks training_models notebooks may require considerable time and it is not recommended.
+- Execution without GPU of notebooks training_model notebooks may require considerable time and it is not recommended.
 
