@@ -19,7 +19,37 @@ The files are preceded by a number that indicates the chronological order of the
 
 ## Workflow (scripts)
 
-FALTA
+#### 1. Data pre-processing
+- 00_data_preprocessing.ipynb
+- 01_analysis_protein_families.ipynb
+- 02_extracting_protein_info.ipynb
+- 03_tuning_padding_type.ipynb
+
+#### 2. Strategies analysis
+- **no_resampling**
+   - 00_preparing_data.ipynb
+   - 01_training_model.ipynb
+   - 02_computing_ratios.ipynb
+
+- **resampling_after_clustering**
+   - 00_preparing_data.ipynb
+   - 01_training_model.ipynb
+   - 02_computing_ratios.ipynb
+   
+- **resampling_before_clustering**
+   - 00_preparing_data.ipynb
+   - 01_training_model.ipynb
+   - 02_computing_ratios.ipynb
+   
+- **semi_resampling*
+   - 00_preparing_data.ipynb
+   - 01_training_model.ipynb
+   - 02_computing_ratios.ipynb
+
+#### 3. Results processing
+- 04_joining_ratios_dfs.ipynb
+- 05_creating_random_baseline.ipynb
+
 
 ## System requirements
 The runs have been executed on a machine from the B2SLab (Universitat Politecnica de Catalunya) with 12 threads, 32GB RAM and 2x NVIDIA GeForce GTX 1070.
