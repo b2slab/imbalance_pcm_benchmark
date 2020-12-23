@@ -1,0 +1,1095 @@
+---
+title: "Putting performance into context"
+author: "Sergio Picart-Armada"
+date: "05/12/2020"
+output:
+  html_document:
+    toc: true
+    theme: united
+    toc_float: true
+    number_sections: true
+    highlight: textmate
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+options(knitr.kable.NA = '')
+```
+
+## Load files
+
+```{r}
+library(tidyverse)
+library(magrittr)
+library(corrplot)
+library(emmeans)
+
+df.raw <- read.csv("performances/ratios_df_rdm_baseline.csv")
+v.strategy <- levels(df.raw$strategy)
+df.raw.nobaseline <- subset(df.raw, is_baseline == "False")
+
+summary(df.raw)
+
+config <- new.env()
+source("config.R", local = config)
+```
+
+Data dimensions:
+
+```{r}
+dim(df.raw)
+```
+
+Column names:
+
+```{r}
+colnames(df.raw)
+```
+
+
+First rows:
+
+```{r}
+head(df.raw, 3)
+```
+
+Number of rows for each resampling scheme, separated by baseline or not:
+
+```{r}
+table(df.raw$strategy, df.raw$is_baseline)
+```
+
+NAs in training positives ratio?
+
+```{r}
+table(df.raw.nobaseline$strategy, is.na(df.raw.nobaseline$ratio_training))
+```
+
+```{r}
+table(df.raw.nobaseline$strategy, is.finite(df.raw.nobaseline$ratio_test))
+```
+
+Resampling after clustering has less proteins in all the folds?
+No, it happens the same way in all the folds:
+
+```{r}
+table(df.raw.nobaseline$strategy, df.raw.nobaseline$fold, df.raw.nobaseline$is_baseline)
+```
+
+Is it always the same proteins?
+
+```{r}
+# split(df.raw, df.raw$fold) %>%
+#   mapply(VennDiagram::venn.diagram, 
+#          x = split(.$Protein, .$strategy), 
+#          filename = paste0(head(.$fold, 1), "_venn.png"))
+```
+
+
+Test set: how often do we have proteins with a ratio of 0, or 1? 
+Does this explain why resampling after clustering has way less proteins?
+
+```{r}
+eps <- 1e-6
+table(df.raw.nobaseline$strategy, cut(df.raw.nobaseline$ratio_test, 
+                                      breaks = c(-eps, 0, 1-eps, Inf)))
+```
+
+Number of familites (should be only one):
+
+```{r}
+table(df.raw.nobaseline$family)
+```
+
+
+Summary of metrics by scheme:
+
+```{r}
+df.raw.nobaseline %>%
+  by(., .$strategy, function(x) summary(x[c("auroc", "f1")]))
+```
+
+### Sanity check - duplicated proteins
+
+Are the row numbers unique? Now they are:
+
+```{r}
+sum(duplicated(df.raw$X))
+```
+
+And in the non-baseline?
+
+```{r}
+sum(duplicated(df.raw.nobaseline$X))
+```
+
+
+Check that every protein ID appears at most once in every `strategy` and `fold`.
+
+```{r}
+df.raw.nobaseline %>%
+    group_by(strategy, fold) %>%
+    summarise(max_occurrences = max(table(DeepAffinity.Protein.ID)))
+```
+
+There are proteins occurring more than once in every strategy.
+Which ones?
+
+```{r}
+df.duplicated <- df.raw %>%
+    group_by(strategy, fold, is_baseline) %>%
+    mutate(is_dup = duplicated(DeepAffinity.Protein.ID)) %>%
+    filter(is_dup)
+df.duplicated
+```
+
+List of unique identifiers:
+
+```{r}
+prot.duplicated.id <- unique(df.duplicated$DeepAffinity.Protein.ID) %>% 
+  as.character
+prot.duplicated.id
+```
+
+
+Are those actually duplicates in all the rows? Apparently not, but the difference is far from obvious
+
+```{r}
+dim(df.raw.nobaseline)
+
+select(df.raw.nobaseline, -X) %>% unique %>% dim
+```
+
+All the affected rows:
+
+```{r}
+subset(df.raw, DeepAffinity.Protein.ID %in% prot.duplicated.id)
+```
+
+Decision: take out the second occurrence in each one
+
+```{r}
+df.clean <- df.raw %>%
+    group_by(strategy, fold, is_baseline) %>%
+    mutate(is_dup = duplicated(DeepAffinity.Protein.ID)) %>%
+    filter(!is_dup) %>%
+    ungroup %>%
+    mutate(fold = as.factor(fold), 
+           baseline = ifelse(is_baseline == "False", "DL model", "Random baseline"))
+```
+
+Sanity check: is the issue fixed now?
+
+```{r}
+df.clean %>%
+    group_by(strategy, fold, is_baseline) %>%
+    summarise(max_occurrences = max(table(DeepAffinity.Protein.ID))) %>%
+    extract2("max_occurrences") %>% 
+    all(. == 1L) %>%
+    stopifnot
+
+df.clean.nobaseline <- subset(df.clean, is_baseline == "False")
+df.clean.baseline <- subset(df.clean, is_baseline == "True")
+```
+
+Dimensions of final data
+
+```{r}
+dim(df.clean)
+```
+
+Competitive methods only:
+
+```{r}
+dim(df.clean.nobaseline)
+```
+
+Save clean table
+
+```{r}
+write.csv(df.clean, file = config$file.cleanperf)
+```
+
+
+# Boxplots with metrics overview
+
+### F1
+
+```{r}
+ggplot(df.clean, aes(x = strategy, y = f1, fill = strategy)) +
+    geom_boxplot() +
+    facet_wrap(~baseline) +
+    scale_fill_manual(values = config$col.strategy) +
+    theme(aspect.ratio = 1, legend.position = "none") +
+    config$gg_45
+```
+
+### AUC
+
+```{r}
+ggplot(df.clean, aes(x = strategy, y = auroc, fill = strategy)) +
+    geom_boxplot() +
+    facet_wrap(~baseline) +
+    scale_fill_manual(values = config$col.strategy) +
+    theme(aspect.ratio = 1, legend.position = "none") +
+    config$gg_45
+```
+
+# Description of data balance in the four strategies
+
+## Histograms - ratio distributions
+
+```{r, fig.width=8}
+tidyr::pivot_longer(
+  df.clean.nobaseline, c("ratio_training", "ratio_test"), 
+  values_to = "RatioValue", names_to = "RatioSet") %>%
+  ggplot(aes(x = RatioValue, fill = strategy)) +
+  geom_histogram() +
+  facet_grid(RatioSet~strategy) +
+  scale_fill_manual(values = config$col.strategy) +
+  theme(aspect.ratio = 1, legend.position = "none")
+```
+
+Trends:
+
+* `resampling_after_clustering` keeps balanced proteins.
+* `resampling_before_clustering` and `semi_resampling` lead to a more balanced train test, but not so much for the test set.
+* `no_resampling` keeps similar data imbalance in training and test.
+*  Tests sets with imbalance tend to create extremes in imbalance (all actives or all inactives), probably due to the combination of the clustering and the lower sample sizes in test.
+
+## Scatterplots - comparing training and test
+
+```{r, fig.width=6, fig.height=6}
+ggplot(df.clean.nobaseline, aes(x = ratio_training, y = ratio_test)) +
+  geom_point(size = .2, colour = "gray20") +
+  geom_smooth(
+    aes(colour = strategy), 
+    method = "glm", method.args = list(family = "quasibinomial")) +
+  scale_colour_manual(values = config$col.strategy) +
+  facet_wrap(~strategy) +
+  theme(aspect.ratio = 1, legend.position = "none")
+```
+
+Trends:
+
+
+* `no_resampling` keeps a positive relation between both, i.e. proteins tend to keep their balance in train and test.
+* `resampling_after_clustering` keeps balanced proteins.
+* `resampling_before_clustering` shows an inverse relationship instead -- this is expected since it starts from globally balanced proteins, and after the clustering, an imbalance in one direction in the training set entails an inverse imbalance in the test set.
+* `semi_resampling` leads to independent train and test balances, expected since the train set is resampled, breaking any correlation with the test set balance.
+
+## Other covariates
+
+### Number of interactions
+
+```{r, fig.width=6, fig.height=6}
+ggplot(df.clean.nobaseline, 
+       aes(x = log10(n_interactions), y = (.5 - ratio_test)**2, colour = strategy)) +
+  geom_point(size = .2, colour = "gray20") +
+  geom_smooth(
+    aes(colour = strategy), 
+    method = "glm", method.args = list(family = "quasibinomial")) +
+  scale_colour_manual(values = config$col.strategy) +
+  facet_wrap(~strategy) +
+  theme(aspect.ratio = 1, legend.position = "none")
+```
+
+Remarks:
+
+* Proteins with most imbalance (i.e. where `(.5 - ratio_test)**2` is greatest) tend to be among those with the least interactions.
+
+### Sequence length
+
+```{r, fig.width=6, fig.height=6}
+ggplot(df.clean.nobaseline, 
+       aes(x = log10(len_seq), y = (.5 - ratio_test)**2, colour = strategy)) +
+  geom_point(size = .2, colour = "gray20") +
+  geom_smooth(
+    aes(colour = strategy), 
+    method = "glm", method.args = list(family = "quasibinomial")) +
+  scale_colour_manual(values = config$col.strategy) +
+  facet_wrap(~strategy) +
+  theme(aspect.ratio = 1, legend.position = "none")
+```
+
+Remarks:
+
+* No obvious effect of `len_seq` on the protein imbalance.
+
+# Linear models on predicted proportions
+
+What drives the predicted proportion of actives?
+
+* Global imbalance?
+* Protein-wise imbalance?
+* (Compound-based imbalance?)
+
+
+
+## Histograms - predicted ratio distributions
+
+```{r, fig.width=8}
+ggplot(df.clean.nobaseline, aes(x = ratio_test_predicted, fill = strategy)) +
+  geom_histogram() +
+  facet_wrap(~strategy, nrow = 2, scales = "free_y") +
+  scale_fill_manual(values = config$col.strategy) +
+  theme(aspect.ratio = 1, legend.position = "none")
+```
+
+Now, adding to the histograms the predicted proportion in test allows for a general assessment: the distribution is most resemblant to that of the test proportions to that of the training ones (except `resampling_after_clustering`, since those proportions are constant).
+
+```{r, fig.width=8, fig.height=7}
+tidyr::pivot_longer(
+  df.clean.nobaseline, c("ratio_training", "ratio_test", "ratio_test_predicted"), 
+  values_to = "RatioValue", names_to = "RatioSet") %>%
+  ggplot(aes(x = RatioValue, fill = strategy)) +
+  geom_histogram() +
+  facet_grid(RatioSet~strategy, scales = "free_y") +
+  scale_fill_manual(values = config$col.strategy) +
+  theme(aspect.ratio = 1, legend.position = "none")
+```
+
+Flipping the facets displays how the predictions are most similar to the test proportions, but with more extreme values (especially positives):
+
+```{r, fig.width=8, fig.height=10}
+tidyr::pivot_longer(
+  df.clean.nobaseline, c("ratio_training", "ratio_test", "ratio_test_predicted"), 
+  values_to = "RatioValue", names_to = "RatioSet") %>%
+  ggplot(aes(x = RatioValue, fill = strategy)) +
+  geom_histogram() +
+  facet_grid(strategy~RatioSet, scales = "free_y") +
+  scale_fill_manual(values = config$col.strategy) +
+  theme(aspect.ratio = 1, legend.position = "none")
+```
+
+Trends:
+
+* `no_resampling` is noticeably biased to predict everything as positives.
+* `resampling_after_clustering` keeps a wide and symmetric distribution of predicted actives.
+* `resampling_before_clustering` and `semi_resampling` alleviate the imbalance in the predictions, but still retain a spike of proteins where all the compounds are predicted as positives.
+
+## Scatterplots - predicted proportions against training proportions
+
+```{r, fig.width=6, fig.height=6}
+ggplot(df.clean.nobaseline, 
+       aes(x = ratio_training, y = ratio_test_predicted, colour = strategy)) +
+  geom_point(size = .2, colour = "gray20") +
+  geom_smooth(
+    aes(colour = strategy), 
+    method = "glm", method.args = list(family = "quasibinomial")) +
+  scale_colour_manual(values = config$col.strategy) +
+  facet_wrap(~strategy) +
+  theme(aspect.ratio = 1, legend.position = "none")
+```
+
+
+Trends:
+
+* `no_resampling`: positive trend between the training and the predicted ratio, but since the training and the test ratio also correlate, the latter could be the one driving the predicted ratio of positives.
+* `resampling_after_clustering` has a contant training ratio, meaning that it cannot explain the predicted ratio.
+* `resampling_before_clustering` shows instead a negative relation between the training and the predicted ratio, but since the former and the test ratio also anticorrelate, the simplest explanation is that the test ratio drives the predicted test ratio.
+* `semi_resampling` shows independence between the predicted ratio and the training ratio.
+
+
+
+
+## Linear models
+
+### Use semi_resampling only 
+
+Due to the independence between training and test ratios, it is the perfect scenario to disentangle them.
+
+```{r}
+lm.prop.semi <- lm(
+  ratio_test_predicted ~ ratio_training + ratio_test + log10(n_interactions) + log10(len_seq) + fold, 
+  data = subset(df.clean.nobaseline, strategy == "semi_resampling")
+)
+
+summary(lm.prop.semi)
+```
+
+This suggests:
+
+* The **test_ratio is driving the predicted proportions**, rather than the training ratio.
+* A relevant factor is **n_interactions**: the more interactions, the less active proportion, suggesting that the **extreme cases with all predicted as actives tend to be proteins with few interactions**.
+
+### Use resampling_before_clustering only 
+
+Due to the negative correlation between training and test ratios, it is another reasonable explanatory model, but the negative correlation could get in the way (i.e. finding a negative correlation to the training proportion).
+
+```{r}
+lm.prop.before <- lm(
+  ratio_test_predicted ~ ratio_training + ratio_test + log10(n_interactions) + log10(len_seq) + fold, 
+  data = subset(df.clean.nobaseline, strategy == "resampling_before_clustering")
+)
+
+summary(lm.prop.before)
+```
+
+This **confirms both conclusions** from the model in the `semi_resampling` strategy, with similar estimates.
+
+### Use no_resampling only 
+
+This model suffers a positive correlation between training and test ratios, and can confound them.
+
+```{r}
+lm.prop.no <- lm(
+  ratio_test_predicted ~ ratio_training + ratio_test + log10(n_interactions) + log10(len_seq) + fold, 
+  data = subset(df.clean.nobaseline, strategy == "no_resampling")
+)
+
+summary(lm.prop.no)
+```
+
+Comments:
+
+* Both `training_ratio` and `test_ratio` show a positive correlation to the predicted fraction of actives. 
+* Although the estimate is larger and more significant for `training_ratio`, the confounding effect and the very skewed distribution of the predicted ratios deems this model inconclusive.
+
+
+
+
+# Linear models on performance
+
+Describing the performance as a function of:
+
+* The train/test positive proportion (especially for F1)
+* The resampling strategy
+* Performance in other resampling strategies
+* Other covariates (protein length, etc)
+
+
+Average all numeric variables by fold for plotting and modelling
+
+```{r}
+df.clean.foldavg <- group_by(df.clean, DeepAffinity.Protein.ID, strategy, baseline) %>%
+  dplyr::summarise_if(is.numeric, mean)
+```
+
+```{r}
+df.clean.foldavg.long <- tidyr::pivot_longer(
+  df.clean.foldavg, 
+  cols = config$v.metrics, 
+  names_to = "metric", 
+  values_to = "performance")
+```
+
+## Baselines only
+
+```{r}
+list.lm.formulae <- lapply(
+  setNames(config$v.metrics, config$v.metrics), 
+  # paste0, " ~ strategy + fold")
+  # paste0, " ~ strategy + log10(n_interactions) + log10(len_seq)")
+  paste0, " ~ strategy + log10(n_interactions) + log10(len_seq) + fold")
+
+list.lm.baseline <- lapply(list.lm.formulae, lm, data = df.clean.baseline)
+list.anova.baseline <- lapply(list.lm.baseline, car::Anova)
+
+df.anova.baseline <- plyr::ldply(list.anova.baseline, tibble::rownames_to_column, "variable", .id = "strategy")
+
+df.anova.baseline %>% subset(variable == "strategy")
+```
+
+Based on this, there are two metrics:
+
+* Those where the baseline is different between strategies: acc, f1 and balanced_acc. Here, the baseline performance needs to be accounted for, before comparing strategies.
+* Those where the baseline is constant: auroc, mcc. Here we will compare strategies directly.
+
+
+```{r, fig.width=10, fig.height=8}
+ggplot(subset(df.clean.foldavg.long, grepl("Random", baseline)), 
+       aes(x = strategy, y = performance, fill = strategy)) +
+    geom_boxplot() +
+    facet_wrap(~metric, scales = "free_y") +
+    ylab("Baseline performance") +
+    theme(legend.position = "bottom", aspect.ratio = 1, 
+          axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+## Study of imbalance-insensitive metrics
+
+### AUROC
+
+```{r}
+list.lm.strat <- lapply(list.lm.formulae, lm, data = df.clean.nobaseline)
+list.anova.strat <- lapply(list.lm.strat, car::Anova)
+
+df.anova.strat <- plyr::ldply(list.anova.strat, tibble::rownames_to_column, "variable", .id = "strategy")
+
+df.anova.strat %>% subset(variable == "strategy")
+```
+
+```{r, fig.width=10, fig.height=8}
+ggplot(subset(df.clean.foldavg.long, metric %in% c("auroc", "mcc")), 
+       aes(x = strategy, y = performance, fill = strategy, 
+           alpha = baseline, colour = baseline, position = baseline)) +
+    geom_boxplot() +
+    facet_wrap(~metric, scales = "free_y") +
+    scale_fill_discrete(guide = FALSE) +
+    scale_colour_manual(values = c("gray5", "gray50")) +
+    scale_alpha_manual(values = c(1, .5)) +
+    ylab("Performance") +
+    theme(legend.position = "right", aspect.ratio = 1, 
+          axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+```{r}
+lapply(list.lm.strat[c("auroc", "mcc")], summary)
+```
+
+EMMs for AUROC
+
+```{r}
+list.emm.strat <- lapply(
+  list.lm.strat, 
+  emmeans::emmeans, 
+  specs = c("strategy"), 
+  data = df.clean.nobaseline)
+
+ci <- .95
+emm.tab <- summary(list.emm.strat$auroc, type = "response", level = ci) 
+
+emm.tab
+```
+
+Testing for differences using Tukey's test.
+
+```{r}
+list.glht.strat <- lapply(
+  list.lm.strat, 
+  multcomp::glht, 
+  linfct = multcomp::mcp(strategy = "Tukey")
+)
+
+confint.auc <- summary(list.glht.strat$auroc)
+confint.auc
+```
+
+```{r}
+color_cor <- colorRampPalette(colors = c("#EB6767", "white", "#6797EB"))(100)
+
+cols <- names(mod_confint$test$coefficients) %>% 
+  strsplit(split = " - ") %>% plyr::ldply(
+  function(x) c(row = x[1], col = x[2])
+) 
+cols$row <- factor(cols$row, v.strategy)
+cols$col <- factor(cols$col, v.strategy)
+cols$estimate <- mod_confint$test$coefficients 
+cols$pvalue <- mod_confint$test$pvalues
+
+e.cor <- reshape2::acast(cols, row~col, value.var = "estimate", fill = 0)
+p.cor <- reshape2::acast(cols, row~col, value.var = "pvalue", fill = 0)
+
+corrplot::corrplot(
+  corr = e.cor, method = "color", type = "lower", number.digits = 3, 
+  addCoef.col = "black", tl.cex = 1, tl.col = "gray10",
+  number.cex = .8, number.font = .8, col = color_cor, 
+  p.mat = p.cor, diag = TRUE, is.corr = FALSE)
+
+```
+
+```{r}
+summary(list.glht.strat$mcc)
+```
+
+Summary:
+
+* AUROC: `after` = `before` > `semi` = `no`
+* MCC: `after` > `before` > `semi` > `no`
+
+## Study of balance-sensitive metrics
+
+For those, the increment of performance with respect to the corresponding baseline was computed.
+
+```{r}
+# arrange by is_baseline (1st False, 2nd True)
+# then group by, make sure there are 2 unique elements (True-False)
+# and subtract the last value
+df.clean.diff <- arrange(df.clean, is_baseline) %>%
+  group_by(DeepAffinity.Protein.ID, strategy, fold) %>%
+  add_count(name = "n_rows") %>%
+  filter(n_rows == 2) %>%
+  mutate_at(config$v.metrics, function(x) x - x[2]) %>%
+  ungroup
+
+# double check that all the metrics in the baseline 
+# are either NA or 0
+subset(df.clean.diff, is_baseline == "True") %>%
+  extract(config$v.metrics) %>% 
+  unlist %>%
+  na.omit %>%
+  magrittr::equals(0) %>%
+  all %>%
+  stopifnot
+
+df.clean.diff.nobaseline <- subset(df.clean.diff, is_baseline == "False")
+```
+
+Long versions
+
+```{r}
+df.clean.diff.nobaseline.foldavg <- group_by(
+  df.clean.diff.nobaseline, DeepAffinity.Protein.ID, strategy) %>%
+  dplyr::summarise_if(is.numeric, mean)
+```
+
+```{r}
+df.clean.diff.nobaseline.foldavg.long <- tidyr::pivot_longer(
+  df.clean.diff.nobaseline.foldavg, 
+  cols = config$v.metrics, 
+  names_to = "metric", 
+  values_to = "performance")
+```
+
+### Global plots
+
+```{r, fig.width=10, fig.height=8}
+ggplot(df.clean.diff.nobaseline.foldavg.long, 
+       aes(x = strategy, y = performance, fill = strategy)) +
+    geom_hline(yintercept = 0, lty = 2) +
+    geom_boxplot() +
+    facet_wrap(~metric, scales = "free_y") +
+    ylab("Baseline performance") +
+    theme(legend.position = "bottom", aspect.ratio = 1, 
+          axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+### Performance models
+
+```{r}
+list.lm.strat.diff <- lapply(list.lm.formulae, lm, data = df.clean.diff.nobaseline)
+list.anova.strat.diff <- lapply(list.lm.strat.diff, car::Anova)
+
+df.anova.strat.diff <- plyr::ldply(list.anova.strat.diff, tibble::rownames_to_column, "variable", .id = "strategy")
+
+df.anova.strat.diff %>% subset(variable == "strategy")
+```
+
+
+EMMs
+
+```{r}
+list.emm.strat.diff <- lapply(
+  list.lm.strat.diff, 
+  emmeans::emmeans, 
+  specs = c("strategy"), 
+  data = df.clean.nobaseline)
+
+ci <- .95
+emm.tab.diff <- summary(list.emm.strat.diff$f1, type = "response", level = ci) 
+
+emm.tab.diff
+```
+
+Testing for differences using Tukey's test.
+
+```{r}
+list.glht.strat.diff <- lapply(
+  list.lm.strat.diff, 
+  multcomp::glht, 
+  linfct = multcomp::mcp(strategy = "Tukey")
+)
+```
+
+```{r}
+lapply(list.glht.strat.diff, summary)
+```
+
+```{r}
+list.lm.strat.diff$acc
+
+
+df.metrics <- plyr::ldply(list.emm.strat.diff, summary, .id = "metric") %>%
+  # ungroup %>%
+  group_by(metric) %>%
+  mutate(z = scale(emmean), 
+         rescaled = emmean/max(emmean), 
+         rank = rank(-emmean), 
+         label = paste0(rank, " (", round(emmean, 3), ")"))
+  
+df.metrics
+```
+
+```{r, fig.width=7, fig.height=6}
+ggplot(df.metrics, aes(x = metric, y = strategy, fill = rescaled, label = label)) + 
+  geom_tile(color = "white") + 
+  geom_text(size = 2.75) + 
+  # scale_fill_gradient2(mid = "white", high = "mediumpurple1") + 
+  scale_fill_distiller(palette = "Spectral", direction = -1, name = "Performance rescaled\nby column maximum") +
+  theme_bw() + 
+  coord_fixed() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1), 
+        legend.position = "right") + 
+  xlab("Performance metric") + 
+  ylab("Method") + 
+  ggtitle("Method ranking by predicted performance, averaging folds.", 
+          subtitle = "Lower ranks are better. Predictions in brackets.")
+```
+
+
+# Old linear models
+
+## Resampling only
+
+### F1
+
+Baselines excluded (does not make sense to put them without an interaction term)
+
+```{r}
+lm.f1.strategy <- lm(f1 ~ strategy + fold, data = df.clean.nobaseline)
+summary(lm.f1.strategy)
+```
+
+Baselines included 
+
+```{r}
+lm.f1.strategy.withbase <- lm(f1 ~ strategy*is_baseline + fold, data = df.clean)
+summary(lm.f1.strategy.withbase)
+```
+
+Baselines only
+
+```{r}
+lm.f1.baselines <- lm(f1 ~ strategy + fold, data = subset(df.clean, is_baseline == "True"))
+summary(lm.f1.baselines)
+```
+
+### AUROC
+
+```{r}
+lm.auroc.strategy <- lm(auroc ~ strategy + fold, data = df.clean.nobaseline)
+summary(lm.auroc.strategy)
+```
+
+```{r}
+lm.auroc.strategy.withbase <- lm(auroc ~ strategy*is_baseline + fold, data = df.clean)
+summary(lm.auroc.strategy.withbase)
+```
+
+Baselines only
+
+```{r}
+lm.auroc.baselines <- lm(auroc ~ strategy + fold, data = subset(df.clean, is_baseline == "True"))
+summary(lm.auroc.baselines)
+```
+
+## Resampling only (paired)
+
+### F1
+
+The estimates for method (and their significance) are very similar
+
+```{r}
+lm.f1.strategy.paired <- lm(f1 ~ strategy + fold + DeepAffinity.Protein.ID, 
+                            data = df.clean.nobaseline)
+# summary(lm.f1.strategy.paired)
+```
+
+### AUROC
+
+The estimates for method (and their significance) are very similar
+
+```{r}
+lm.auroc.strategy.paired <- lm(auroc ~ strategy + DeepAffinity.Protein.ID, data = df.clean.nobaseline)
+# summary(lm.auroc.strategy.paired)
+```
+
+### Conclusions
+
+Compared to no resampling...
+
+* F1: resampling before clustering is better (unpaired, paired).
+* AUROC: resampling after clustering is better (unpaired), resampling after and before clustering are both better (paired).
+
+But, of course, this ignores covariates that bias the metric (especially F1), like the ratio of positives in test.
+
+## Resampling and covariates
+
+### F1
+
+What other covariates explain the performance, besides `strategy`?
+
+```{r}
+lm.f1.add <- lm(f1 ~ log10(len_seq) + log10(n_interactions) + ratio_training + ratio_test + strategy + fold, data = df.clean.nobaseline)
+```
+
+```{r}
+summary(lm.f1.add)
+```
+
+But this is not totally right... one should only include objective measures (i.e. non dependant on the balancing strategy), since those are artifically modified by the changes in the sampling.
+
+```{r}
+anova(lm.f1.add)
+```
+
+What does this model suggest?
+
+* Proteins with more interactions are better predicted. More data availability, more prediction power. But is it because those also tend to have a higher proportion of positives?
+* Higher active ratios in train, and especially in test, yield better F1 scores. This makes sense, since the imbalance in favour of positives will entail a higher F1 score by default. 
+* Resampling strategies seem to help, as long as they are carried out after the clustering. This means that one must enforce the balancing, since even if the underlying data are balanced, the clustering will imbalance it again, and the ratio of positives will anticorrelate in train and test (since they must be globally balanced).
+
+### Correlogram of covariates
+
+```{r}
+mat.cov <- df.clean.nobaseline %>%
+  mutate(log10_len_seq = log10(len_seq), 
+         log10_n_interactions = log10(n_interactions)) %>%
+  extract(c("log10_len_seq", "log10_n_interactions", "ratio_training", "ratio_test")) 
+  
+```
+
+```{r}
+cor.cov <- cor(mat.cov, method = "pearson", use = "pairwise.complete.obs")
+fdr.cov <- corrplot::cor.mtest(mat.cov, method = "pearson")$p %>% 
+  p.adjust(method = "fdr") %>% 
+  matrix(nrow = nrow(cor.cov))
+
+cor.cov
+fdr.cov
+```
+
+
+```{r}
+sig.level <- .05
+color_cor <- colorRampPalette(colors = c("#EB6767", "white", "#6797EB"))(100)
+corrplot::corrplot(
+    corr = cor.cov, method = "color", type = "lower", 
+    addCoef.col = "black", tl.cex = 1, tl.col = "gray10",
+    cl.lim = c(-1, 1), 
+    number.cex = .8, number.font = 1, col = color_cor, 
+    sig.level = sig.level,
+    p.mat = fdr.cov, diag = TRUE, is.corr = FALSE)
+```
+
+### Correlogram of F1 scores
+
+```{r}
+summary(dplyr::select(df.clean.nobaseline, DeepAffinity.Protein.ID, strategy, f1))
+```
+
+
+
+```{r}
+# df.wide.f1 <- dplyr::select(df.clean, DeepAffinity.Protein.ID, strategy, f1) %>%
+
+df.wide.f1 <- dplyr::group_by(df.clean.nobaseline, DeepAffinity.Protein.ID, strategy) %>%
+  dplyr::summarise(f1_mean_folds = mean(f1)) %>%
+    tidyr::pivot_wider(
+        id_cols = "DeepAffinity.Protein.ID",
+        names_from = "strategy", values_from = "f1_mean_folds") %>%
+  ungroup
+```
+
+```{r}
+mat.f1 <- dplyr::select(df.wide.f1, -DeepAffinity.Protein.ID) 
+cor.p <- cor(mat.f1, method = "pearson", use = "pairwise.complete.obs")
+fdr.p <- corrplot::cor.mtest(mat.f1, method = "pearson")$p %>% 
+  p.adjust(method = "fdr") %>% 
+  matrix(nrow = nrow(cor.p))
+
+cor.p
+fdr.p
+```
+
+```{r}
+corrplot::corrplot(
+  cor.p, 
+  p.mat = fdr.p, type = "lower", sig.level = .05, 
+  method = "ellipse", tl.col = "black")
+```
+
+```{r}
+sig.level <- .05
+color_cor <- colorRampPalette(colors = c("#EB6767", "white", "#6797EB"))(100)
+corrplot::corrplot(
+    corr = cor.p, method = "color", type = "lower", 
+    addCoef.col = "black", tl.cex = 1, tl.col = "gray10",
+    cl.lim = c(0, 1), 
+    number.cex = .8, number.font = 1, col = color_cor, 
+    sig.level = sig.level,
+    p.mat = fdr.p, diag = TRUE, is.corr = FALSE)
+```
+
+We observe that:
+
+* All correlations are significant at FDR < `r sig.level`.
+* All lie in the range 0.15-0.30, except for one close to 0.8: semi and resampled after clustering.
+* The latter pair is the only sharing the same training set, which provides the simplest hypothesis for differences in performance: largest differences arise from changing the training set - even larger than those from changing the test set.
+
+### Resampling and covariates, AUROC
+
+```{r}
+lm.auroc.add <- lm(auroc ~ log10(len_seq) + log10(n_interactions) + ratio_training + ratio_test + strategy + fold, data = df.clean.nobaseline)
+```
+
+```{r}
+summary(lm.auroc.add)
+```
+
+
+```{r}
+anova(lm.auroc.add)
+```
+
+
+### F1
+
+
+
+```{r}
+lm.f1.avg <- lm(f1 ~ log10(len_seq) + log10(n_interactions) + ratio_training + ratio_test + strategy, data = subset(df.clean.foldavg, baseline == "DL model"))
+summary(lm.f1.avg)
+```
+
+Diagnostic plots
+
+```{r}
+plot(lm.f1.avg, ask = FALSE)
+```
+
+What about a binomial model?
+
+```{r}
+glm.f1.avg <- glm(f1 ~ log10(len_seq) + log10(n_interactions) + ratio_training + ratio_test + strategy, family = quasibinomial(), data = subset(df.clean.foldavg, baseline == "DL model"))
+summary(glm.f1.avg)
+```
+
+```{r}
+plot(glm.f1.avg, ask = FALSE)
+```
+
+
+
+```{r, fig.width=8}
+ggplot(df.clean.foldavg, aes(x = log10(n_interactions), y = f1, colour = strategy)) +
+    geom_point(size = .5) +
+    geom_smooth() +
+    facet_wrap(~baseline) +
+    theme(aspect.ratio = 1)
+```
+
+```{r, fig.width=8}
+ggplot(df.clean.foldavg, aes(x = log10(n_interactions), y = f1, colour = strategy)) +
+    geom_smooth(aes(lty = baseline)) +
+    facet_wrap(~strategy) +
+    theme(aspect.ratio = 1)
+```
+
+```{r, fig.width=8}
+ggplot(df.clean.foldavg, aes(x = ratio_training, y = f1, colour = strategy)) +
+    geom_smooth(aes(lty = baseline)) +
+    facet_wrap(~strategy) +
+    theme(aspect.ratio = 1)
+```
+
+```{r, fig.width=8}
+ggplot(df.clean.foldavg, aes(x = ratio_test, y = f1, colour = strategy)) +
+    facet_wrap(~baseline) +
+    geom_point(size = .5) +
+    theme(aspect.ratio = 1)
+```
+
+```{r, fig.width=8}
+ggplot(df.clean.foldavg, aes(x = ratio_test, y = f1, colour = strategy)) +
+    geom_smooth(aes(lty = baseline)) +
+    facet_wrap(~strategy) +
+    theme(aspect.ratio = 1)
+```
+
+
+```{r, fig.width=8}
+ggplot(df.clean.foldavg, aes(x = ratio_training, y = f1, colour = strategy)) +
+    facet_wrap(~baseline) +
+    geom_point(size = .5) +
+    theme(aspect.ratio = 1)
+```
+
+### AUROC
+
+```{r}
+ggplot(df.clean.foldavg, aes(x = log10(n_interactions), y = auroc, colour = strategy)) +
+    facet_wrap(~baseline) +
+    geom_point(size = .5) +
+    theme(aspect.ratio = 1)
+```
+
+```{r}
+ggplot(df.clean.foldavg, aes(x = ratio_test, y = auroc, colour = strategy)) +
+    facet_wrap(~baseline) +
+    geom_point(size = .5) +
+    theme(aspect.ratio = 1)
+```
+
+### All the metrics
+
+
+
+```{r, fig.width=10, fig.height=8}
+ggplot(df.clean.foldavg.long, aes(x = strategy, y = performance, fill = baseline)) +
+    geom_boxplot() +
+    # scale_fill_discrete(palette = "Set1") +
+    facet_wrap(~metric, scales = "free_y") +
+    theme(legend.position = "bottom", aspect.ratio = 1, 
+          axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+```{r, fig.width=12, fig.height=8}
+ggplot(df.clean.foldavg.long, aes(x = log10(n_interactions), y = performance, colour = strategy)) +
+  geom_hline(yintercept = 0, lty = 2) +
+  geom_hline(yintercept = .5, lty = 3) +
+  geom_hline(yintercept = 1, lty = 2) +
+  geom_point(size = .5) +
+  geom_smooth() +
+  facet_grid(baseline~metric, scales = "free_y") +
+  theme(legend.position = "bottom", aspect.ratio = 1)
+```
+
+```{r, fig.width=12, fig.height=8}
+ggplot(df.clean.foldavg.long, aes(x = ratio_training, y = performance, colour = strategy)) +
+  geom_hline(yintercept = 0, lty = 2) +
+  geom_hline(yintercept = .5, lty = 3) +
+  geom_hline(yintercept = 1, lty = 2) +
+  geom_point(size = .5) +
+  geom_smooth() +
+  facet_grid(baseline~metric, scales = "free_y") +
+  theme(legend.position = "bottom", aspect.ratio = 1)
+```
+
+```{r, fig.width=12, fig.height=8}
+ggplot(df.clean.foldavg.long, aes(x = ratio_test, y = performance, colour = strategy)) +
+  geom_hline(yintercept = 0, lty = 2) +
+  geom_hline(yintercept = .5, lty = 3) +
+  geom_hline(yintercept = 1, lty = 2) +
+  geom_point(size = .5) +
+  geom_smooth() +
+  facet_grid(baseline~metric, scales = "free_y") +
+  theme(legend.position = "bottom", aspect.ratio = 1)
+```
+
+## Baseline-adjusted, covariate-aware models
+
+### F1
+
+```{r}
+lm.f1.avg.cov <- lm(f1 ~ log10(len_seq) + log10(n_interactions) + ratio_training + ratio_test + strategy*baseline, data = df.clean.foldavg)
+summary(lm.f1.avg.cov)
+```
+
+### AUROC
+
+```{r}
+lm.auroc.avg.cov <- lm(auroc ~ log10(len_seq) + log10(n_interactions) + ratio_training + ratio_test + strategy*baseline, data = df.clean.foldavg)
+summary(lm.auroc.avg.cov)
+```
+
+
+
+# Reproducibility
+
+```{r}
+sessionInfo()
+```
+

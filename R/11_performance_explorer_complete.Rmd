@@ -1,0 +1,407 @@
+---
+title: "Putting performance into context"
+author: "Sergio Picart-Armada"
+date: "21/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+```
+
+## Load files
+
+```{r}
+library(tidyverse)
+library(magrittr)
+library(corrplot)
+
+df.raw <- read.csv("performances/ratios_df_complete.csv")
+
+summary(df.raw)
+
+gg_45 <- theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+
+theme_set(theme_bw())
+```
+
+Data dimensions:
+
+```{r}
+dim(df.raw)
+```
+
+Column names:
+
+```{r}
+colnames(df.raw)
+```
+
+
+First rows:
+
+```{r}
+head(df.raw, 3)
+```
+
+Number of rows for each resampling scheme:
+
+```{r}
+table(df.raw$strategy)
+```
+
+
+```{r}
+table(df.raw$strategy, is.na(df.raw$ratio_training))
+```
+
+```{r}
+table(df.raw$strategy, is.finite(df.raw$ratio_test))
+```
+
+Resampling after clustering has less proteins in all the folds?
+No, it happens the same way in all the folds:
+
+```{r}
+table(df.raw$strategy, df.raw$fold)
+```
+
+Is it always the same proteins?
+
+```{r}
+split(df.raw, df.raw$fold) %>%
+  mapply(VennDiagram::venn.diagram, 
+         x = split(.$Protein, .$strategy), 
+         filename = paste0(head(.$fold, 1), "_venn.png"))
+```
+
+
+Test set: how often do we have proteins with a ratio of 0, or 1? 
+Does this explain why resampling after clustering has way less proteins?
+
+```{r}
+eps <- 1e-6
+table(df.raw$strategy, cut(df.raw$ratio_test, breaks = c(-eps, 0, 1-eps, Inf)))
+```
+
+Number of familites (should be only one):
+
+```{r}
+table(df.raw$family)
+```
+
+
+Summary of metrics by scheme:
+
+```{r}
+by(df.raw, df.raw$strategy, function(x) summary(x[c("auroc", "f1")]))
+```
+
+### Sanity check - duplicated proteins
+
+Are the row numbers unique? No:
+
+```{r}
+sum(duplicated(df.raw$X))
+```
+
+
+Check that every protein ID appears at most once in every `strategy` and `fold`.
+
+```{r}
+df.raw %>%
+    group_by(strategy, fold) %>%
+    summarise(max_occurrences = max(table(DeepAffinity.Protein.ID)))
+```
+
+There are proteins occurring more than once in every strategy.
+Which ones?
+
+```{r}
+df.duplicated <- df.raw %>%
+    group_by(strategy, fold) %>%
+    mutate(is_dup = duplicated(DeepAffinity.Protein.ID)) %>%
+    filter(is_dup)
+df.duplicated
+```
+
+List of unique identifiers:
+
+```{r}
+prot.duplicated.id <- unique(df.duplicated$DeepAffinity.Protein.ID) %>% 
+  as.character
+prot.duplicated.id
+```
+
+
+Are those actually duplicates in all the rows? Apparently not, but the difference is far from obvious
+
+```{r}
+dim(df.raw)
+
+select(df.raw, -X) %>% unique %>% dim
+```
+
+All the affected rows:
+
+```{r}
+subset(df.raw, DeepAffinity.Protein.ID %in% prot.duplicated.id)
+```
+
+Decision: take out the second occurrence in each one
+
+```{r}
+df.clean <- filter(df.raw, !(X %in% df.duplicated$X)) %>%
+    mutate(fold = as.factor(fold))
+```
+
+Sanity check: is the issue fixed now?
+
+```{r}
+df.clean %>%
+    group_by(strategy, fold) %>%
+    summarise(max_occurrences = max(table(DeepAffinity.Protein.ID))) %>%
+    extract2("max_occurrences") %>% 
+    all(. == 1L) %>%
+    stopifnot
+```
+
+
+## Boxplots with metrics overview
+
+### F1
+
+```{r}
+ggplot(df.clean, aes(x = strategy, y = f1)) +
+    geom_boxplot() +
+    theme(aspect.ratio = 1) +
+    gg_45
+```
+
+### AUC
+
+```{r}
+ggplot(df.clean, aes(x = strategy, y = auroc)) +
+    geom_boxplot() +
+    theme(aspect.ratio = 1) +
+    gg_45
+```
+
+# Linear models
+
+Describing the performance as a function of:
+
+* The train/test positive proportion (especially for F1)
+* The resampling strategy
+* Performance in other resampling strategies
+* Other covariates (protein length, etc)
+
+## Resampling only
+
+### F1
+
+```{r}
+lm.f1.strategy <- lm(f1 ~ strategy + fold, data = df.clean)
+summary(lm.f1.strategy)
+```
+
+### AUROC
+
+```{r}
+lm.auroc.strategy <- lm(auroc ~ strategy + fold, data = df.clean)
+summary(lm.auroc.strategy)
+```
+
+## Resampling only (paired)
+
+### F1
+
+The estimates for method (and their significance) are very similar
+
+```{r}
+lm.f1.strategy.paired <- lm(f1 ~ strategy + fold + DeepAffinity.Protein.ID, 
+                            data = df.clean)
+summary(lm.f1.strategy.paired)
+```
+
+### AUROC
+
+The estimates for method (and their significance) are very similar
+
+```{r}
+lm.auroc.strategy.paired <- lm(auroc ~ strategy + DeepAffinity.Protein.ID, data = df.clean)
+summary(lm.auroc.strategy.paired)
+```
+
+### Conclusions
+
+Compared to no resampling...
+
+* F1: resampling before clustering is better (unpaired, paired).
+* AUROC: resampling after clustering is better (unpaired), resampling after and before clustering are both better (paired).
+
+But, of course, this ignores covariates that bias the metric (especially F1), like the ratio of positives in test.
+
+## Resampling and covariates
+
+### F1
+
+What other covariates explain the performance, besides `strategy`?
+
+```{r}
+lm.f1.add <- lm(f1 ~ log10(len_seq) + log10(n_interactions) + ratio_training + ratio_test + strategy + fold, data = df.clean)
+```
+
+```{r}
+summary(lm.f1.add)
+```
+
+But this is not totally right... one should only include objective measures (i.e. non dependant on the balancing strategy), since those are artifically modified by the changes in the sampling.
+
+```{r}
+anova(lm.f1.add)
+```
+
+What does this model suggest?
+
+* Proteins with more interactions are better predicted. More data availability, more prediction power. But is it because those also tend to have a higher proportion of positives?
+* Higher active ratios in train, and especially in test, yield better F1 scores. This makes sense, since the imbalance in favour of positives will entail a higher F1 score by default. 
+* Resampling strategies seem to help, as long as they are carried out after the clustering. This means that one must enforce the balancing, since even if the underlying data are balanced, the clustering will imbalance it again, and the ratio of positives will anticorrelate in train and test (since they must be globally balanced).
+
+### Correlogram of F1 scores
+
+```{r}
+summary(dplyr::select(df.clean, DeepAffinity.Protein.ID, strategy, f1))
+```
+
+
+
+```{r}
+# df.wide.f1 <- dplyr::select(df.clean, DeepAffinity.Protein.ID, strategy, f1) %>%
+
+df.wide.f1 <- dplyr::group_by(df.clean, DeepAffinity.Protein.ID, strategy) %>%
+  dplyr::summarise(f1_mean_folds = mean(f1)) %>%
+    tidyr::pivot_wider(
+        id_cols = "DeepAffinity.Protein.ID",
+        names_from = "strategy", values_from = "f1_mean_folds") %>%
+  ungroup
+```
+
+```{r}
+mat.f1 <- dplyr::select(df.wide.f1, -DeepAffinity.Protein.ID) 
+cor.p <- cor(mat.f1, method = "pearson", use = "pairwise.complete.obs")
+fdr.p <- corrplot::cor.mtest(mat.f1, method = "pearson")$p %>% 
+  p.adjust(method = "fdr") %>% 
+  matrix(nrow = nrow(cor.p))
+
+cor.p
+fdr.p
+```
+
+```{r}
+corrplot::corrplot(
+  cor.p, 
+  p.mat = fdr.p, type = "lower", sig.level = .05, 
+  method = "ellipse", tl.col = "black")
+```
+
+```{r}
+sig.level <- .05
+color_cor <- colorRampPalette(colors = c("#EB6767", "white", "#6797EB"))(100)
+corrplot::corrplot(
+    corr = cor.p, method = "color", type = "lower", 
+    addCoef.col = "black", tl.cex = 1, tl.col = "gray10",
+    cl.lim = c(0, 1), 
+    number.cex = .8, number.font = 1, col = color_cor, 
+    sig.level = sig.level,
+    p.mat = fdr.p, diag = TRUE, is.corr = FALSE)
+```
+
+We observe that:
+
+* All correlations are significant at FDR < `r sig.level`.
+* All lie in the range 0.15-0.30, except for one close to 0.8: semi and resampled after clustering.
+* The latter pair is the only sharing the same training set, which provides the simplest hypothesis for differences in performance: largest differences arise from changing the training set - even larger than those from changing the test set.
+
+### Resampling and covariates, AUROC
+
+```{r}
+lm.auroc.add <- lm(auroc ~ log10(len_seq) + log10(n_interactions) + ratio_training + ratio_test + strategy + fold, data = df.clean)
+```
+
+```{r}
+summary(lm.auroc.add)
+```
+
+### F1
+
+Average all numeric variables by fold for plotting
+
+```{r}
+df.clean.foldavg <- group_by(df.clean, DeepAffinity.Protein.ID, strategy) %>%
+  dplyr::summarise_if(is.numeric, mean)
+```
+
+
+```{r}
+ggplot(df.clean.foldavg, aes(x = log10(n_interactions), y = f1, colour = strategy)) +
+    geom_point() +
+    geom_smooth()
+```
+
+```{r}
+ggplot(df.clean.foldavg, aes(x = ratio_test, y = f1, colour = strategy)) +
+    geom_point() 
+```
+
+```{r}
+ggplot(df.clean.foldavg, aes(x = ratio_training, y = f1, colour = strategy)) +
+    geom_point() 
+```
+
+### AUROC
+
+```{r}
+ggplot(df.clean.foldavg, aes(x = log10(n_interactions), y = auroc, colour = strategy)) +
+    geom_point() +
+    geom_smooth()
+```
+
+```{r}
+ggplot(df.clean.foldavg, aes(x = ratio_test, y = auroc, colour = strategy)) +
+    geom_point() 
+```
+
+### All the metrics
+
+```{r}
+df.clean.foldavg.long <- tidyr::pivot_longer(
+  df.clean.foldavg, 
+  cols = c("acc", "auroc", "f1", "balanced_acc", "mcc"), 
+  names_to = "metric", 
+  values_to = "performance")
+```
+
+```{r, fig.width=10, fig.height=8}
+ggplot(df.clean.foldavg.long, aes(x = strategy, y = performance, fill = strategy)) +
+    geom_boxplot() +
+  facet_wrap(~metric, scales = "free_y") +
+  theme(legend.position = "bottom", aspect.ratio = 1)
+```
+
+```{r, fig.width=10, fig.height=8}
+ggplot(df.clean.foldavg.long, aes(x = ratio_training, y = performance, colour = strategy)) +
+    geom_point(size = .5) +
+  geom_smooth() +
+  facet_wrap(~metric, scales = "free_y") +
+  theme(legend.position = "bottom", aspect.ratio = 1)
+```
+
+```{r, fig.width=10, fig.height=8}
+ggplot(df.clean.foldavg.long, aes(x = ratio_test, y = performance, colour = strategy)) +
+    geom_point(size = .5) +
+  geom_smooth() +
+  facet_wrap(~metric, scales = "free_y") +
+  theme(legend.position = "bottom", aspect.ratio = 1)
+```
+

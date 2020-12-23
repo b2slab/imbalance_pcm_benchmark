@@ -1,0 +1,345 @@
+---
+title: "Supplement 2: model predictions and performance"
+author: 
+  - "Angela Lopez-del Rio"
+  - "Sergio Picart-Armada"
+  - "Alexandre Perera-Lluna"
+date: "05/12/2020"
+output: bookdown::pdf_document2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+
+
+```{r}
+library(tidyverse)
+library(magrittr)
+library(corrplot)
+
+library(stargazer)
+# library(xtable)
+library(kableExtra)
+
+config <- new.env()
+source("config.R", local = config)
+
+df.clean <- read.csv(config$file.cleanperf) %>%
+  dplyr::mutate(fold.label = paste0("Fold ", fold), 
+                strategy = factor(strategy, levels = config$v.strategy))
+df.clean.nobaseline <- subset(df.clean, is_baseline == "False")
+
+v.strategy <- intersect(config$v.strategy, unique(df.clean$strategy))
+v.metrics <- intersect(config$v.metrics, names(df.clean))
+
+ggplot2::theme_set(config$gg_theme)
+```
+
+# Overview
+
+This supplement describes the behaviour of the proteochemometrics (PCM) deep learning model to predict protein-compound bioactivity. 
+Specifically, this includes the descriptive statistics of data imbalance: the proportion of actives per protein in the training and test sets during the model fitting and the predicted proportion of actives.
+The model performance per protein was also described, pinpointing the most influential factors and characterising the proteins with the most extreme performances.
+
+Four strategies (`r v.strategy`) were considered.
+For each of those, `r length(unique(df.clean$fold))` folds of repeated holdout were run, and `r length(v.metrics)` performance metrics were computed: `r v.metrics`.
+This led to a total of `r nrow(df.clean.nobaseline)` values of performance.
+Since some strategies involved the upsampling method SMOTE, proteins whose sample sizes did not allow upsampling were excluded (table \@ref(tab:nprot-fold-strat)).
+
+```{r, results='asis'}
+table(df.clean.nobaseline$strategy, df.clean.nobaseline$fold.label) %>%
+  as.data.frame.matrix() %>%
+  tibble::rownames_to_column("Strategy") %>%
+  knitr::kable(format = "latex", 
+               caption = "Number of proteins for which performance metrics were computed. The resampling after clustering was the most stringent strategy regarding eligible proteins, since the resampling was carried out after the clustering, which introduced more imbalance.", 
+               booktabs = TRUE, label = "nprot-fold-strat") %>%
+    kableExtra::kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+
+# Description of data balance 
+
+The data balancing strategy had an impact on the actual data balance, defined as the proportion of active molecules for a protein.
+Furthermore, specific trends were observed in the original data in the training and test sets, as well as in the values predicted by the deep learning model.
+
+## Distributions of the actives ratio
+
+The histograms in figure \@ref(fig:ratio-histograms-original) revealed trends: 
+
+* `no_resampling` keeps similar data imbalance in training and test.
+* `resampling_before_clustering` and `semi_resampling` lead to a more balanced training set, but not so much for the test set.
+* `resampling_after_clustering` kept balanced proteins in both training and test sets.
+
+In addition, test sets with imbalance tended to magnify it and create extreme cases (all actives or all inactives), probably due to the combination of the clustering and the lower sample sizes in the test sets compared to training.
+
+
+```{r ratio-histograms-original, fig.width=8, fig.cap='Distributios of the actives ratio in the training set and in the test set (both original and predicted by the deep learning model).'}
+tidyr::pivot_longer(
+  df.clean.nobaseline, c("ratio_training", "ratio_test"), 
+  values_to = "Ratio", names_to = "RatioSet") %>%
+  ggplot(aes(x = Ratio, fill = strategy)) +
+  geom_histogram() +
+  facet_grid(RatioSet~strategy) +
+  scale_fill_manual(values = config$col.strategy) +
+  xlab("Actives ratio") +
+  ylab("Count") +
+  theme(aspect.ratio = 1, legend.position = "none")
+```
+
+## Comparing training and test imbalance
+
+Figure \@ref(fig:ratio-scatter-original) revealed both positive, negative and null trends between the training and test set protein balances.
+
+* `no_resampling` showed a positive relation between both, i.e. proteins were prone to keep their (im)balance in train and test.
+* `resampling_before_clustering` showed an inverse relationship instead. This was expected since this strategy started from globally balanced proteins, and after the clustering, an imbalance in one direction in the training set entailed an inverse imbalance in the test set.
+* `semi_resampling` led to independent train and test balances, expected since the train set was resampled, breaking any correlation with the test set balance.
+* `resampling_after_clustering` always kept balanced proteins, by design.
+
+
+```{r ratio-scatter-original, fig.width=8, fig.cap='Comparison of the training and test ratios, by resampling strategy. A quasibinomial fit line was added per strategy.'}
+ggplot(df.clean.nobaseline, aes(x = ratio_training, y = ratio_test)) +
+  geom_point(size = .2, colour = "gray20") +
+  geom_smooth(
+    aes(colour = strategy), 
+    method = "glm", method.args = list(family = "quasibinomial")) +
+  scale_colour_manual(values = config$col.strategy) +
+  facet_wrap(~strategy, nrow = 1) +
+  xlab("Actives ratio (training set)") +
+  ylab("Actives ratio (test set)") +
+  theme(aspect.ratio = 1, legend.position = "none")
+```
+
+## Other covariates
+
+The effect of the number of interactions of each protein in its corresponding set and fold (figure \@ref(fig:ratio-scatter-ninter)) and the protein length in amino acids (figure \@ref(fig:ratio-scatter-seqlen)) on the test set imbalance was investigated:
+
+* Proteins with greatest imbalance (i.e. where `(0.5 - ratio_test)^2` was greatest) tended to be among those with the least interactions.
+* The sequence length had no obvious effect on the protein imbalance.
+
+
+```{r, ratio-scatter-ninter, fig.width=8, fig.cap='Data imbalance in the test set as a function of the number of available interactions for each protein.'}
+ggplot(df.clean.nobaseline, 
+       aes(x = log10(n_interactions), y = (.5 - ratio_test)**2, colour = strategy)) +
+  geom_point(size = .2, colour = "gray20") +
+  geom_smooth(
+    aes(colour = strategy), 
+    method = "glm", method.args = list(family = "quasibinomial")) +
+  scale_colour_manual(values = config$col.strategy) +
+  facet_wrap(~strategy, nrow = 1) +
+  xlab("Number of interactions (log10)") +
+  theme(aspect.ratio = 1, legend.position = "none")
+```
+
+
+```{r ratio-scatter-seqlen, fig.width=8, fig.cap='Data imbalance in the test set as a function of the protein length, in amino acids.'}
+ggplot(df.clean.nobaseline, 
+       aes(x = log10(len_seq), y = (.5 - ratio_test)**2, colour = strategy)) +
+  geom_point(size = .2, colour = "gray20") +
+  geom_smooth(
+    aes(colour = strategy), 
+    method = "glm", method.args = list(family = "quasibinomial")) +
+  scale_colour_manual(values = config$col.strategy) +
+  facet_wrap(~strategy, nrow = 1) +
+  xlab("Protein length (log10)") +
+  theme(aspect.ratio = 1, legend.position = "none")
+```
+
+
+# Linear models on predicted proportions
+
+The next key question was to narrow down the factor driving the predicted proportion of actives.
+The main options under consideration were: 
+
+1. A constant, global imbalance that the model would learn from the whole dataset.
+2. The protein-wise imbalance that the model would learn in the training set.
+3. A test set-driven imbalance, based on its actual imbalance.
+
+## Distributions of the predicted ratios
+
+After the model predictions in the test set were binarized (actives were those whose probabilities exceeded $0.5$), the ratio of predicted actives was computed by protein. 
+This ratio, shown in figure \@ref(fig:ratio-hist-predicted), suggested that:
+
+* `no_resampling` was noticeably biased to predict everything as positives.
+* `resampling_before_clustering` and `semi_resampling` alleviated the imbalance in the predictions, but still retained a spike of proteins where all the compounds were predicted as positives.
+* `resampling_after_clustering` kept a wide and symmetric distribution of predicted actives.
+
+
+```{r ratio-hist-predicted, fig.width=8, fig.cap='Ratios of the prediction values, after binarization.'}
+ggplot(df.clean.nobaseline, aes(x = ratio_test_predicted, fill = strategy)) +
+  geom_histogram() +
+  facet_wrap(~strategy, nrow = 1, scales = "free_y") +
+  scale_fill_manual(values = config$col.strategy) +
+  xlab("Predicted actives ratio (test set)") +
+  ylab("Count") +
+  theme(aspect.ratio = 1, legend.position = "none")
+```
+
+and represented together with the original training and test ratios in figure .
+
+Now, representing together (1) the original training and test ratios, and (2) the predicted ratios in test (figure \@ref(fig:ratio-hist-all)) eased a general qualitative assessment: the distribution was most resemblant to that of the test proportions to that of the training ones (except `resampling_after_clustering`, since those proportions are constant).
+
+```{r ratio-hist-all, fig.width=6, fig.height=8, fig.cap='Distributios of the actives ratio in the training set and in the test set (both original and predicted by the deep learning model).'}
+tidyr::pivot_longer(
+  df.clean.nobaseline, c("ratio_training", "ratio_test", "ratio_test_predicted"), 
+  values_to = "Ratio", names_to = "RatioSet") %>%
+  ggplot(aes(x = Ratio, fill = strategy)) +
+  geom_histogram() +
+  facet_grid(strategy~RatioSet, scales = "free_y") +
+  scale_fill_manual(values = config$col.strategy) +
+  theme(aspect.ratio = 1, legend.position = "none")
+```
+
+
+## Predicted ratios against training ratios
+
+Figure \@ref(fig:ratio-scatter-predicted) puts the predicted ratios in context of the training ratios, elucidating a variety of trends:
+
+* `no_resampling`: positive trend between the training and the predicted ratio, but since the training and the test ratio also positively correlated (figure \@ref(fig:ratio-scatter-original)), the latter could be the one driving the predicted ratio of positives.
+* `resampling_after_clustering` had a contant training ratio, meaning that the predicted ratio was not explainable by differences in training ratios.
+* `resampling_before_clustering` showed instead a negative relation between the training and the predicted ratio. But since the former and the test ratio also anticorrelated (figure \@ref(fig:ratio-scatter-original), the simplest explanation was that the test ratio drove the predicted test ratio.
+* `semi_resampling` showed no apparent correlation between the predicted ratio and the training ratio.
+
+```{r, ratio-scatter-predicted, fig.width=8, fig.cap='Predicted ratios, as a function of training ratios.'}
+ggplot(df.clean.nobaseline, 
+       aes(x = ratio_training, y = ratio_test_predicted, colour = strategy)) +
+  geom_point(size = .2, colour = "gray20") +
+  geom_smooth(
+    aes(colour = strategy), 
+    method = "glm", method.args = list(family = "quasibinomial")) +
+  scale_colour_manual(values = config$col.strategy) +
+  facet_wrap(~strategy) +
+  theme(aspect.ratio = 1, legend.position = "none")
+```
+
+## Linear models
+
+The predicted ratio of actives $r_{pred}$ was modelled through the following linear models, stratified by strategy:
+
+$$ r_{pred} \sim r_{training} + r_{test} + 
+    \mathrm{log10}(n_{int}) + \mathrm{log10}(n_{seq}) + k_{fold} $$
+
+The main variables of interest are the actual ratios in the training $r_{training}$ and in test $r_{test}$, both numeric between 0 and 1.
+As additional covariates, the number of interactions $n_{int}$ and the sequence length $n_{seq}$ (numerical) and the fold number $k_{fold}$ (categorical) were also included.
+
+### In semi_resampling or resampling_before_clustering
+
+Due to the lack of correlation between training and test ratios (figure \@ref(fig:ratio-scatter-original)), the `semi_resampling` strategy is the **ideal scenario** to disentangle their effects on the predicted ratio of actives (see model in table \@ref(tab:mod-prop-semi-before)).
+This additive model suggests:
+
+* The **test_ratio is driving the predicted proportions**, rather than the training ratio.
+* A relevant factor is **n_interactions**: the more interactions, the less active proportion, suggesting that the extreme cases with all predicted as actives tend to be proteins with few interactions.
+
+Table \@ref(tab:mod-prop-semi-before) also shows the additive model for `resampling_before_clustering`.
+This strategy showed negative correlation between training and test ratios, also providing a reasonably good scenario to distinguish their effects.
+
+* This model **confirms both conclusions** from the model in the `semi_resampling` strategy, with similar estimates.
+
+```{r}
+lm.prop.semi <- lm(
+  ratio_test_predicted ~ ratio_training + ratio_test + 
+    log10(n_interactions) + log10(len_seq) + fold, 
+  data = subset(df.clean.nobaseline, strategy == "semi_resampling")
+)
+
+lm.prop.before <- lm(
+  ratio_test_predicted ~ ratio_training + ratio_test + 
+    log10(n_interactions) + log10(len_seq) + fold, 
+  data = subset(df.clean.nobaseline, strategy == "resampling_before_clustering")
+)
+```
+
+```{r, results='asis'}
+stargazer::stargazer(
+  lm.prop.semi, lm.prop.before, 
+  column.labels = c("semi\\_resampling", "resampling\\_before\\_clustering"), 
+  ci = TRUE, ci.level = 0.95, header = FALSE, 
+  single.row = TRUE, omit.table.layout = "mdl", 
+  star.cutoffs = config$star.cutoffs,  
+  label = "tab:mod-prop-semi-before", 
+  title = "Linear model to describe the predicted active ratio for the semi\\_resampling and the resampling\\_before\\_clustering strategies. Significance and 95\\% confidence intervals are included.")
+```
+
+### In no_resampling
+
+The explanatory linear model under the `no_resampling` strategy (table \@ref(tab:mod-prop-nores)) suffers from the positive correlation between training and test ratios, which can be confounded.
+
+* Both `training_ratio` and `test_ratio` show a positive effect on the predicted fraction of actives. 
+* Although the estimate is larger and more significant for `training_ratio`, the confounding effect and the very skewed distribution of the predicted ratios deems this model inconclusive.
+
+```{r}
+lm.prop.no <- lm(
+  ratio_test_predicted ~ ratio_training + ratio_test + 
+    log10(n_interactions) + log10(len_seq) + fold, 
+  data = subset(df.clean.nobaseline, strategy == "no_resampling")
+)
+```
+
+
+```{r, results='asis'}
+stargazer::stargazer(
+  lm.prop.no,  
+  column.labels = c("no\\_resampling"), 
+  ci = TRUE, ci.level = 0.95, header = FALSE, 
+  single.row = TRUE, omit.table.layout = "mdl", 
+  star.cutoffs = config$star.cutoffs,  
+  label = "tab:mod-prop-nores", 
+  title = "Linear model to describe the predicted active ratio for the no\\_resampling strategy. Significance and 95\\% confidence intervals are included.")
+```
+
+## Conclusions
+
+* Data imbalance exists in all strategies but in `resampling_after_clustering`, where balance is enforced.
+* The correlation between a protein's ratio in train and test is positive in `no_resampling`, negative in `resampling_before_clustering` and null in `semi_resampling` and `resampling_after_clustering`. 
+* The main factor driving the ratio of actives in the model predictions, per protein, is the actual ratio of positives in the test set. Their distributions are resemblant, and linear models confirm the association.
+
+
+# TODO -- Linear models on performance
+
+Describing the performance as a function of:
+
+* The train/test positive proportion (especially for F1)
+* The resampling strategy
+* Performance in other resampling strategies
+* Other covariates (protein length, etc)
+
+
+```{r, results='asis'}
+df.clean.nobaseline[c("strategy", config$v.metrics)] %>% 
+  group_by(strategy) %>% 
+  summarise_all(function(x) sum(!is.na(x))) %>%
+  knitr::kable(format = "latex", 
+               caption = "Number of computable performance measures. AUROC was undefined for proteins with all actives or unactives in the test set.", 
+               booktabs = TRUE, label = "nmetric-nona-strat") %>%
+    kableExtra::kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+## Resampling only
+
+### F1
+
+Baselines excluded (does not make sense to put them without an interaction term)
+
+```{r}
+lm.f1.strategy <- lm(f1 ~ strategy + fold, data = df.clean.nobaseline)
+summary(lm.f1.strategy)
+```
+
+Baselines included 
+
+```{r}
+lm.f1.strategy.withbase <- lm(f1 ~ strategy*is_baseline + fold, data = df.clean)
+summary(lm.f1.strategy.withbase)
+```
+
+Baselines only
+
+```{r}
+lm.f1.baselines <- lm(f1 ~ strategy + fold, data = subset(df.clean, is_baseline == "True"))
+summary(lm.f1.baselines)
+```
+
+# Conclusions
+
+...
