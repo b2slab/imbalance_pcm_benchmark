@@ -295,6 +295,10 @@ stargazer::stargazer(
 * The main factor driving the ratio of actives in the model predictions, per protein, is the actual ratio of positives in the test set. Their distributions are resemblant, and linear models confirm the association.
 
 
+# Description of baseline performance
+
+
+
 # TODO -- Linear models on performance
 
 Describing the performance as a function of:

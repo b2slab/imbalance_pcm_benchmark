@@ -570,6 +570,8 @@ confint.auc
 ```{r}
 color_cor <- colorRampPalette(colors = c("#EB6767", "white", "#6797EB"))(100)
 
+mod_confint <- confint.auc
+
 cols <- names(mod_confint$test$coefficients) %>% 
   strsplit(split = " - ") %>% plyr::ldply(
   function(x) c(row = x[1], col = x[2])
@@ -651,7 +653,7 @@ ggplot(df.clean.diff.nobaseline.foldavg.long,
     geom_hline(yintercept = 0, lty = 2) +
     geom_boxplot() +
     facet_wrap(~metric, scales = "free_y") +
-    ylab("Baseline performance") +
+    ylab("Baseline-adjusted performance") +
     theme(legend.position = "bottom", aspect.ratio = 1, 
           axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 ```
@@ -660,6 +662,11 @@ ggplot(df.clean.diff.nobaseline.foldavg.long,
 
 ```{r}
 list.lm.strat.diff <- lapply(list.lm.formulae, lm, data = df.clean.diff.nobaseline)
+lapply(list.lm.strat.diff, summary)
+```
+
+
+```{r}
 list.anova.strat.diff <- lapply(list.lm.strat.diff, car::Anova)
 
 df.anova.strat.diff <- plyr::ldply(list.anova.strat.diff, tibble::rownames_to_column, "variable", .id = "strategy")
@@ -722,7 +729,7 @@ ggplot(df.metrics, aes(x = metric, y = strategy, fill = rescaled, label = label)
   coord_fixed() +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1), 
         legend.position = "right") + 
-  xlab("Performance metric") + 
+  xlab("Baseline-adjusted performance metric") + 
   ylab("Method") + 
   ggtitle("Method ranking by predicted performance, averaging folds.", 
           subtitle = "Lower ranks are better. Predictions in brackets.")

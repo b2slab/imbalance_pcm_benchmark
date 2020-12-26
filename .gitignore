@@ -106,3 +106,6 @@ venv.bak/
 #FOLDERS
 data/
 tests/
+.Rproj.user
+*.Rproj
+
