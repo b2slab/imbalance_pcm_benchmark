@@ -326,6 +326,7 @@ ggplot(subset(df.clean.foldavg.long, grepl("Random", baseline)),
     geom_boxplot(outlier.size = .5) +
     scale_fill_manual(values = config$col.strategy) +
     facet_wrap(~metric, scales = "free_y") +
+    xlab("Resampling strategy") +
     ylab("Baseline performance") +
     theme(legend.position = "none", aspect.ratio = 1, 
           axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
@@ -338,8 +339,8 @@ Formally, each performance metric was described with the following linear model:
 $$ \mathrm{metric} \sim \mathrm{strategy} +  
     \mathrm{log10}(n_{int}) + \mathrm{log10}(n_{seq}) + k_{fold} $$
 
-The response was the quantitative metric of interest (one model per metric), while `strategy` was categorical with the following possibilities: `no_resampling`, `resampling_after_clustering` , `resampling_before_clustering`, `semi_resampling`.
-As additional covariates, the number of interactions $n_{int}$ and the sequence length $n_{seq}$ (numerical) and the fold number $k_{fold}$ (categorical).
+The response was the quantitative metric of interest (one model per metric), while `strategy` was categorical with the following possibilities: `no_resampling`, `resampling_after_clustering`, `resampling_before_clustering`, `semi_resampling`.
+Additional covariates included the number of interactions $n_{int}$ and the sequence length $n_{seq}$ (numerical) and the fold number $k_{fold}$ (categorical).
 The `strategy` variable was tested with a type 3 ANOVA, being significant with $p < 0.05$ for `acc`, `f1` and `balanced_acc` (table \@ref(tab:anova-foldavg-strat)). 
 
 
@@ -355,11 +356,13 @@ df.anova.baseline <- plyr::ldply(
   list.anova.baseline, tibble::rownames_to_column, 
   "variable", .id = "strategy")
 
-df.anova.baseline %>% subset(variable == "strategy") %>%
-  knitr::kable(format = "latex", 
+df.anova.baseline %>% 
+  subset(variable == "strategy") %>%
+  mutate_at(vars("F value", "Pr(>F)"), formatC, format = "e", digits = 2) %>%
+  knitr::kable(format = "latex", row.names = FALSE, 
                caption = "ANOVA p-values for including the resampling strategy as a regressor. Significant p-values imply that differences exist between resampling strategies.", 
                booktabs = TRUE, label = "anova-foldavg-strat") %>%
-    kableExtra::kable_styling(latex_options = c("scale_down", "hold_position"))
+    kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
 Based on this, metrics were divided in two types:
