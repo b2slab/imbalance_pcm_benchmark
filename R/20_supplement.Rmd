@@ -30,6 +30,7 @@ df.clean <- read.csv(config$file.cleanperf) %>%
   dplyr::mutate(fold.label = paste0("Fold ", fold), 
                 strategy = factor(strategy, levels = config$v.strategy))
 df.clean.nobaseline <- subset(df.clean, is_baseline == "False")
+df.clean.baseline <- subset(df.clean, is_baseline == "True")
 
 v.strategy <- intersect(config$v.strategy, unique(df.clean$strategy))
 v.metrics <- intersect(config$v.metrics, names(df.clean))
@@ -296,6 +297,85 @@ stargazer::stargazer(
 
 
 # Description of baseline performance
+
+```{r}
+df.clean.foldavg <- group_by(df.clean, DeepAffinity.Protein.ID, strategy, baseline) %>%
+  dplyr::summarise_if(is.numeric, mean)
+```
+
+```{r}
+df.clean.foldavg.long <- tidyr::pivot_longer(
+  df.clean.foldavg, 
+  cols = config$v.metrics, 
+  names_to = "metric", 
+  values_to = "performance")
+```
+
+
+Before evaluating the deep learning model, the performance metrics of the baselines were characterised, in order to pinpoint imbalance-sensitive and insensitive metrics. 
+Metrics were called imbalance-sensitive if the imbalance-aware random baseline exhibited different performances between resampling strategies.
+
+## Descriptive plot
+
+Figure \@ref(fig:perf-boxplot-baseline-foldavg) shows a fold-averaged picture of the metrics by protein. 
+Visual inspection suggested that accuracy, F1 and possibly balanced accuracy were affected by the data balance.
+
+```{r, perf-boxplot-baseline-foldavg, fig.width=6, fig.height=5, fig.cap='Performance metrics for imbalance-aware random baselines. Data points correspond to proteins, averaged over folds.'}
+ggplot(subset(df.clean.foldavg.long, grepl("Random", baseline)), 
+       aes(x = strategy, y = performance, fill = strategy)) +
+    geom_boxplot(outlier.size = .5) +
+    scale_fill_manual(values = config$col.strategy) +
+    facet_wrap(~metric, scales = "free_y") +
+    ylab("Baseline performance") +
+    theme(legend.position = "none", aspect.ratio = 1, 
+          axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+## Linear models
+
+Formally, each performance metric was described with the following linear model:
+
+$$ \mathrm{metric} \sim \mathrm{strategy} +  
+    \mathrm{log10}(n_{int}) + \mathrm{log10}(n_{seq}) + k_{fold} $$
+
+The response was the quantitative metric of interest (one model per metric), while `strategy` was categorical with the following possibilities: `no_resampling`, `resampling_after_clustering` , `resampling_before_clustering`, `semi_resampling`.
+As additional covariates, the number of interactions $n_{int}$ and the sequence length $n_{seq}$ (numerical) and the fold number $k_{fold}$ (categorical).
+The `strategy` variable was tested with a type 3 ANOVA, being significant with $p < 0.05$ for `acc`, `f1` and `balanced_acc` (table \@ref(tab:anova-foldavg-strat)). 
+
+
+```{r}
+list.lm.formulae <- lapply(
+  setNames(config$v.metrics, config$v.metrics), 
+  paste0, " ~ strategy + log10(n_interactions) + log10(len_seq) + fold")
+
+list.lm.baseline <- lapply(list.lm.formulae, lm, data = df.clean.baseline)
+list.anova.baseline <- lapply(list.lm.baseline, car::Anova, type = 3)
+
+df.anova.baseline <- plyr::ldply(
+  list.anova.baseline, tibble::rownames_to_column, 
+  "variable", .id = "strategy")
+
+df.anova.baseline %>% subset(variable == "strategy") %>%
+  knitr::kable(format = "latex", 
+               caption = "ANOVA p-values for including the resampling strategy as a regressor. Significant p-values imply that differences exist between resampling strategies.", 
+               booktabs = TRUE, label = "anova-foldavg-strat") %>%
+    kableExtra::kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+Based on this, metrics were divided in two types:
+
+* Those where the baseline is different between strategies, i.e. imbalance-sensitive: `acc`, `f1` and `balanced_acc`. Therefore, before comparing strategies, the baseline performance needed to be accounted for.
+* Those where the baseline was constant, i.e. imbalance-insensitive: `auroc`, `mcc`. Here we could compare strategies directly.
+
+
+
+
+
+
+
+
+
+
 
 
 

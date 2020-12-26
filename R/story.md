@@ -41,7 +41,7 @@ Trends:
 
 * Describe baseline metrics
 * Classify them as sensitive (ACC, F1, BACC)/insensitive (AUROC, MCC) by data balance
-* Direct comparison of imbalance-sensitive metrics can be misleading (proof?)
+* Direct comparison of imbalance-sensitive metrics can be misleading (proof? boxplots of absolute vs boxplot of diffs)
 
 ## Imbalance-insensitive
 
