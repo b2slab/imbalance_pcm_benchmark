@@ -1,3 +1,13 @@
+#FOLDERS
+data/
+tests/
+.Rproj.user
+*.Rproj
+R/*.pdf
+R/*/*/*.pdf
+R/*.tex
+R/*.zip
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -102,10 +112,3 @@ venv.bak/
 
 # mypy
 .mypy_cache/
-
-#FOLDERS
-data/
-tests/
-.Rproj.user
-*.Rproj
-
