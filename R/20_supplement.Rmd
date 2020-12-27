@@ -28,6 +28,7 @@ source("config.R", local = config)
 
 df.clean <- read.csv(config$file.cleanperf) %>%
   dplyr::mutate(fold.label = paste0("Fold ", fold), 
+                fold = as.factor(fold), 
                 strategy = factor(strategy, levels = config$v.strategy))
 df.clean.nobaseline <- subset(df.clean, is_baseline == "False")
 df.clean.baseline <- subset(df.clean, is_baseline == "True")
@@ -318,7 +319,7 @@ Metrics were called imbalance-sensitive if the imbalance-aware random baseline e
 ## Descriptive plot
 
 Figure \@ref(fig:perf-boxplot-baseline-foldavg) shows a fold-averaged picture of the metrics by protein. 
-Visual inspection suggested that accuracy, F1 and possibly balanced accuracy were affected by the data balance.
+Visual inspection suggested that accuracy, F1 and possibly balanced accuracy were affected by the data imbalance.
 
 ```{r, perf-boxplot-baseline-foldavg, fig.width=6, fig.height=5, fig.cap='Performance metrics for imbalance-aware random baselines. Data points correspond to proteins, averaged over folds.'}
 ggplot(subset(df.clean.foldavg.long, grepl("Random", baseline)), 
@@ -341,15 +342,32 @@ $$ \mathrm{metric} \sim \mathrm{strategy} +
 
 The response was the quantitative metric of interest (one model per metric), while `strategy` was categorical with the following possibilities: `no_resampling`, `resampling_after_clustering`, `resampling_before_clustering`, `semi_resampling`.
 Additional covariates included the number of interactions $n_{int}$ and the sequence length $n_{seq}$ (numerical) and the fold number $k_{fold}$ (categorical).
-The `strategy` variable was tested with a type 3 ANOVA, being significant with $p < 0.05$ for `acc`, `f1` and `balanced_acc` (table \@ref(tab:anova-foldavg-strat)). 
+The `strategy` variable was tested with a type 3 ANOVA, being significant with $p < 0.05$ for `acc`, `f1` and `balanced_acc` (table \@ref(tab:anova-baseline-strat)). 
 
 
 ```{r}
-list.lm.formulae <- lapply(
-  setNames(config$v.metrics, config$v.metrics), 
-  paste0, " ~ strategy + log10(n_interactions) + log10(len_seq) + fold")
+# # this wont work with stargazer since it parses the call(), which is lazy-evaluated,
+# # and breaks down 
+# list.lm.formulae <- lapply(
+#   setNames(config$v.metrics, config$v.metrics), 
+#   paste0, " ~ strategy + log10(n_interactions) + log10(len_seq) + fold")
+# list.lm.baseline <- lapply(list.lm.formulae, lm, data = df.clean.baseline)
+# 
+# ... doing it with plyr::dlply and always the same formula also fails,
+# since the call is .fun(y~x) instead of lm(y~x)... really...
 
-list.lm.baseline <- lapply(list.lm.formulae, lm, data = df.clean.baseline)
+df.clean.long <- tidyr::pivot_longer(
+  df.clean, cols = config$v.metrics, 
+  names_to = "metricname", values_to = "metric")
+df.clean.baseline.long <- subset(df.clean.long, is_baseline == "True")
+df.clean.nobaseline.long <- subset(df.clean.long, is_baseline == "False")
+
+list.lm.baseline <- plyr::dlply(
+  df.clean.baseline.long, 
+  "metricname", 
+  lm, 
+  formula = "metric ~ strategy + log10(n_interactions) + log10(len_seq) + fold"
+)
 list.anova.baseline <- lapply(list.lm.baseline, car::Anova, type = 3)
 
 df.anova.baseline <- plyr::ldply(
@@ -361,14 +379,162 @@ df.anova.baseline %>%
   mutate_at(vars("F value", "Pr(>F)"), formatC, format = "e", digits = 2) %>%
   knitr::kable(format = "latex", row.names = FALSE, 
                caption = "ANOVA p-values for including the resampling strategy as a regressor. Significant p-values imply that differences exist between resampling strategies.", 
-               booktabs = TRUE, label = "anova-foldavg-strat") %>%
+               booktabs = TRUE, label = "anova-baseline-strat") %>%
     kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
 Based on this, metrics were divided in two types:
 
-* Those where the baseline is different between strategies, i.e. imbalance-sensitive: `acc`, `f1` and `balanced_acc`. Therefore, before comparing strategies, the baseline performance needed to be accounted for.
+* Those where the baseline was different between strategies, i.e. imbalance-sensitive: `acc`, `f1` and `balanced_acc`. Therefore, before comparing strategies, the baseline performance needed to be accounted for.
 * Those where the baseline was constant, i.e. imbalance-insensitive: `auroc`, `mcc`. Here we could compare strategies directly.
+
+# Description of deep learning model performance
+
+An overview of fold-averaged performances is displayed in figure \@ref(fig:perf-boxplot-strat-foldavg), where strategies are paired with their baselines.
+This illustrates the issue of direct strategy comparison with imbalance-sensitive metrics, which was especially visible for the F1-score.
+
+```{r perf-boxplot-strat-foldavg, fig.width=10, fig.height=8, fig.cap='Performance metrics for balancing strategies and their corresponding imbalance-aware random baselines. Data points correspond to proteins, averaged over folds.'}
+# ggplot(subset(df.clean.foldavg.long, metric %in% c("auroc", "mcc")), 
+ggplot(df.clean.foldavg.long, 
+       aes(x = strategy, y = performance, fill = strategy, 
+           alpha = baseline, colour = baseline, position = baseline)) +
+    geom_boxplot(outlier.size = .5) +
+    facet_wrap(~metric, scales = "free_y") +
+    scale_fill_manual(values = config$col.strategy, guide = FALSE) +
+    scale_colour_manual(values = c("gray5", "gray50")) +
+    scale_alpha_manual(values = c(1, .5)) +
+    ylab("Performance") +
+    theme(legend.position = "bottom", aspect.ratio = 1, 
+          axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+
+## Direct comparison of performance metrics
+
+Anologous to the baseline performance models, absolute metric models (not accounting for baselines) were fitted:
+
+$$ \mathrm{metric} \sim \mathrm{strategy} +  
+    \mathrm{log10}(n_{int}) + \mathrm{log10}(n_{seq}) + k_{fold} $$
+
+The `strategy` covariate was always significant in a type 3 ANOVA (table \@ref(tab:anova-perf-strat)). 
+The models, summarized in \@ref(tab:mod-perf-absolute), showed different behaviour in imbalance-sensitive and insensitive metrics.
+Pairwise comparisons of the strategy coefficients using Tukey's method would point to two different pictures (figure \@ref(fig:perf-tukey-absolute-strat)), further confirmed when prioritizing the strategies according to their expected performance through the linear models (figure \@ref(fig:perf-ranking-absolute-strat)):
+
+* Accuracy and F1-score suggested that `no_resampling` was the best strategy, but this was confounded by the fact that it also held the highest baselines.
+* AUROC, MCC and balanced accuracy showed instead that `resampling_before_clustering` and `resampling_after_clustering` held the highest performance estimates. 
+
+
+```{r}
+# must do it like this for stargazer to work...
+list.lm.strat <- list(
+  acc = lm(acc ~ strategy + log10(n_interactions) + log10(len_seq) + fold, data = df.clean.nobaseline), 
+  auroc = lm(auroc ~ strategy + log10(n_interactions) + log10(len_seq) + fold, data = df.clean.nobaseline), 
+  f1 = lm(f1 ~ strategy + log10(n_interactions) + log10(len_seq) + fold, data = df.clean.nobaseline), 
+  balanced_acc = lm(balanced_acc ~ strategy + log10(n_interactions) + log10(len_seq) + fold, data = df.clean.nobaseline), 
+  mcc = lm(mcc ~ strategy + log10(n_interactions) + log10(len_seq) + fold, data = df.clean.nobaseline)
+)
+list.anova.strat <- lapply(list.lm.strat, car::Anova)
+
+df.anova.strat <- plyr::ldply(list.anova.strat, tibble::rownames_to_column, "variable", .id = "strategy")
+
+df.anova.strat %>% subset(variable == "strategy") %>%
+  mutate_at(vars("F value", "Pr(>F)"), formatC, format = "e", digits = 2) %>%
+  knitr::kable(format = "latex", row.names = FALSE, 
+               caption = "ANOVA p-values for including the resampling strategy as a regressor in the performance models.", 
+               booktabs = TRUE, label = "anova-perf-strat") %>%
+    kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+
+```{r, results='asis'}
+stargazer::stargazer(
+  list.lm.strat, 
+  column.labels = gsub("_", "\\\\_", names(list.lm.strat)),
+  # ci = TRUE, ci.level = 0.95, 
+  header = FALSE, 
+  model.numbers = TRUE,
+  single.row = FALSE, 
+  omit.table.layout = "mdl", omit.stat=c("LL","ser","f"), 
+  star.cutoffs = config$star.cutoffs,  
+  label = "tab:mod-perf-absolute", 
+  title = "Linear model to describe each performance metric. Standard deviations in parentheses.")
+```
+
+
+```{r}
+# EMMs
+list.emm.strat <- lapply(
+  list.lm.strat, 
+  emmeans::emmeans, 
+  specs = c("strategy"), 
+  data = df.clean.nobaseline)
+
+list.glht.strat <- lapply(
+  list.lm.strat, 
+  multcomp::glht, 
+  linfct = multcomp::mcp(strategy = "Tukey")
+)
+```
+
+```{r}
+plot_corrplot <- function(mod_glht, main, levels = config$v.strategy) {
+  mod_confint <- summary(mod_glht)
+  color_cor <- colorRampPalette(colors = c("#EB6767", "white", "#6797EB"))(100)
+  
+  cols <- names(mod_confint$test$coefficients) %>% 
+    strsplit(split = " - ") %>% plyr::ldply(
+    function(x) c(row = x[1], col = x[2])
+  ) 
+  cols$row <- factor(cols$row, levels)
+  cols$col <- factor(cols$col, levels)
+  cols$estimate <- mod_confint$test$coefficients 
+  cols$pvalue <- mod_confint$test$pvalues
+  
+  e.cor <- reshape2::acast(cols, row~col, value.var = "estimate", fill = 0)
+  p.cor <- reshape2::acast(cols, row~col, value.var = "pvalue", fill = 0)
+  
+  # par(mfrow=c(2,2)) 
+  corrplot::corrplot(
+    title = main, 
+    corr = e.cor, method = "color", type = "lower", number.digits = 3, 
+    addCoef.col = "black", tl.cex = 1, tl.col = "gray10",
+    number.cex = .8, number.font = .8, col = color_cor, 
+    p.mat = p.cor, diag = TRUE, is.corr = FALSE, mar = c(0,0,3,0)) 
+}
+```
+
+```{r perf-tukey-absolute-strat, results='hide', fig.height=8, fig.cap='Pairwise comparison of strategy performance using Tukey method.'}
+par(mfrow = c(3, 2))
+mapply(plot_corrplot, mod_glht = list.glht.strat, main = paste0("Pairwise comparisons for: ", names(list.glht.strat)))
+par(mfrow = c(1, 1))
+```
+
+
+```{r}
+df.metrics.absolute <- plyr::ldply(list.emm.strat, summary, .id = "metric") %>%
+  # ungroup %>%
+  group_by(metric) %>%
+  mutate(z = scale(emmean), 
+         rescaled = emmean/max(emmean), 
+         rank = rank(-emmean), 
+         label = paste0(rank, " (", round(emmean, 3), ")"))
+```
+
+```{r perf-ranking-absolute-strat, fig.width=7, fig.height=6, fig.cap='Method ranking according to the linear model predicted performances for each metric. Baseline metrics were ignored.'}
+ggplot(df.metrics.absolute, aes(x = metric, y = strategy, fill = rescaled, label = label)) + 
+  geom_tile(color = "white") + 
+  geom_text(size = 2.75) + 
+  # scale_fill_gradient2(mid = "white", high = "mediumpurple1") + 
+  scale_fill_distiller(palette = "Spectral", direction = -1, name = "Performance rescaled\nby column maximum") +
+  theme_bw() + 
+  coord_fixed() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1), 
+        legend.position = "right") + 
+  xlab("Baseline-naive performance metric") + 
+  ylab("Method") + 
+  ggtitle("Method ranking by predicted performance, averaging folds.", 
+          subtitle = "Lower ranks are better. Expected performances in brackets.")
+```
+
 
 
 
