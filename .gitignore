@@ -3,6 +3,7 @@ data/
 tests/
 .Rproj.user
 *.Rproj
+R/*.html
 R/*.pdf
 R/*/*/*.pdf
 R/*.tex
