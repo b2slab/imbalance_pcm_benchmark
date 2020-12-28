@@ -396,6 +396,18 @@ Based on this, metrics were divided in two types:
 
 An overview of fold-averaged performances is displayed in figure \@ref(fig:perf-boxplot-strat-foldavg), where strategies are paired with their baselines.
 This illustrates the issue of direct strategy comparison with imbalance-sensitive metrics, which was especially visible for the F1-score.
+Some metrics are undefined in edge cases (e.g. AUROC when only actives or only inactives are available); table \@ref(tab:nmetric-nona-strat) summarizes the number of proteins, added over folds, whose metrics were computable.
+
+```{r, results='asis'}
+df.clean.nobaseline[c("strategy", config$v.metrics)] %>% 
+  group_by(strategy) %>% 
+  summarise_all(function(x) sum(!is.na(x))) %>%
+  knitr::kable(format = "latex", 
+               caption = "Number of computable performance measures. AUROC was undefined for proteins with all actives or unactives in the test set, hence its lower counts.", 
+               booktabs = TRUE, label = "nmetric-nona-strat") %>%
+    kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+
 
 ```{r perf-boxplot-strat-foldavg, fig.width=10, fig.height=8, fig.cap='Performance metrics for balancing strategies and their corresponding imbalance-aware random baselines. Data points correspond to proteins, averaged over folds.'}
 # ggplot(subset(df.clean.foldavg.long, metric %in% c("auroc", "mcc")), 
@@ -703,30 +715,6 @@ Conclusions drawn from the baseline-adjusted performance analysis:
 * In four out of five metrics, **proteins with more interactions were better predicted** (table \@ref(tab:mod-adjperf-absolute)).
 
 \FloatBarrier 
-
-
-
-
-# TODO -- Linear models on performance
-
-Describing the performance as a function of:
-
-* The train/test positive proportion (especially for F1)
-* The resampling strategy
-* Performance in other resampling strategies
-* Other covariates (protein length, etc)
-
-
-```{r, results='asis'}
-df.clean.nobaseline[c("strategy", config$v.metrics)] %>% 
-  group_by(strategy) %>% 
-  summarise_all(function(x) sum(!is.na(x))) %>%
-  knitr::kable(format = "latex", 
-               caption = "Number of computable performance measures. AUROC was undefined for proteins with all actives or unactives in the test set.", 
-               booktabs = TRUE, label = "nmetric-nona-strat") %>%
-    kableExtra::kable_styling(latex_options = c("scale_down", "hold_position"))
-```
-
 
 
 # Conclusions

@@ -7,6 +7,7 @@ R/*.pdf
 R/*/*/*.pdf
 R/*.tex
 R/*.zip
+*.Rhistory
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
