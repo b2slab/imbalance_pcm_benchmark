@@ -717,10 +717,80 @@ Conclusions drawn from the baseline-adjusted performance analysis:
 \FloatBarrier 
 
 
-# Conclusions
+# Summary
 
-...
+This section is a copy-paste of conclusions and remarks scattered over this report.
 
+* Code: [K] kinases, [G] GPCR, [KG] claims that hold for both, [KG?] holds in K, looks like it holds in G, but needs model/test to confirm.
+* In general, both families agree - the main conclusions remain unaffected.
+* Differences of GPCR compared to kinases:
+  - `semi_resampling` is missing more baseline metrics (23%, up from 6%), and its train ratio is NA more often (30%, up from 7%)
+  - `resampling_after_clustering` only has DL performance metrics for 80% of the proteins (down from 100%)
+  - They seem a bit more imbalance towards the actives, can this cause such differences?
+
+## Data balance
+
+### Distribution of actives
+
+* [KG] `no_resampling` keeps similar data imbalance in training and test.
+* [KG] `resampling_before_clustering` and `semi_resampling` lead to a more balanced training set, but not so much for the test set.
+* [KG] `resampling_after_clustering` kept balanced proteins in both training and test sets.
+
+### Comparing train and test imbalance
+
+* [KG] `no_resampling` showed a positive relation between both, i.e. proteins were prone to keep their (im)balance in train and test.
+* [KG] `resampling_before_clustering` showed an inverse relationship instead. This was expected since this strategy started from globally balanced proteins, and after the clustering, an imbalance in one direction in the training set entailed an inverse imbalance in the test set.
+* [K] `semi_resampling` led to independent train and test balances, expected since the train set was resampled, breaking any correlation with the test set balance. [G]: certain degree of positive correlation (test?).
+* [KG] `resampling_after_clustering` always kept balanced proteins, by design.
+
+### Other covariates
+
+* [KG] Proteins with greatest imbalance (i.e. where `(0.5 - ratio_test)^2` was greatest) tended to be among those with the least interactions.
+* [K] The sequence length had no obvious effect on the protein imbalance. [G]: slightly negative slope (test?).
+
+## Predicted proportions
+
+### Distributions of the predicted ratios
+
+* [KG] `no_resampling` was noticeably biased to predict everything as positives.
+* [KG] `resampling_before_clustering` and `semi_resampling` alleviated the imbalance in the predictions, but still retained a spike of proteins where all the compounds were predicted as positives.
+* [KG] `resampling_after_clustering` kept a wide and symmetric distribution of predicted actives.
+
+### Predicted ratios against training ratios
+
+* [KG] `no_resampling`: positive trend between the training and the predicted ratio, but since the training and the test ratio also positively correlated (figure \@ref(fig:ratio-scatter-original)), the latter could be the one driving the predicted ratio of positives.
+* [KG] `resampling_after_clustering` had a contant training ratio, meaning that the predicted ratio was not explainable by differences in training ratios.
+* [KG] `resampling_before_clustering` showed instead a negative relation between the training and the predicted ratio. But since the former and the test ratio also anticorrelated (figure \@ref(fig:ratio-scatter-original), the simplest explanation was that the test ratio drove the predicted test ratio.
+* [KG] `semi_resampling` showed no apparent correlation between the predicted ratio and the training ratio.
+
+### lm: semi_resampling
+
+* [KG] The **test_ratio is driving the predicted proportions**, rather than the training ratio.
+* [K] A relevant factor is **n_interactions**: the more interactions, the less active proportion, suggesting that the extreme cases with all predicted as actives tend to be proteins with few interactions. [G]: the term was not significant, although it significantly affects performance later on.
+
+### lm: resampling_before_clustering
+
+* [K] This model **confirms both conclusions** from the model in the `semi_resampling` strategy, with similar estimates. [G]: estimates not that similar, but conclusions still supported, including that of n_interactions.
+
+## Baseline performance
+
+### Linear models
+
+* [KG] Those where the baseline was different between strategies, i.e. imbalance-sensitive: `acc`, `f1` and `balanced_acc`. Therefore, before comparing strategies, the baseline performance needed to be accounted for.
+* [KG] Those where the baseline was constant, i.e. imbalance-insensitive: `auroc`, `mcc`. Here we could compare strategies directly.
+
+## DL model performance
+
+### Absolute, baseline-naive
+
+* [KG?] Accuracy and F1-score suggested that `no_resampling` was the best strategy, but this was confounded by the fact that it also held the highest baselines.
+* [KG] AUROC, MCC and balanced accuracy showed instead that `resampling_before_clustering` and `resampling_after_clustering` held the highest performance estimates. 
+
+### Baseline-adjusted
+
+* [KG] The largest impact in performance estimates was the application of **data augmentation to the test set**: `resampling_before_clustering` and `resampling_after_clustering` tended to outperform `semi_resampling` and `no_resampling` (Tukey's method, $p < 0.05$, figure \@ref(fig:adjperf-tukey-absolute-strat)). However, augmenting the test set might not faithfully reflect new data anymore, and could **artificially inflate the peformance estimates**. 
+* [KG?] `semi_resampling` outperformed `no_resampling` in four out of five metrics (Tukey's method, $p < 0.05$, figure \@ref(fig:adjperf-tukey-absolute-strat)), which **supports data augmentation usefulness** even if the data balance in the test set differs from that of the training set. This was consistent with the observation that the predicted proportion of positives of the PCM model was mainly driven by the actual data balance in the test set, rather than that of the training set. Combined with the healthier distributions of predicted active ratios of `semi_resampling` against `no_resampling`, this made a case in favour of the former.
+* [KG] In four out of five metrics, **proteins with more interactions were better predicted** (table \@ref(tab:mod-adjperf-absolute)).
 
 # Reproducibility
 
