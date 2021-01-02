@@ -464,7 +464,7 @@ Average all numeric variables by fold for plotting and modelling
 
 ```{r}
 df.clean.foldavg <- group_by(df.clean, DeepAffinity.Protein.ID, strategy, baseline) %>%
-  dplyr::summarise_if(is.numeric, mean)
+  dplyr::summarise_if(is.numeric, mean, na.rm = TRUE)
 ```
 
 ```{r}
@@ -634,7 +634,7 @@ Long versions
 ```{r}
 df.clean.diff.nobaseline.foldavg <- group_by(
   df.clean.diff.nobaseline, DeepAffinity.Protein.ID, strategy) %>%
-  dplyr::summarise_if(is.numeric, mean)
+  dplyr::summarise_if(is.numeric, mean, na.rm = TRUE)
 ```
 
 ```{r}
@@ -734,6 +734,87 @@ ggplot(df.metrics, aes(x = metric, y = strategy, fill = rescaled, label = label)
   ggtitle("Method ranking by predicted performance, averaging folds.", 
           subtitle = "Lower ranks are better. Predictions in brackets.")
 ```
+
+# Analysis of protein performance
+
+## F1-score, baseline-adjusted
+
+```{r}
+df.prot.diff.scatter <- tidyr::pivot_longer(
+  df.clean.diff.nobaseline, 
+  cols = config$v.metrics, 
+  names_to = "metric", 
+  values_to = "performance") %>%
+  dplyr::select(DeepAffinity.Protein.ID, strategy, fold, metric, performance) %>%
+  tidyr::pivot_wider(
+        id_cols = c("DeepAffinity.Protein.ID", "fold", "metric"),
+        names_from = "strategy", values_from = "performance") %>%
+  ungroup
+```
+
+```{r, fig.width=7, fig.height=10}
+ggplot(df.prot.diff.scatter, aes(x = no_resampling, y = semi_resampling)) +
+  geom_point(size = .5, alpha = .2) +
+  # geom_density2d() +
+  geom_hline(yintercept = 0, lty = 2) +
+  geom_vline(xintercept = 0, lty = 2) +
+  geom_abline(slope = 1, intercept = 0, lty = 3) +
+  geom_smooth(method = "lm") +
+  coord_equal() +
+  facet_wrap(~metric, ncol = 2) +
+  theme_bw()
+```
+
+Aggregate over folds, rank by metric
+
+```{r}
+# rank metrics DECREASINGLY, keep NAs as NAs
+# and rescale to lie in [0, 1] 
+# otherwise some ranks will not be comparable for different lengths..
+rank_na <- function(x) {
+  ind.na <- is.na(x)
+  rk <- rank(-x[!ind.na])
+  x[!ind.na] <- rk/max(rk)
+  x
+}
+
+df.prot.diff.rank <- group_by(df.prot.diff.scatter, fold, metric) %>%
+  mutate_if(is.numeric, rank_na)
+```
+
+```{r, fig.width=5, fig.height=5}
+tidyr::pivot_longer(df.prot.diff.rank, cols = config$v.strategy, 
+                    names_to = "strategy", values_to = "performance") %>%
+  group_by(fold, metric) %>%
+  mutate(performance_avg = mean(performance, na.rm = TRUE)) %>%
+  ggplot(aes(x = performance_avg)) +
+  geom_histogram() +
+  facet_wrap(~strategy) +
+  theme_bw()
+  
+```
+
+```{r, fig.width=8, fig.height=10}
+tidyr::pivot_longer(df.prot.diff.rank, cols = config$v.strategy, 
+                    names_to = "strategy", values_to = "performance") %>%
+  group_by(fold) %>%
+  mutate(performance_avg = mean(performance, na.rm = TRUE)) %>%
+  ggplot(aes(x = performance_avg)) +
+  geom_histogram() +
+  facet_grid(metric~strategy) +
+  theme_bw()
+  
+```
+
+
+```{r}
+# split(df.raw, df.raw$fold) %>%
+#   mapply(VennDiagram::venn.diagram, 
+#          x = split(.$Protein, .$strategy), 
+#          filename = paste0(head(.$fold, 1), "_venn.png"))
+```
+
+
 
 
 # Old linear models
