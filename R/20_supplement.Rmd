@@ -117,6 +117,36 @@ ggplot(df.clean.nobaseline, aes(x = ratio_training, y = ratio_test)) +
   theme(aspect.ratio = 1, legend.position = "none")
 ```
 
+Table \@ref(tab:cortest-scatter-original) displays the Pearson correlation estimate, 95% confidence interval and p-value for each strategy (except `resampling_after_clustering`, where ratios are constant), further confirming the claims above.
+
+```{r}
+format_cortest <- function(r) {
+  data.frame(cor = r$estimate, ci_lower = r$conf.int[1], 
+             ci_upper = r$conf.int[2], 
+             alternative = r$alternative, pvalue = r$p.value)
+}
+
+df.cor.ratio.scatter <- plyr::ddply(
+  df.clean.nobaseline, "strategy", 
+  function(df) {
+    r <- cor.test(
+      formula = ~ ratio_training + ratio_test, 
+        data = df, method = "pearson", alternative = "two.sided")
+    format_cortest(r)  
+  }
+)
+
+df.cor.ratio.scatter %>% 
+  mutate_at(vars("pvalue"), formatC, format = "e", digits = 2) %>%
+  mutate_at(vars("cor", "ci_lower", "ci_upper"), formatC, format = "f", digits = 3) %>%
+  knitr::kable(format = "latex", row.names = FALSE, 
+               caption = "Correlations between train and test active ratios. 95% confidence intervals and p-values are shown.", 
+               booktabs = TRUE, label = "cortest-scatter-original") %>%
+    kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+
+
+
 ## Other covariates
 
 The effect of the number of interactions of each protein in its corresponding set and fold (figure \@ref(fig:ratio-scatter-ninter)) and the protein length in amino acids (figure \@ref(fig:ratio-scatter-seqlen)) on the test set imbalance was investigated:
