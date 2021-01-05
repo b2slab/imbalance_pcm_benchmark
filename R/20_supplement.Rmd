@@ -125,7 +125,9 @@ format_cortest <- function(r) {
              ci_upper = r$conf.int[2], 
              alternative = r$alternative, pvalue = r$p.value)
 }
+```
 
+```{r, results='asis'}
 df.cor.ratio.scatter <- plyr::ddply(
   df.clean.nobaseline, "strategy", 
   function(df) {
@@ -140,7 +142,7 @@ df.cor.ratio.scatter %>%
   mutate_at(vars("pvalue"), formatC, format = "e", digits = 2) %>%
   mutate_at(vars("cor", "ci_lower", "ci_upper"), formatC, format = "f", digits = 3) %>%
   knitr::kable(format = "latex", row.names = FALSE, 
-               caption = "Correlations between train and test active ratios. 95% confidence intervals and p-values are shown.", 
+               caption = "Correlations between train and test active ratios. 95\\% confidence intervals and p-values are shown.", 
                booktabs = TRUE, label = "cortest-scatter-original") %>%
     kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
@@ -151,8 +153,8 @@ df.cor.ratio.scatter %>%
 
 The effect of the number of interactions of each protein in its corresponding set and fold (figure \@ref(fig:ratio-scatter-ninter)) and the protein length in amino acids (figure \@ref(fig:ratio-scatter-seqlen)) on the test set imbalance was investigated:
 
-* Proteins with greatest imbalance (i.e. where `(0.5 - ratio_test)^2` was greatest) tended to be among those with the least interactions.
-* The sequence length had no obvious effect on the protein imbalance.
+* Proteins with greatest imbalance (i.e. where `(0.5 - ratio_test)^2` was greatest) tended to be among those with the least interactions. Linear correlations were significant (table \@ref(tab:cortest-ninter-original)).
+* The sequence length had no obvious effect on the protein imbalance. Linear correlations were not significant (`no_resampling`, `semi_resampling`) or significant but low (`resampling_before_clustering`).
 
 
 ```{r, ratio-scatter-ninter, fig.width=8, fig.cap='Data imbalance in the test set as a function of the number of available interactions for each protein.'}
@@ -166,6 +168,28 @@ ggplot(df.clean.nobaseline,
   facet_wrap(~strategy, nrow = 1) +
   xlab("Number of interactions (log10)") +
   theme(aspect.ratio = 1, legend.position = "none")
+```
+
+```{r, results='asis'}
+df.cor.ratio.ninter <- plyr::mutate(
+  df.clean.nobaseline, imbalance_sq = (0.5 - ratio_test)**2) %>%
+  plyr::ddply(
+  "strategy", 
+  function(df) {
+    r <- cor.test(
+      formula = ~ n_interactions + imbalance_sq, 
+        data = df, method = "pearson", alternative = "two.sided")
+    format_cortest(r)  
+  }
+)
+
+df.cor.ratio.ninter %>% 
+  mutate_at(vars("pvalue"), formatC, format = "e", digits = 2) %>%
+  mutate_at(vars("cor", "ci_lower", "ci_upper"), formatC, format = "f", digits = 3) %>%
+  knitr::kable(format = "latex", row.names = FALSE, 
+               caption = "Correlations between imbalance (as defined above) and number of interactions. 95\\% confidence intervals and p-values are shown.", 
+               booktabs = TRUE, label = "cortest-ninter-original") %>%
+    kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
 
@@ -182,6 +206,29 @@ ggplot(df.clean.nobaseline,
   theme(aspect.ratio = 1, legend.position = "none")
 ```
 
+```{r}
+df.cor.ratio.seqlen <- plyr::mutate(
+  df.clean.nobaseline, imbalance_sq = (0.5 - ratio_test)**2) %>%
+  plyr::ddply(
+  "strategy", 
+  function(df) {
+    r <- cor.test(
+      formula = ~ len_seq + imbalance_sq, 
+        data = df, method = "pearson", alternative = "two.sided")
+    format_cortest(r)  
+  }
+)
+```
+
+```{r, results='asis'}
+df.cor.ratio.seqlen %>% 
+  mutate_at(vars("pvalue"), formatC, format = "e", digits = 2) %>%
+  mutate_at(vars("cor", "ci_lower", "ci_upper"), formatC, format = "f", digits = 3) %>%
+  knitr::kable(format = "latex", row.names = FALSE, 
+               caption = "Correlations between imbalance (as defined above) and sequence length. 95\\% confidence intervals and p-values are shown.", 
+               booktabs = TRUE, label = "cortest-seqlen-original") %>%
+    kableExtra::kable_styling(latex_options = c("hold_position"))
+```
 
 # Linear models on predicted proportions
 
@@ -237,6 +284,8 @@ Figure \@ref(fig:ratio-scatter-predicted) puts the predicted ratios in context o
 * `resampling_before_clustering` showed instead a negative relation between the training and the predicted ratio. But since the former and the test ratio also anticorrelated (figure \@ref(fig:ratio-scatter-original), the simplest explanation was that the test ratio drove the predicted test ratio.
 * `semi_resampling` showed no apparent correlation between the predicted ratio and the training ratio.
 
+The significance of the linear correlation backs up all the claims above (table \@ref(tab:cortest-scatter-predicted)).
+
 ```{r, ratio-scatter-predicted, fig.width=8, fig.cap='Predicted ratios, as a function of training ratios.'}
 ggplot(df.clean.nobaseline, 
        aes(x = ratio_training, y = ratio_test_predicted, colour = strategy)) +
@@ -247,6 +296,26 @@ ggplot(df.clean.nobaseline,
   scale_colour_manual(values = config$col.strategy) +
   facet_wrap(~strategy) +
   theme(aspect.ratio = 1, legend.position = "none")
+```
+
+```{r, results='asis'}
+df.cor.ratio.pred <- plyr::ddply(
+  df.clean.nobaseline, "strategy", 
+  function(df) {
+    r <- cor.test(
+      formula = ~ ratio_training + ratio_test_predicted, 
+        data = df, method = "pearson", alternative = "two.sided")
+    format_cortest(r)  
+  }
+)
+
+df.cor.ratio.pred %>% 
+  mutate_at(vars("pvalue"), formatC, format = "e", digits = 2) %>%
+  mutate_at(vars("cor", "ci_lower", "ci_upper"), formatC, format = "f", digits = 3) %>%
+  knitr::kable(format = "latex", row.names = FALSE, 
+               caption = "Correlations between train and predicted test active ratios. 95\\% confidence intervals and p-values are shown.", 
+               booktabs = TRUE, label = "cortest-scatter-predicted") %>%
+    kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
 ## Linear models
