@@ -1,15 +1,16 @@
 ---
-title: "Supplement 2: model predictions and performance (kinases)"
+title: "Supplement 3: model predictions and performance (GPCRs)"
 author: 
   - "Angela Lopez-del Rio"
   - "Sergio Picart-Armada"
   - "Alexandre Perera-Lluna"
-date: "05/12/2020"
+date: "06/01/2021"
 output: 
   bookdown::pdf_document2:
     keep_tex: yes
 header-includes:
   - \usepackage{placeins}
+  - \usepackage{xcolor}
 ---
 
 ```{r setup, include=FALSE}
@@ -30,7 +31,7 @@ library(kableExtra)
 config <- new.env()
 source("config.R", local = config)
 
-df.clean <- read.csv(config$file.cleanperf) %>%
+df.clean <- read.csv(config$file.cleanperf.gpcr) %>%
   dplyr::mutate(fold.label = paste0("Fold ", fold), 
                 fold = as.factor(fold), 
                 strategy = factor(strategy, levels = config$v.strategy))
@@ -82,7 +83,7 @@ stargazer2 <- function(...) {
 
 # Overview
 
-This supplement describes the behaviour of the proteochemometrics (PCM) deep learning model to predict protein-compound bioactivity. 
+This supplement describes the behaviour of the proteochemometrics (PCM) deep learning model to predict protein-compound bioactivity for \textcolor{blue}{kinases} \textcolor{magenta}{GPCRs (comments or differences)}. 
 Specifically, this includes the descriptive statistics of data imbalance: the proportion of actives per protein in the training and test sets during the model fitting and the predicted proportion of actives.
 The model performance per protein was also described, pinpointing the most influential factors and characterising the proteins with the most extreme performances.
 
@@ -111,11 +112,11 @@ Furthermore, specific trends were observed in the original data in the training 
 
 The histograms in figure \@ref(fig:ratio-histograms-original) revealed trends: 
 
-* `no_resampling` keeps similar data imbalance in training and test.
-* `resampling_before_clustering` and `semi_resampling` lead to a more balanced training set, but not so much for the test set.
-* `resampling_after_clustering` kept balanced proteins in both training and test sets.
+* `no_resampling` \textcolor{blue}{keeps similar data imbalance in training and test.}
+* `resampling_before_clustering` and `semi_resampling` \textcolor{blue}{lead to a more balanced training set, but not so much for the test set.}
+* `resampling_after_clustering` \textcolor{blue}{kept balanced proteins} in both training and test sets.
 
-In addition, test sets with imbalance tended to magnify it and create extreme cases (all actives or all inactives), probably due to the combination of the clustering and the lower sample sizes in the test sets compared to training.
+In addition, \textcolor{blue}{test sets with imbalance tended to magnify} it and create extreme cases (all actives or all inactives), probably due to the combination of the clustering and the lower sample sizes in the test sets compared to training.
 
 
 ```{r ratio-histograms-original, fig.width=8, fig.cap='Distributios of the actives ratio in the training set and in the test set (both original and predicted by the deep learning model).'}
@@ -135,10 +136,10 @@ tidyr::pivot_longer(
 
 Figure \@ref(fig:ratio-scatter-original) revealed both positive, negative and null trends between the training and test set protein balances.
 
-* `no_resampling` showed a positive relation between both, i.e. proteins were prone to keep their (im)balance in train and test.
-* `resampling_before_clustering` showed an inverse relationship instead. This was expected since this strategy started from globally balanced proteins, and after the clustering, an imbalance in one direction in the training set entailed an inverse imbalance in the test set.
-* `semi_resampling` led to independent train and test balances, expected since the train set was resampled, breaking any correlation with the test set balance.
-* `resampling_after_clustering` always kept balanced proteins, by design.
+* `no_resampling` showed a \textcolor{blue}{positive relation} between both, i.e. proteins were prone to keep their (im)balance in train and test.
+* `resampling_before_clustering` showed an \textcolor{blue}{inverse relationship} instead. This was expected since this strategy started from globally balanced proteins, and after the clustering, an imbalance in one direction in the training set entailed an inverse imbalance in the test set.
+* `semi_resampling` led to \textcolor{blue}{independent train and test balances, expected since the train set was resampled, breaking any correlation with the test set balance.} \textcolor{magenta}{a slight positive correlation, but weaker than no resampling}.
+* `resampling_after_clustering` always \textcolor{blue}{kept balanced proteins}, by design.
 
 
 ```{r ratio-scatter-original, fig.width=8, fig.cap='Comparison of the training and test ratios, by resampling strategy. A quasibinomial fit line was added per strategy.'}
@@ -190,8 +191,8 @@ df.cor.ratio.scatter %>%
 
 The effect of the number of interactions of each protein in its corresponding set and fold (figure \@ref(fig:ratio-scatter-ninter)) and the protein length in amino acids (figure \@ref(fig:ratio-scatter-seqlen)) on the test set imbalance was investigated:
 
-* Proteins with greatest imbalance (i.e. where `(0.5 - ratio_test)^2` was greatest) tended to be among those with the least interactions. Linear correlations were significant (table \@ref(tab:cortest-ninter-original)).
-* The sequence length had no obvious effect on the protein imbalance. Linear correlations were not significant (`no_resampling`, `semi_resampling`) or significant but low (`resampling_before_clustering`).
+* \textcolor{blue}{Proteins with greatest imbalance} (i.e. where `(0.5 - ratio_test)^2` was greatest) \textcolor{blue}{tended to be among those with the least interactions. Linear correlations were significant} (table \@ref(tab:cortest-ninter-original)).
+* \textcolor{blue}{The sequence length had no obvious effect on the protein imbalance. Linear correlations were not significant} (`no_resampling`, `semi_resampling`) or significant but low (`resampling_before_clustering`). 
 
 
 ```{r, ratio-scatter-ninter, fig.width=8, fig.cap='Data imbalance in the test set as a function of the number of available interactions for each protein.'}
@@ -281,9 +282,9 @@ The main options under consideration were:
 After the model predictions in the test set were binarized (actives were those whose probabilities exceeded $0.5$), the ratio of predicted actives was computed by protein. 
 This ratio, shown in figure \@ref(fig:ratio-hist-predicted), suggested that:
 
-* `no_resampling` was noticeably biased to predict everything as positives.
-* `resampling_before_clustering` and `semi_resampling` alleviated the imbalance in the predictions, but still retained a spike of proteins where all the compounds were predicted as positives.
-* `resampling_after_clustering` kept a wide and symmetric distribution of predicted actives.
+* `no_resampling` was noticeably \textcolor{blue}{biased to predict everything as positives}.
+* `resampling_before_clustering` and `semi_resampling` \textcolor{blue}{alleviated the imbalance in the predictions, but still retained a spike of proteins where all the compounds were predicted as positives}.
+* `resampling_after_clustering` \textcolor{blue}{kept a wide and symmetric distribution of predicted actives}.
 
 
 ```{r ratio-hist-predicted, fig.width=8, fig.cap='Ratios of the prediction values, after binarization.'}
@@ -296,7 +297,8 @@ ggplot(df.clean.nobaseline, aes(x = ratio_test_predicted, fill = strategy)) +
   theme(aspect.ratio = 1, legend.position = "none")
 ```
 
-Now, representing together (1) the original training and test ratios, and (2) the predicted ratios in test (figure \@ref(fig:ratio-hist-all)) eased a general qualitative assessment: the distribution was most resemblant to that of the test proportions to that of the training ones (except `resampling_after_clustering`, since those proportions are constant). Table \@ref(tab:perc-extremes) displays how `no_resampling` was highly inclined to predict all positives, `resampling_before_clustering` and `semi_resampling` alleviated this phenomenon, and `resampling_after_clustering` was essentially balanced.
+
+Now, representing together (1) the original training and test ratios, and (2) the predicted ratios in test (figure \@ref(fig:ratio-hist-all)) eased a general qualitative assessment: \textcolor{blue}{the distribution was most resemblant to that of the test proportions to that of the training ones} (except `resampling_after_clustering`, since those proportions are constant). Table \@ref(tab:perc-extremes) displays how `no_resampling` was \textcolor{blue}{highly inclined to predict all positives}, `resampling_before_clustering` and `semi_resampling` \textcolor{blue}{alleviated this phenomenon}, and `resampling_after_clustering` was \textcolor{blue}{essentially balanced}.
 
 ```{r ratio-hist-all, fig.width=6, fig.height=8, fig.cap='Distributios of the actives ratio in the training set and in the test set (both original and predicted by the deep learning model).'}
 tidyr::pivot_longer(
@@ -332,10 +334,10 @@ tidyr::pivot_longer(
 
 Figure \@ref(fig:ratio-scatter-predicted) puts the predicted ratios in context of the training ratios, elucidating a variety of trends:
 
-* `no_resampling`: positive trend between the training and the predicted ratio, but since the training and the test ratio also positively correlated (figure \@ref(fig:ratio-scatter-original)), the latter could be the one driving the predicted ratio of positives.
-* `resampling_after_clustering` had a constant training ratio, meaning that the predicted ratio was not explainable by differences in training ratios.
-* `resampling_before_clustering` showed instead a negative relation between the training and the predicted ratio. But since the former and the test ratio also anticorrelated (figure \@ref(fig:ratio-scatter-original), the simplest explanation was that the test ratio drove the predicted test ratio.
-* `semi_resampling` showed no apparent correlation between the predicted ratio and the training ratio.
+* `no_resampling`: \textcolor{blue}{positive trend between the training and the predicted ratio}, but since the training and the test ratio also positively correlated (figure \@ref(fig:ratio-scatter-original)), the latter could be the one driving the predicted ratio of positives.
+* `resampling_after_clustering` had a \textcolor{blue}{constant training ratio}, meaning that the predicted ratio was not explainable by differences in training ratios.
+* `resampling_before_clustering` showed instead a \textcolor{blue}{negative relation between the training and the predicted ratio}. But since the former and the test ratio also anticorrelated (figure \@ref(fig:ratio-scatter-original), the simplest explanation was that the test ratio drove the predicted test ratio.
+* `semi_resampling` showed \textcolor{blue}{no apparent correlation} between the predicted ratio and the training ratio.
 
 The significance of the linear correlation backs up all the claims above (table \@ref(tab:cortest-scatter-predicted)).
 
@@ -383,16 +385,16 @@ As additional covariates, the number of interactions $n_{int}$ and the sequence 
 
 ### In semi_resampling or resampling_before_clustering
 
-Due to the lack of correlation between training and test ratios (figure \@ref(fig:ratio-scatter-original)), the `semi_resampling` strategy is the **ideal scenario** to disentangle their effects on the predicted ratio of actives (see model in table \@ref(tab:mod-prop-semi-before)).
+\textcolor{blue}{Due to the lack of correlation between training and test ratios} \textcolor{magenta}{only slight correlation} (figure \@ref(fig:ratio-scatter-original)), the `semi_resampling` strategy is the \textcolor{blue}{ideal scenario to disentangle their effects} on the predicted ratio of actives (see model in table \@ref(tab:mod-prop-semi-before)).
 This additive model suggests:
 
-* The **test_ratio is driving the predicted proportions**, rather than the training ratio.
-* A relevant factor is **n_interactions**: the more interactions, the less active proportion, suggesting that the extreme cases with all predicted as actives tend to be proteins with few interactions.
+* The \textcolor{blue}{test_ratio is driving the predicted proportions, rather than the training ratio}.
+* A relevant factor is `n_interactions`: \textcolor{blue}{the more interactions, the less active proportion, suggesting that the extreme cases with all predicted as actives tend to be proteins with few interactions} \textcolor{magenta}{the term is not significant in GPCRs}.
 
 Table \@ref(tab:mod-prop-semi-before) also shows the additive model for `resampling_before_clustering`.
 This strategy showed negative correlation between training and test ratios, also providing a reasonably good scenario to distinguish their effects.
 
-* This model **confirms both conclusions** from the model in the `semi_resampling` strategy, with similar estimates.
+* \textcolor{blue}{This model confirms both conclusions from the model} in the `semi_resampling` strategy, with \textcolor{blue}{similar estimates.} \textcolor{magenta}{ the ratio in training is also significant for GPCRs, but lower significance and estimate than the ratio in test; number of interactions slightly significant now.}
 
 ```{r}
 lm.prop.semi <- lm(
@@ -422,10 +424,10 @@ stargazer2(
 
 ### In no_resampling
 
-The explanatory linear model under the `no_resampling` strategy (table \@ref(tab:mod-prop-nores)) suffers from the positive correlation between training and test ratios, which can be confounded.
+The explanatory linear model under the `no_resampling` strategy (table \@ref(tab:mod-prop-nores)) \textcolor{blue}{suffers from the positive correlation between training and test ratios, which can be confounded}.
 
-* Both `training_ratio` and `test_ratio` show a positive effect on the predicted fraction of actives. 
-* Although the estimate is larger and more significant for `training_ratio`, the confounding effect and the very skewed distribution of the predicted ratios deems this model inconclusive.
+* Both `training_ratio` and `test_ratio` show a \textcolor{blue}{positive effect} on the predicted fraction of actives. 
+* Although the \textcolor{blue}{estimate is larger and more significant} for `training_ratio`, the \textcolor{blue}{confounding effect and the very skewed distribution of the predicted ratios deems this model inconclusive}.
 
 ```{r}
 lm.prop.no <- lm(
@@ -455,6 +457,7 @@ stargazer2(
 * The correlation between a protein's ratio in train and test is positive in `no_resampling`, negative in `resampling_before_clustering` and null in `semi_resampling` and `resampling_after_clustering`. 
 * The main factor driving the ratio of actives in the model predictions, per protein, is the actual ratio of positives in the test set. Their distributions are resemblant, and linear models confirm the association.
 
+\textcolor{magenta}{All of them apply to GPCRs.}
 
 # Description of baseline performance
 
@@ -478,8 +481,8 @@ Metrics were called imbalance-sensitive if the imbalance-aware random baseline e
 ## Descriptive plot
 
 Figure \@ref(fig:perf-boxplot-baseline-foldavg) shows a fold-averaged picture of the metrics by protein. 
-Visual inspection suggested that accuracy, F1 and possibly balanced accuracy were affected by the data imbalance.
-F1 is the most apparent case, see the quartiles in table \@ref(tab:quartiles-f1-baseline).
+\textcolor{blue}{Visual inspection suggested that accuracy, F1 and possibly balanced accuracy were affected by the data imbalance}.
+\textcolor{blue}{F1 is the most apparent case}, see the quartiles in table \@ref(tab:quartiles-f1-baseline).
 
 ```{r, perf-boxplot-baseline-foldavg, fig.width=6, fig.height=5, fig.cap='Performance metrics for imbalance-aware random baselines. Data points correspond to proteins, averaged over folds.'}
 ggplot(subset(df.clean.foldavg.long, grepl("Random", baseline)), 
@@ -513,7 +516,7 @@ $$ \mathrm{metric} \sim \mathrm{strategy} +
 
 The response was the quantitative metric of interest (one model per metric), while `strategy` was categorical with the following possibilities: `no_resampling`, `resampling_after_clustering`, `resampling_before_clustering`, `semi_resampling`.
 Additional covariates included the number of interactions $n_{int}$ and the sequence length $n_{seq}$ (numerical) and the fold number $k_{fold}$ (categorical).
-The `strategy` variable was tested with a type 3 ANOVA, being significant with $p < 0.05$ for `acc`, `f1` and `balanced_acc` (table \@ref(tab:anova-baseline-strat)). 
+The `strategy` variable was tested with a type 3 ANOVA, being \textcolor{blue}{significant} with $p < 0.05$ for `acc`, `f1` and `balanced_acc` (table \@ref(tab:anova-baseline-strat)). 
 
 
 ```{r}
@@ -559,10 +562,12 @@ Based on this, metrics were divided in two types:
 * Those where the baseline was different between strategies, i.e. imbalance-sensitive: `acc`, `f1` and `balanced_acc`. Therefore, before comparing strategies, the baseline performance needed to be accounted for.
 * Those where the baseline was constant, i.e. imbalance-insensitive: `auroc`, `mcc`. Here we could compare strategies directly.
 
+\textcolor{magenta}{All applies to GPRCs as well.}
+
 # Description of deep learning model performance
 
 An overview of fold-averaged performances is displayed in figure \@ref(fig:perf-boxplot-strat-foldavg), where strategies are paired with their baselines.
-This illustrates the issue of direct strategy comparison with imbalance-sensitive metrics, which was especially visible for the F1-score.
+This illustrates the \textcolor{blue}{issue of direct strategy comparison} with imbalance-sensitive metrics, which was especially visible for the F1-score.
 Some metrics are undefined in edge cases (e.g. AUROC when only actives or only inactives are available); table \@ref(tab:nmetric-nona-strat) summarizes the number of proteins, added over folds, whose metrics were computable.
 
 ```{r, results='asis'}
@@ -599,12 +604,12 @@ Anologous to the baseline performance models, absolute metric models (not accoun
 $$ \mathrm{metric} \sim \mathrm{strategy} +  
     \mathrm{log10}(n_{int}) + \mathrm{log10}(n_{seq}) + k_{fold} $$
 
-The `strategy` covariate was always significant in a type 3 ANOVA (table \@ref(tab:anova-perf-strat)). 
-The models, summarized in \@ref(tab:mod-perf-absolute), showed different behaviour in imbalance-sensitive and insensitive metrics.
-Pairwise comparisons of the strategy coefficients using Tukey's method would point to two different pictures (figure \@ref(fig:perf-tukey-absolute-strat)), further confirmed when prioritizing the strategies according to their expected performance through the linear models (table \@ref(tab:emm-perf-strat) and figure \@ref(fig:perf-ranking-absolute-strat)):
+The `strategy` covariate was \textcolor{blue}{always significant} in a type 3 ANOVA (table \@ref(tab:anova-perf-strat)). 
+The models, summarized in \@ref(tab:mod-perf-absolute), showed \textcolor{blue}{different behaviour in imbalance-sensitive and insensitive metrics}.
+Pairwise comparisons of the strategy coefficients using Tukey's method would point to \textcolor{blue}{two different pictures} (figure \@ref(fig:perf-tukey-absolute-strat)), further confirmed when prioritizing the strategies according to their expected performance through the linear models (table \@ref(tab:emm-perf-strat) and figure \@ref(fig:perf-ranking-absolute-strat)):
 
-* Accuracy and F1-score suggested that `no_resampling` was the best strategy, but this was confounded by the fact that it also held the highest baselines.
-* AUROC, MCC and balanced accuracy showed instead that `resampling_before_clustering` and `resampling_after_clustering` held the highest performance estimates. 
+* Accuracy and F1-score suggested that `no_resampling` was the \textcolor{blue}{best strategy}, but this was confounded by the fact that it also held the \textcolor{blue}{highest baselines}.
+* AUROC, MCC and balanced accuracy showed instead that `resampling_before_clustering` and `resampling_after_clustering` held the \textcolor{blue}{highest performance estimates}. 
 
 
 ```{r}
@@ -777,7 +782,7 @@ Specifically:
 
 $$ \textrm{adj\_metric} = \textrm{metric} - \textrm{baseline} $$
 
-A descriptive plot of the the adjusted metrics (figure \@ref(fig:adjperf-boxplot-strat-foldavg)) pointed to a scenario diffent than that of unadjusted ones (figure \@ref(fig:perf-boxplot-strat-foldavg)).
+A descriptive plot of the the adjusted metrics (figure \@ref(fig:adjperf-boxplot-strat-foldavg)) pointed to a \textcolor{blue}{scenario diffent than that of unadjusted ones} (figure \@ref(fig:perf-boxplot-strat-foldavg)).
 
 ```{r adjperf-boxplot-strat-foldavg, fig.width=6, fig.height=5, fig.cap='Baseline-adjusted performance metrics for balancing strategies. Data points correspond to proteins, averaged over folds.'}
 ggplot(df.clean.diff.nobaseline.foldavg.long, 
@@ -798,11 +803,11 @@ $$ \mathrm{adj\_metric} \sim \mathrm{strategy} +
 
 Note that while all metrics but `mcc` were non-negative, the adjusted metrics could show negative values when the performance of the DL model was lower than that of the baseline.
 
-Again, `strategy` covariate was always significant in a type 3 ANOVA (table \@ref(tab:anova-adjperf-strat)). 
-Baseline adjustment brought a uniform behaviour across the models (table \@ref(tab:mod-adjperf-absolute)), further confirmed in pairwise coefficient comparison (Tukey's method, figure \@ref(fig:adjperf-tukey-absolute-strat)) and in their expected performance (table \@ref(tab:emm-adjperf-strat) and figure \@ref(fig:adjperf-ranking-absolute-strat)):
+Again, `strategy` covariate was \textcolor{blue}{always significant} in a type 3 ANOVA (table \@ref(tab:anova-adjperf-strat)). 
+\textcolor{blue}{Baseline adjustment brought a uniform behaviour across the models} (table \@ref(tab:mod-adjperf-absolute)), further confirmed in pairwise coefficient comparison (Tukey's method, figure \@ref(fig:adjperf-tukey-absolute-strat)) and in their expected performance (table \@ref(tab:emm-adjperf-strat) and figure \@ref(fig:adjperf-ranking-absolute-strat)):
 
-* `resampling_before_clustering` and `resampling_after_clustering` had the highest performance estimates, followed by `semi_resampling` and finally by `no_resampling`.
-* This picture was analogous to that of the non-adjusted performance metrics that were imbalance-insensitive (AUROC, MCC). 
+* `resampling_before_clustering` and `resampling_after_clustering` had the \textcolor{blue}{highest performance estimates, followed by} `semi_resampling` and finally by `no_resampling`.
+* This \textcolor{blue}{picture was analogous to that of the non-adjusted performance metrics that were imbalance-insensitive} (AUROC, MCC). 
 
 ```{r}
 # must do it like this for stargazer to work...
@@ -904,8 +909,8 @@ ggplot(df.metrics.diff, aes(x = metric, y = strategy, fill = rescaled, label = l
 Conclusions drawn from the baseline-adjusted performance analysis:
 
 * The largest impact in performance estimates was the application of **data augmentation to the test set**: `resampling_before_clustering` and `resampling_after_clustering` tended to outperform `semi_resampling` and `no_resampling` (Tukey's method, $p < 0.05$, figure \@ref(fig:adjperf-tukey-absolute-strat)). However, augmenting the test set might not faithfully reflect new data anymore, and could **artificially inflate the peformance estimates**. 
-* `semi_resampling` outperformed `no_resampling` in four out of five metrics (Tukey's method, $p < 0.05$, figure \@ref(fig:adjperf-tukey-absolute-strat)), which **supports data augmentation usefulness** even if the data balance in the test set differs from that of the training set. This was consistent with the observation that the predicted proportion of positives of the PCM model was mainly driven by the actual data balance in the test set, rather than that of the training set. Combined with the healthier distributions of predicted active ratios of `semi_resampling` against `no_resampling`, this made a case in favour of the former.
-* In four out of five metrics, **proteins with more interactions were better predicted** (table \@ref(tab:mod-adjperf-absolute)).
+* `semi_resampling` outperformed `no_resampling` in \textcolor{blue}{four out of five metrics} \textcolor{magenta}{three out of five, being the other two non-significant} (Tukey's method, $p < 0.05$, figure \@ref(fig:adjperf-tukey-absolute-strat)), which **supports data augmentation usefulness** even if the data balance in the test set differs from that of the training set. This was \textcolor{blue}{consistent with the observation that the predicted proportion of positives of the PCM model was mainly driven by the actual data balance in the test set, rather than that of the training set. Combined with the healthier distributions of predicted active ratios} of `semi_resampling` against `no_resampling`, this made a \textcolor{blue}{case in favour of the former}.
+* In \textcolor{blue}{four} \textcolor{magenta}{five} out of five metrics, **proteins with more interactions were better predicted** (table \@ref(tab:mod-adjperf-absolute)).
 
 \FloatBarrier 
 
