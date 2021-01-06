@@ -298,7 +298,7 @@ ggplot(df.clean.nobaseline, aes(x = ratio_test_predicted, fill = strategy)) +
 
 and represented together with the original training and test ratios in figure .
 
-Now, representing together (1) the original training and test ratios, and (2) the predicted ratios in test (figure \@ref(fig:ratio-hist-all)) eased a general qualitative assessment: the distribution was most resemblant to that of the test proportions to that of the training ones (except `resampling_after_clustering`, since those proportions are constant).
+Now, representing together (1) the original training and test ratios, and (2) the predicted ratios in test (figure \@ref(fig:ratio-hist-all)) eased a general qualitative assessment: the distribution was most resemblant to that of the test proportions to that of the training ones (except `resampling_after_clustering`, since those proportions are constant). Table \@ref(tab:perc-extremes) displays how `no_resampling` was highly inclined to predict all positives, `resampling_before_clustering` and `semi_resampling` alleviated this phenomenon, and `resampling_after_clustering` was essentially balanced.
 
 ```{r ratio-hist-all, fig.width=6, fig.height=8, fig.cap='Distributios of the actives ratio in the training set and in the test set (both original and predicted by the deep learning model).'}
 tidyr::pivot_longer(
@@ -312,7 +312,6 @@ tidyr::pivot_longer(
 ```
 
 ```{r, results='asis'}
-# asdf
 tidyr::pivot_longer(
   df.clean.nobaseline, 
   c("ratio_training", "ratio_test", "ratio_test_predicted"), 
