@@ -311,6 +311,25 @@ tidyr::pivot_longer(
   theme(aspect.ratio = 1, legend.position = "none")
 ```
 
+```{r, results='asis'}
+# asdf
+tidyr::pivot_longer(
+  df.clean.nobaseline, 
+  c("ratio_training", "ratio_test", "ratio_test_predicted"), 
+  values_to = "Ratio", names_to = "RatioSet") %>% 
+  group_by(strategy, RatioSet) %>%
+  summarise(all_inactives = 100*mean(abs(Ratio) < 1e-6, na.rm = TRUE), 
+            all_actives = 100*mean(abs(Ratio - 1) < 1e-6, na.rm = TRUE), 
+            all_extremes = all_inactives + all_actives) %>%
+  mutate_if(is.numeric, formatC, format = "f", digits = 1) %>%
+  knitr::kable(
+    format = "latex", row.names = FALSE, 
+    caption = "Percentage of extreme cases, i.e. proteins with all actives or inactives.", 
+    booktabs = TRUE, label = "perc-extremes", 
+    linesep = c("", "", "\\addlinespace")) %>%
+  kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+
 
 ## Predicted ratios against training ratios
 
