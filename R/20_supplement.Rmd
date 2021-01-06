@@ -44,10 +44,12 @@ ggplot2::theme_set(config$gg_theme)
 ```
 
 ```{r}
+# booktabs: add vertical spaces
+# https://stackoverflow.com/questions/49015578
+
+
 # hack to display actual pvalues
 # https://stackoverflow.com/questions/31551822/how-to-display-coefficients-in-scientific-notation-with-stargazer
-
-
 stargazer2 <- function(...) {
   # string to mark floats in output - watchout for collisions!
   mark  = '::::::'
@@ -583,7 +585,7 @@ $$ \mathrm{metric} \sim \mathrm{strategy} +
 
 The `strategy` covariate was always significant in a type 3 ANOVA (table \@ref(tab:anova-perf-strat)). 
 The models, summarized in \@ref(tab:mod-perf-absolute), showed different behaviour in imbalance-sensitive and insensitive metrics.
-Pairwise comparisons of the strategy coefficients using Tukey's method would point to two different pictures (figure \@ref(fig:perf-tukey-absolute-strat)), further confirmed when prioritizing the strategies according to their expected performance through the linear models (figure \@ref(fig:perf-ranking-absolute-strat)):
+Pairwise comparisons of the strategy coefficients using Tukey's method would point to two different pictures (figure \@ref(fig:perf-tukey-absolute-strat)), further confirmed when prioritizing the strategies according to their expected performance through the linear models (table \@ref(tab:emm-perf-strat) and figure \@ref(fig:perf-ranking-absolute-strat)):
 
 * Accuracy and F1-score suggested that `no_resampling` was the best strategy, but this was confounded by the fact that it also held the highest baselines.
 * AUROC, MCC and balanced accuracy showed instead that `resampling_before_clustering` and `resampling_after_clustering` held the highest performance estimates. 
@@ -676,7 +678,7 @@ par(mfrow = c(1, 1))
 ```
 
 
-```{r}
+```{r, results='asis'}
 df.metrics.absolute <- plyr::ldply(list.emm.strat, summary, .id = "metric") %>%
   # ungroup %>%
   group_by(metric) %>%
@@ -684,6 +686,18 @@ df.metrics.absolute <- plyr::ldply(list.emm.strat, summary, .id = "metric") %>%
          rescaled = emmean/max(emmean), 
          rank = rank(-emmean), 
          label = paste0(rank, " (", round(emmean, 3), ")"))
+
+
+dplyr::select(df.metrics.absolute, metric, strategy, emmean, SE, lower.CL, upper.CL) %>%
+  mutate_at(vars("emmean", "lower.CL", "upper.CL"), formatC, format = "f", digits = 3) %>%
+  mutate_at(vars("SE"), formatC, format = "e", digits = 3) %>%
+  knitr::kable(
+    format = "latex", row.names = FALSE, 
+    caption = "Expected absolute performances, by metric and strategy, with 95\\% confidence intervals.", 
+    booktabs = TRUE, label = "emm-perf-strat", 
+    linesep = c(rep("", length(config$v.strategy) - 1), "\\addlinespace")) %>%
+  kableExtra::kable_styling(latex_options = c("hold_position"))
+
 ```
 
 ```{r perf-ranking-absolute-strat, fig.width=7, fig.height=6, fig.cap='Method ranking according to the linear model predicted performances for each metric. Baseline metrics were ignored.'}
@@ -769,7 +783,7 @@ $$ \mathrm{adj\_metric} \sim \mathrm{strategy} +
 Note that while all metrics but `mcc` were non-negative, the adjusted metrics could show negative values when the performance of the DL model was lower than that of the baseline.
 
 Again, `strategy` covariate was always significant in a type 3 ANOVA (table \@ref(tab:anova-adjperf-strat)). 
-Baseline adjustment brought a uniform behaviour across the models (table \@ref(tab:mod-adjperf-absolute)), further confirmed in pairwise coefficient comparison (Tukey's method, figure \@ref(fig:adjperf-tukey-absolute-strat)) and in their expected performance (figure \@ref(fig:adjperf-ranking-absolute-strat)):
+Baseline adjustment brought a uniform behaviour across the models (table \@ref(tab:mod-adjperf-absolute)), further confirmed in pairwise coefficient comparison (Tukey's method, figure \@ref(fig:adjperf-tukey-absolute-strat)) and in their expected performance (table \@ref(tab:emm-adjperf-strat) and figure \@ref(fig:adjperf-ranking-absolute-strat)):
 
 * `resampling_before_clustering` and `resampling_after_clustering` had the highest performance estimates, followed by `semi_resampling` and finally by `no_resampling`.
 * This picture was analogous to that of the non-adjusted performance metrics that were imbalance-insensitive (AUROC, MCC). 
@@ -843,6 +857,16 @@ df.metrics.diff <- plyr::ldply(list.emm.diff.strat, summary, .id = "metric") %>%
          rescaled = emmean/max(emmean), 
          rank = rank(-emmean), 
          label = paste0(rank, " (", round(emmean, 3), ")"))
+
+dplyr::select(df.metrics.diff, metric, strategy, emmean, SE, lower.CL, upper.CL) %>%
+  mutate_at(vars("emmean", "lower.CL", "upper.CL"), formatC, format = "f", digits = 3) %>%
+  mutate_at(vars("SE"), formatC, format = "e", digits = 3) %>%
+  knitr::kable(
+    format = "latex", row.names = FALSE, 
+    caption = "Expected adjusted performances, by metric and strategy, with 95\\% confidence intervals.", 
+    booktabs = TRUE, label = "emm-adjperf-strat", 
+    linesep = c(rep("", length(config$v.strategy) - 1), "\\addlinespace")) %>%
+  kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
 ```{r adjperf-ranking-absolute-strat, fig.width=7, fig.height=6, fig.cap='Method ranking according to the linear model predicted adjusted performances for each metric. Baseline metrics were taken into account in the adjustment.'}
@@ -857,7 +881,7 @@ ggplot(df.metrics.diff, aes(x = metric, y = strategy, fill = rescaled, label = l
         legend.position = "right") + 
   xlab("Baseline-adjusted performance metric") + 
   ylab("Method") + 
-  ggtitle("Method ranking by absolute performance.", 
+  ggtitle("Method ranking by adjusted performance.", 
           subtitle = "Lower ranks are better. Expected fold-averaged performances in brackets.")
 ```
 
