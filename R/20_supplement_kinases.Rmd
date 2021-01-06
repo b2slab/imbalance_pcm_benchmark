@@ -1,5 +1,5 @@
 ---
-title: "Supplement 2: model predictions and performance"
+title: "Supplement 2: model predictions and performance (kinases)"
 author: 
   - "Angela Lopez-del Rio"
   - "Sergio Picart-Armada"

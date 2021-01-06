@@ -1,9 +1,10 @@
 RSCRIPT := Rscript
 
-suppl: 20_supplement.pdf ziptex
+suppl: 20_supplement_kinases.pdf ziptex
 
 ziptex:: 
-	zip -9 -r supplement.zip 20_supplement.pdf 20_supplement.tex 20_supplement_files;
+	zip -9 -r supplement.zip 20_supplement_kinases.pdf \
+		20_supplement_kinases.tex 20_supplement_kinases_files;
 
 cleanziptex::
 	rm supplement.zip
