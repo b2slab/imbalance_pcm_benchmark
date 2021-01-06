@@ -24,7 +24,7 @@ library(magrittr)
 library(corrplot)
 
 library(stargazer)
-# library(xtable)
+library(gsubfn)
 library(kableExtra)
 
 config <- new.env()
@@ -42,6 +42,41 @@ v.metrics <- intersect(config$v.metrics, names(df.clean))
 
 ggplot2::theme_set(config$gg_theme)
 ```
+
+```{r}
+# hack to display actual pvalues
+# https://stackoverflow.com/questions/31551822/how-to-display-coefficients-in-scientific-notation-with-stargazer
+
+
+stargazer2 <- function(...) {
+  # string to mark floats in output - watchout for collisions!
+  mark  = '::::::'
+  # regex to match it
+  reg = paste0("([0-9.\\-]+", mark, "[0-9.\\-]+)")
+  
+  # function to replace with  right format
+  replace_numbers = function(x, low=0.01, high=1e3, digits = 3) {
+    x = gsub(mark,'.',x)
+    x.num = as.numeric(x)
+    form = paste0('%.', digits, 'e')
+    ifelse(
+      (abs(x.num) >= low) & (abs(x.num) < high), 
+      round(x.num, digits = digits), 
+      sprintf(form, x.num) 
+    )
+  }
+  
+  # get stargazer marked table, use 100 digits to pick stuff like p = 1e-80
+  # 200 digits breaks down
+  out <- capture.output(stargazer::stargazer(
+    decimal.mark  = mark, digit.separator = '', digits = 100, ...)
+  )
+  
+  # hack format
+  cat(gsubfn::gsubfn(reg, ~replace_numbers(x), out), sep='\n')
+}
+```
+
 
 # Overview
 
@@ -356,8 +391,9 @@ lm.prop.before <- lm(
 ```
 
 ```{r, results='asis'}
-stargazer::stargazer(
+stargazer2(
   lm.prop.semi, lm.prop.before, 
+  report = "vcs*p",
   column.labels = c("semi\\_resampling", "resampling\\_before\\_clustering"), 
   ci = TRUE, ci.level = 0.95, header = FALSE, 
   single.row = TRUE, omit.table.layout = "mdl", 
@@ -383,8 +419,9 @@ lm.prop.no <- lm(
 
 
 ```{r, results='asis'}
-stargazer::stargazer(
+stargazer2(
   lm.prop.no,  
+  report = "vcs*p",
   column.labels = c("no\\_resampling"), 
   ci = TRUE, ci.level = 0.95, header = FALSE, 
   single.row = TRUE, omit.table.layout = "mdl", 
@@ -392,6 +429,7 @@ stargazer::stargazer(
   label = "tab:mod-prop-nores", 
   title = "Linear models to describe the predicted active ratio for the no\\_resampling strategy. Significance and 95\\% confidence intervals are included.")
 ```
+
 
 ## Conclusions
 
@@ -423,6 +461,7 @@ Metrics were called imbalance-sensitive if the imbalance-aware random baseline e
 
 Figure \@ref(fig:perf-boxplot-baseline-foldavg) shows a fold-averaged picture of the metrics by protein. 
 Visual inspection suggested that accuracy, F1 and possibly balanced accuracy were affected by the data imbalance.
+F1 is the most apparent case, see the quartiles in table \@ref(tab:quartiles-f1-baseline).
 
 ```{r, perf-boxplot-baseline-foldavg, fig.width=6, fig.height=5, fig.cap='Performance metrics for imbalance-aware random baselines. Data points correspond to proteins, averaged over folds.'}
 ggplot(subset(df.clean.foldavg.long, grepl("Random", baseline)), 
@@ -435,6 +474,17 @@ ggplot(subset(df.clean.foldavg.long, grepl("Random", baseline)),
     theme(legend.position = "none", aspect.ratio = 1, 
           axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 ```
+
+```{r, results='asis'}
+subset(df.clean.foldavg.long, grepl("Random", baseline) & metric == "f1") %>%
+  plyr::ddply("strategy", function(x) summary(x$performance)) %>%
+  mutate_if(is.numeric, formatC, format = "f", digits = 3) %>%
+  knitr::kable(format = "latex", row.names = FALSE, 
+               caption = "Quartiles for the baseline F1-scores.", 
+               booktabs = TRUE, label = "quartiles-f1-baseline") %>%
+    kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+
 
 ## Linear models
 
@@ -561,8 +611,10 @@ df.anova.strat %>% subset(variable == "strategy") %>%
 ```
 
 ```{r, results='asis'}
-stargazer::stargazer(
+stargazer2(
   list.lm.strat, 
+  report = "vc*sp",
+  font.size = "scriptsize",
   column.labels = gsub("_", "\\\\_", names(list.lm.strat)),
   # ci = TRUE, ci.level = 0.95, 
   header = FALSE, 
@@ -744,8 +796,10 @@ df.anova.diff.strat %>% subset(variable == "strategy") %>%
 ```
 
 ```{r, results='asis'}
-stargazer::stargazer(
+stargazer2(
   list.lm.diff.strat, 
+  report = "vc*sp",
+  font.size = "scriptsize", 
   column.labels = gsub("_", "\\\\_", names(list.lm.strat)),
   # ci = TRUE, ci.level = 0.95, 
   header = FALSE, 
