@@ -141,12 +141,12 @@ Figure \@ref(fig:ratio-scatter-original) revealed both positive, negative and nu
 * `resampling_after_clustering` always kept balanced proteins, by design.
 
 
-```{r ratio-scatter-original, fig.width=8, fig.cap='Comparison of the training and test ratios, by resampling strategy. A quasibinomial fit line was added per strategy.'}
+```{r ratio-scatter-original, fig.width=8, fig.cap='Comparison of the training and test ratios, by resampling strategy. A linear fit line was added per strategy.'}
 ggplot(df.clean.nobaseline, aes(x = ratio_training, y = ratio_test)) +
   geom_point(size = .2, colour = "gray20") +
   geom_smooth(
     aes(colour = strategy), 
-    method = "glm", method.args = list(family = "quasibinomial")) +
+    method = "lm") +
   scale_colour_manual(values = config$col.strategy) +
   facet_wrap(~strategy, nrow = 1) +
   xlab("Actives ratio (training set)") +
@@ -200,7 +200,7 @@ ggplot(df.clean.nobaseline,
   geom_point(size = .2, colour = "gray20") +
   geom_smooth(
     aes(colour = strategy), 
-    method = "glm", method.args = list(family = "quasibinomial")) +
+    method = "lm") +
   scale_colour_manual(values = config$col.strategy) +
   facet_wrap(~strategy, nrow = 1) +
   xlab("Number of interactions (log10)") +
@@ -236,7 +236,7 @@ ggplot(df.clean.nobaseline,
   geom_point(size = .2, colour = "gray20") +
   geom_smooth(
     aes(colour = strategy), 
-    method = "glm", method.args = list(family = "quasibinomial")) +
+    method = "lm") +
   scale_colour_manual(values = config$col.strategy) +
   facet_wrap(~strategy, nrow = 1) +
   xlab("Protein length (log10)") +
@@ -345,7 +345,7 @@ ggplot(df.clean.nobaseline,
   geom_point(size = .2, colour = "gray20") +
   geom_smooth(
     aes(colour = strategy), 
-    method = "glm", method.args = list(family = "quasibinomial")) +
+    method = "lm") +
   scale_colour_manual(values = config$col.strategy) +
   facet_wrap(~strategy) +
   theme(aspect.ratio = 1, legend.position = "none")
