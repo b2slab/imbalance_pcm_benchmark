@@ -208,6 +208,7 @@ ggplot(df.clean.nobaseline,
   theme(aspect.ratio = 1, legend.position = "none")
 ```
 
+
 ```{r, results='asis'}
 df.cor.ratio.ninter <- plyr::mutate(
   df.clean.nobaseline, imbalance_sq = (0.5 - ratio_test)**2) %>%
@@ -349,7 +350,9 @@ ggplot(df.clean.nobaseline,
     aes(colour = strategy), 
     method = "lm") +
   scale_colour_manual(values = config$col.strategy) +
-  facet_wrap(~strategy) +
+  facet_wrap(~strategy, nrow = 1) +
+  xlab("Actives ratio (training set)") +
+  ylab("Predicted actives ratio (test set)") +
   theme(aspect.ratio = 1, legend.position = "none")
 ```
 
@@ -584,18 +587,19 @@ df.clean.nobaseline[c("strategy", config$v.metrics)] %>%
 ```
 
 
-```{r perf-boxplot-strat-foldavg, fig.width=10, fig.height=8, fig.cap='Performance metrics for balancing strategies and their corresponding imbalance-aware random baselines. Data points correspond to proteins, averaged over folds.'}
+```{r perf-boxplot-strat-foldavg, fig.width=6, fig.height=5, fig.cap='Performance metrics for balancing strategies and their corresponding imbalance-aware random baselines. Data points correspond to proteins, averaged over folds.'}
 # ggplot(subset(df.clean.foldavg.long, metric %in% c("auroc", "mcc")), 
 ggplot(df.clean.foldavg.long, 
        aes(x = strategy, y = performance, fill = strategy, 
            alpha = baseline, colour = baseline, position = baseline)) +
-    geom_boxplot(outlier.size = .5) +
+    geom_boxplot(outlier.size = .25, lwd = .25) +
     facet_wrap(~metric, scales = "free_y") +
     scale_fill_manual(values = config$col.strategy, guide = FALSE) +
-    scale_colour_manual(values = c("gray5", "gray50")) +
-    scale_alpha_manual(values = c(1, .5)) +
+    scale_colour_manual(values = c("gray5", "gray50"), name = "Prediction type") +
+    scale_alpha_manual(values = c(1, .5), name = "Prediction type") +
+    xlab("Strategy") +
     ylab("Performance") +
-    theme(legend.position = "bottom", aspect.ratio = 1, 
+    theme(legend.position = c(.87, .15), aspect.ratio = 1, 
           axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 ```
 
@@ -794,6 +798,7 @@ ggplot(df.clean.diff.nobaseline.foldavg.long,
     geom_boxplot(outlier.size = .5) +
     scale_fill_manual(values = config$col.strategy, guide = FALSE) +
     facet_wrap(~metric, scales = "free_y") +
+    xlab("Strategy") +
     ylab("Baseline-adjusted performance") +
     theme(legend.position = "bottom", aspect.ratio = 1, 
           axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
@@ -893,20 +898,26 @@ dplyr::select(df.metrics.diff, metric, strategy, emmean, SE, lower.CL, upper.CL)
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
-```{r adjperf-ranking-absolute-strat, fig.width=7, fig.height=6, fig.cap='Method ranking according to the linear model predicted adjusted performances for each metric. Baseline metrics were taken into account in the adjustment.'}
-ggplot(df.metrics.diff, aes(x = metric, y = strategy, fill = rescaled, label = label)) + 
+```{r adjperf-ranking-absolute-strat, fig.width=8, fig.height=6, fig.cap='Method ranking according to the linear model predicted adjusted performances for each metric. Baseline metrics were taken into account in the adjustment. For a direct comparison, the same ranking using the absolute metrics was kept side by side.'}
+df.metrics.both <- dplyr::bind_rows(
+  mutate(df.metrics.absolute, modtype = "Absolute metrics"), 
+  mutate(df.metrics.diff, modtype = "Baseline-adjusted metrics")
+)
+
+ggplot(df.metrics.both, aes(x = strategy, y = metric, fill = rescaled, label = label)) + 
   geom_tile(color = "white") + 
   geom_text(size = 2.75) + 
   # scale_fill_gradient2(mid = "white", high = "mediumpurple1") + 
-  scale_fill_distiller(palette = "Spectral", direction = -1, name = "Performance rescaled\nby column maximum") +
-  theme_bw() + 
+  scale_fill_distiller(palette = "Spectral", direction = -1, name = "Performance rescaled by\neach block row maximum") +
+  facet_wrap(~modtype, nrow = 1) +
   coord_fixed() +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1), 
-        legend.position = "right") + 
-  xlab("Baseline-adjusted performance metric") + 
-  ylab("Method") + 
+  xlab("Strategy") + 
+  ylab("Performance metric") + 
   ggtitle("Method ranking by adjusted performance.", 
-          subtitle = "Lower ranks are better. Expected fold-averaged performances in brackets.")
+          subtitle = "Lower ranks are better. Expected fold-averaged performances in brackets.") +
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1), 
+        legend.position = "right")
 ```
 
 Conclusions drawn from the baseline-adjusted performance analysis:
