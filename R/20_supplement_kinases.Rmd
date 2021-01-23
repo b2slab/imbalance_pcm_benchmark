@@ -373,7 +373,7 @@ df.cor.ratio.pred %>%
 
 ## Linear models
 
-The predicted ratio of actives $r_{pred}$ was modelled through the following linear models, stratified by strategy:
+The predicted ratio of actives $r_{pred}$ was modelled through the following quasibinomial generalized linear models, stratified by strategy:
 
 $$ r_{pred} \sim r_{training} + r_{test} + 
     \mathrm{log10}(n_{int}) + \mathrm{log10}(n_{seq}) + k_{fold} $$
