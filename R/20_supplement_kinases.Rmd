@@ -587,7 +587,7 @@ df.clean.nobaseline[c("strategy", config$v.metrics)] %>%
 ggplot(df.clean.foldavg.long, 
        aes(x = strategy, y = performance, fill = strategy, 
            alpha = baseline, colour = baseline, position = baseline)) +
-    geom_boxplot(outlier.size = .5) +
+    geom_boxplot(outlier.size = .25, lwd = .25) +
     facet_wrap(~metric, scales = "free_y") +
     scale_fill_manual(values = config$col.strategy, guide = FALSE) +
     scale_colour_manual(values = c("gray5", "gray50"), name = "Prediction type") +
