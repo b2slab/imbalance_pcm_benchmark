@@ -397,15 +397,17 @@ This strategy showed negative correlation between training and test ratios, also
 * \textcolor{blue}{This model confirms both conclusions from the model} in the `semi_resampling` strategy, with \textcolor{blue}{similar estimates.} \textcolor{magenta}{ the ratio in training is also significant for GPCRs, but lower significance and estimate than the ratio in test; number of interactions slightly significant now.}
 
 ```{r}
-lm.prop.semi <- lm(
+lm.prop.semi <- glm(
   ratio_test_predicted ~ ratio_training + ratio_test + 
     log10(n_interactions) + log10(len_seq) + fold, 
+  family = quasibinomial(),
   data = subset(df.clean.nobaseline, strategy == "semi_resampling")
 )
 
-lm.prop.before <- lm(
+lm.prop.before <- glm(
   ratio_test_predicted ~ ratio_training + ratio_test + 
     log10(n_interactions) + log10(len_seq) + fold, 
+  family = quasibinomial(),
   data = subset(df.clean.nobaseline, strategy == "resampling_before_clustering")
 )
 ```
@@ -430,9 +432,10 @@ The explanatory linear model under the `no_resampling` strategy (table \@ref(tab
 * Although the \textcolor{blue}{estimate is larger and more significant} for `training_ratio`, the \textcolor{blue}{confounding effect and the very skewed distribution of the predicted ratios deems this model inconclusive}.
 
 ```{r}
-lm.prop.no <- lm(
+lm.prop.no <- glm(
   ratio_test_predicted ~ ratio_training + ratio_test + 
     log10(n_interactions) + log10(len_seq) + fold, 
+  family = quasibinomial(),
   data = subset(df.clean.nobaseline, strategy == "no_resampling")
 )
 ```

@@ -395,15 +395,17 @@ This strategy showed negative correlation between training and test ratios, also
 * This model **confirms both conclusions** from the model in the `semi_resampling` strategy, with similar estimates.
 
 ```{r}
-lm.prop.semi <- lm(
+lm.prop.semi <- glm(
   ratio_test_predicted ~ ratio_training + ratio_test + 
     log10(n_interactions) + log10(len_seq) + fold, 
+  family = quasibinomial(),
   data = subset(df.clean.nobaseline, strategy == "semi_resampling")
 )
 
-lm.prop.before <- lm(
+lm.prop.before <- glm(
   ratio_test_predicted ~ ratio_training + ratio_test + 
     log10(n_interactions) + log10(len_seq) + fold, 
+  family = quasibinomial(),
   data = subset(df.clean.nobaseline, strategy == "resampling_before_clustering")
 )
 ```
@@ -428,9 +430,10 @@ The explanatory linear model under the `no_resampling` strategy (table \@ref(tab
 * Although the estimate is larger and more significant for `training_ratio`, the confounding effect and the very skewed distribution of the predicted ratios deems this model inconclusive.
 
 ```{r}
-lm.prop.no <- lm(
+lm.prop.no <- glm(
   ratio_test_predicted ~ ratio_training + ratio_test + 
     log10(n_interactions) + log10(len_seq) + fold, 
+  family = quasibinomial(),
   data = subset(df.clean.nobaseline, strategy == "no_resampling")
 )
 ```
