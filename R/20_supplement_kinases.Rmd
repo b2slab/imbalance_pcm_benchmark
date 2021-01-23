@@ -306,6 +306,7 @@ tidyr::pivot_longer(
   geom_histogram() +
   facet_grid(strategy~RatioSet, scales = "free_y") +
   scale_fill_manual(values = config$col.strategy) +
+  ylab("Count") +
   theme(aspect.ratio = 1, legend.position = "none")
 ```
 
@@ -347,7 +348,9 @@ ggplot(df.clean.nobaseline,
     aes(colour = strategy), 
     method = "lm") +
   scale_colour_manual(values = config$col.strategy) +
-  facet_wrap(~strategy) +
+  facet_wrap(~strategy, nrow = 1) +
+  xlab("Actives ratio (training set)") +
+  ylab("Predicted actives ratio (test set)") +
   theme(aspect.ratio = 1, legend.position = "none")
 ```
 
@@ -579,7 +582,7 @@ df.clean.nobaseline[c("strategy", config$v.metrics)] %>%
 ```
 
 
-```{r perf-boxplot-strat-foldavg, fig.width=10, fig.height=8, fig.cap='Performance metrics for balancing strategies and their corresponding imbalance-aware random baselines. Data points correspond to proteins, averaged over folds.'}
+```{r perf-boxplot-strat-foldavg, fig.width=6, fig.height=5, fig.cap='Performance metrics for balancing strategies and their corresponding imbalance-aware random baselines. Data points correspond to proteins, averaged over folds.'}
 # ggplot(subset(df.clean.foldavg.long, metric %in% c("auroc", "mcc")), 
 ggplot(df.clean.foldavg.long, 
        aes(x = strategy, y = performance, fill = strategy, 
@@ -587,10 +590,11 @@ ggplot(df.clean.foldavg.long,
     geom_boxplot(outlier.size = .5) +
     facet_wrap(~metric, scales = "free_y") +
     scale_fill_manual(values = config$col.strategy, guide = FALSE) +
-    scale_colour_manual(values = c("gray5", "gray50")) +
-    scale_alpha_manual(values = c(1, .5)) +
+    scale_colour_manual(values = c("gray5", "gray50"), name = "Prediction type") +
+    scale_alpha_manual(values = c(1, .5), name = "Prediction type") +
+    xlab("Strategy") +
     ylab("Performance") +
-    theme(legend.position = "bottom", aspect.ratio = 1, 
+    theme(legend.position = c(.87, .15), aspect.ratio = 1, 
           axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 ```
 
@@ -789,6 +793,7 @@ ggplot(df.clean.diff.nobaseline.foldavg.long,
     geom_boxplot(outlier.size = .5) +
     scale_fill_manual(values = config$col.strategy, guide = FALSE) +
     facet_wrap(~metric, scales = "free_y") +
+    xlab("Strategy") +
     ylab("Baseline-adjusted performance") +
     theme(legend.position = "bottom", aspect.ratio = 1, 
           axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
