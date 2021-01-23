@@ -893,20 +893,26 @@ dplyr::select(df.metrics.diff, metric, strategy, emmean, SE, lower.CL, upper.CL)
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
-```{r adjperf-ranking-absolute-strat, fig.width=7, fig.height=6, fig.cap='Method ranking according to the linear model predicted adjusted performances for each metric. Baseline metrics were taken into account in the adjustment.'}
-ggplot(df.metrics.diff, aes(x = metric, y = strategy, fill = rescaled, label = label)) + 
+```{r adjperf-ranking-absolute-strat, fig.width=8, fig.height=6, fig.cap='Method ranking according to the linear model predicted adjusted performances for each metric. Baseline metrics were taken into account in the adjustment. For a direct comparison, the same ranking using the absolute metrics was kept side by side.'}
+df.metrics.both <- dplyr::bind_rows(
+  mutate(df.metrics.absolute, modtype = "Absolute metrics"), 
+  mutate(df.metrics.diff, modtype = "Baseline-adjusted metrics")
+)
+
+ggplot(df.metrics.both, aes(x = strategy, y = metric, fill = rescaled, label = label)) + 
   geom_tile(color = "white") + 
   geom_text(size = 2.75) + 
   # scale_fill_gradient2(mid = "white", high = "mediumpurple1") + 
-  scale_fill_distiller(palette = "Spectral", direction = -1, name = "Performance rescaled\nby column maximum") +
-  theme_bw() + 
+  scale_fill_distiller(palette = "Spectral", direction = -1, name = "Performance rescaled by\neach block row maximum") +
+  facet_wrap(~modtype, nrow = 1) +
   coord_fixed() +
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1), 
-        legend.position = "right") + 
-  xlab("Baseline-adjusted performance metric") + 
-  ylab("Method") + 
+  xlab("Strategy") + 
+  ylab("Performance metric") + 
   ggtitle("Method ranking by adjusted performance.", 
-          subtitle = "Lower ranks are better. Expected fold-averaged performances in brackets.")
+          subtitle = "Lower ranks are better. Expected fold-averaged performances in brackets.") +
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1), 
+        legend.position = "right")
 ```
 
 Conclusions drawn from the baseline-adjusted performance analysis:
