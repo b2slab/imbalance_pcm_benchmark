@@ -9,6 +9,7 @@ R/*/*/*.pdf
 R/*.tex
 R/*.zip
 *.Rhistory
+R/data-interim
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
