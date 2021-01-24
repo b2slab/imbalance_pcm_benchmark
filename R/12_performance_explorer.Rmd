@@ -785,7 +785,7 @@ df.prot.diff.rank <- group_by(df.prot.diff.scatter, fold, metric) %>%
 ```{r, fig.width=5, fig.height=5}
 tidyr::pivot_longer(df.prot.diff.rank, cols = config$v.strategy, 
                     names_to = "strategy", values_to = "performance") %>%
-  group_by(fold, metric) %>%
+  group_by(fold, metric, DeepAffinity.Protein.ID) %>%
   mutate(performance_avg = mean(performance, na.rm = TRUE)) %>%
   ggplot(aes(x = performance_avg)) +
   geom_histogram() +
@@ -797,8 +797,8 @@ tidyr::pivot_longer(df.prot.diff.rank, cols = config$v.strategy,
 ```{r, fig.width=8, fig.height=10}
 tidyr::pivot_longer(df.prot.diff.rank, cols = config$v.strategy, 
                     names_to = "strategy", values_to = "performance") %>%
-  group_by(fold) %>%
-  mutate(performance_avg = mean(performance, na.rm = TRUE)) %>%
+  group_by(strategy, metric, DeepAffinity.Protein.ID) %>%
+  summarise(performance_avg = mean(performance, na.rm = TRUE)) %>%
   ggplot(aes(x = performance_avg)) +
   geom_histogram() +
   facet_grid(metric~strategy) +
