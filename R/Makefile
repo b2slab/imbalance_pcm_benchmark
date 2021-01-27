@@ -1,0 +1,27 @@
+# R version to use in the analysis (defaults to system version)
+RSCRIPT := Rscript
+
+## all the supplement analysis
+all: supplement.zip
+
+## steps
+# 1: data cleaning
+data-interim/ratios_df_clean.csv: 12_performance_explorer.Rmd
+	$(RSCRIPT) -e "require(rmarkdown); render('$<');";
+data-interim/ratios_df_clean_gpcr.csv: 13_performance_explorer_gpcr.Rmd
+	$(RSCRIPT) -e "require(rmarkdown); render('$<');";
+
+# 2: data analysis
+20_supplement_kinases.pdf: 20_supplement_kinases.Rmd data-interim/ratios_df_clean.csv
+21_supplement_gpcr.pdf: 21_supplement_gpcr.Rmd data-interim/ratios_df_clean_gpcr.csv
+
+# 3: zip files
+supplement.zip: 20_supplement_kinases.pdf 21_supplement_gpcr.pdf
+	rm -f supplement.zip;
+	zip -9 -r supplement.zip \
+		20_supplement_kinases.pdf 20_supplement_kinases.tex 20_supplement_kinases_files \
+		21_supplement_gpcr.pdf 21_supplement_gpcr.tex 21_supplement_gpcr_files;
+
+## general recipes
+%.pdf:: %.Rmd; $(RSCRIPT) -e "require(rmarkdown); render('$<');";
+%.html:: %.Rmd; $(RSCRIPT) -e "require(rmarkdown); render('$<');";
