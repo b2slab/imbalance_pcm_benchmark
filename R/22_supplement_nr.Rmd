@@ -1,0 +1,1012 @@
+---
+title: "Supplement 4: model predictions and performance (NRs)"
+author: 
+  - "Angela Lopez-del Rio"
+  - "Sergio Picart-Armada"
+  - "Alexandre Perera-Lluna"
+date: "27/02/2021"
+output: 
+  bookdown::pdf_document2:
+    keep_tex: yes
+header-includes:
+  - \usepackage{placeins}
+  - \usepackage{xcolor}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+
+
+```{r}
+library(tidyverse)
+library(magrittr)
+library(corrplot)
+
+library(stargazer)
+library(gsubfn)
+library(kableExtra)
+
+config <- new.env()
+source("config.R", local = config)
+
+df.clean <- read.csv(config$file.cleanperf.nr) %>%
+  dplyr::mutate(fold.label = paste0("Fold ", fold), 
+                fold = as.factor(fold), 
+                strategy = factor(strategy, levels = config$v.strategy))
+df.clean.nobaseline <- subset(df.clean, is_baseline == "False")
+df.clean.baseline <- subset(df.clean, is_baseline == "True")
+
+v.strategy <- intersect(config$v.strategy, unique(df.clean$strategy))
+v.metrics <- intersect(config$v.metrics, names(df.clean))
+
+ggplot2::theme_set(config$gg_theme)
+```
+
+```{r}
+# booktabs: add vertical spaces
+# https://stackoverflow.com/questions/49015578
+
+
+# hack to display actual pvalues
+# https://stackoverflow.com/questions/31551822/how-to-display-coefficients-in-scientific-notation-with-stargazer
+stargazer2 <- function(...) {
+  # string to mark floats in output - watchout for collisions!
+  mark  = '::::::'
+  # regex to match it
+  reg = paste0("([0-9.\\-]+", mark, "[0-9.\\-]+)")
+  
+  # function to replace with  right format
+  replace_numbers = function(x, low=0.01, high=1e3, digits = 3) {
+    x = gsub(mark,'.',x)
+    x.num = as.numeric(x)
+    form = paste0('%.', digits, 'e')
+    ifelse(
+      (abs(x.num) >= low) & (abs(x.num) < high), 
+      round(x.num, digits = digits), 
+      sprintf(form, x.num) 
+    )
+  }
+  
+  # get stargazer marked table, use 100 digits to pick stuff like p = 1e-80
+  # 200 digits breaks down
+  out <- capture.output(stargazer::stargazer(
+    decimal.mark  = mark, digit.separator = '', digits = 100, ...)
+  )
+  
+  # hack format
+  cat(gsubfn::gsubfn(reg, ~replace_numbers(x), out), sep='\n')
+}
+```
+
+
+# Overview
+
+This supplement describes the behaviour of the proteochemometrics (PCM) deep learning model to predict protein-compound bioactivity for \textcolor{blue}{kinases} \textcolor{magenta}{ NRs (only comments or differences; similarities are just omitted)}. 
+Specifically, this includes the descriptive statistics of data imbalance: the proportion of actives per protein in the training and test sets during the model fitting and the predicted proportion of actives.
+The model performance per protein was also described, pinpointing the most influential factors and characterising the proteins with the most extreme performances.
+
+Four strategies (`r v.strategy`) were considered.
+For each of those, `r length(unique(df.clean$fold))` folds of repeated holdout were run, and `r length(v.metrics)` performance metrics were computed: `r v.metrics`.
+This led to a total of `r nrow(df.clean.nobaseline)` values of performance.
+Since some strategies involved the upsampling method SMOTE, proteins whose sample sizes did not allow upsampling were excluded (table \@ref(tab:nprot-fold-strat)).
+
+```{r, results='asis'}
+table(df.clean.nobaseline$strategy, df.clean.nobaseline$fold.label) %>%
+  as.data.frame.matrix() %>%
+  tibble::rownames_to_column("Strategy") %>%
+  knitr::kable(format = "latex", 
+               caption = "Number of proteins for which performance metrics were computed. The resampling after clustering was the most stringent strategy regarding eligible proteins, since the resampling was carried out after the clustering, which introduced more imbalance.", 
+               booktabs = TRUE, label = "nprot-fold-strat") %>%
+    kableExtra::kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+
+# Description of data balance 
+
+The data balancing strategy had an impact on the actual data balance, defined as the proportion of active molecules for a protein.
+Furthermore, specific trends were observed in the original data in the training and test sets, as well as in the values predicted by the deep learning model.
+
+## Distributions of the actives ratio
+
+The histograms in figure \@ref(fig:ratio-histograms-original) revealed trends: 
+
+* `no_resampling` \textcolor{blue}{keeps similar data imbalance in training and test.}
+* `resampling_before_clustering` and `semi_resampling` \textcolor{blue}{lead to a more balanced training set, but not so much for the test set.}
+* `resampling_after_clustering` \textcolor{blue}{kept balanced proteins} in both training and test sets.
+
+In addition, \textcolor{blue}{test sets with imbalance tended to magnify} it and create extreme cases (all actives or all inactives), probably due to the combination of the clustering and the lower sample sizes in the test sets compared to training.
+
+
+```{r ratio-histograms-original, fig.width=8, fig.cap='Distributios of the actives ratio in the training set and in the test set (both original and predicted by the deep learning model).'}
+tidyr::pivot_longer(
+  df.clean.nobaseline, c("ratio_training", "ratio_test"), 
+  values_to = "Ratio", names_to = "RatioSet") %>%
+  ggplot(aes(x = Ratio, fill = strategy)) +
+  geom_histogram() +
+  facet_grid(RatioSet~strategy) +
+  scale_fill_manual(values = config$col.strategy) +
+  xlab("Actives ratio") +
+  ylab("Count") +
+  theme(aspect.ratio = 1, legend.position = "none")
+```
+
+## Comparing training and test imbalance
+
+Figure \@ref(fig:ratio-scatter-original) revealed both positive, negative and null trends between the training and test set protein balances.
+
+* `no_resampling` showed a \textcolor{blue}{positive relation} between both, i.e. proteins were prone to keep their (im)balance in train and test.
+* `resampling_before_clustering` showed an \textcolor{blue}{inverse relationship} instead. This was expected since this strategy started from globally balanced proteins, and after the clustering, an imbalance in one direction in the training set entailed an inverse imbalance in the test set.
+* `semi_resampling` led to \textcolor{blue}{independent train and test balances, expected since the train set was resampled, breaking any correlation with the test set balance.} 
+* `resampling_after_clustering` always \textcolor{blue}{kept balanced proteins}, by design.
+
+
+```{r ratio-scatter-original, fig.width=8, fig.cap='Comparison of the training and test ratios, by resampling strategy. A linear fit line was added per strategy.'}
+ggplot(df.clean.nobaseline, aes(x = ratio_training, y = ratio_test)) +
+  geom_point(size = .2, colour = "gray20") +
+  geom_smooth(
+    aes(colour = strategy), 
+    method = "lm") +
+  scale_colour_manual(values = config$col.strategy) +
+  facet_wrap(~strategy, nrow = 1) +
+  xlab("Actives ratio (training set)") +
+  ylab("Actives ratio (test set)") +
+  theme(aspect.ratio = 1, legend.position = "none")
+```
+
+Table \@ref(tab:cortest-scatter-original) displays the Pearson correlation estimate, 95% confidence interval and p-value for each strategy (except `resampling_after_clustering`, where ratios are constant), further confirming the claims above.
+
+```{r}
+format_cortest <- function(r) {
+  data.frame(cor = r$estimate, ci_lower = r$conf.int[1], 
+             ci_upper = r$conf.int[2], 
+             alternative = r$alternative, pvalue = r$p.value)
+}
+```
+
+```{r, results='asis'}
+df.cor.ratio.scatter <- plyr::ddply(
+  df.clean.nobaseline, "strategy", 
+  function(df) {
+    r <- cor.test(
+      formula = ~ ratio_training + ratio_test, 
+        data = df, method = "pearson", alternative = "two.sided")
+    format_cortest(r)  
+  }
+)
+
+df.cor.ratio.scatter %>% 
+  mutate_at(vars("pvalue"), formatC, format = "e", digits = 2) %>%
+  mutate_at(vars("cor", "ci_lower", "ci_upper"), formatC, format = "f", digits = 3) %>%
+  knitr::kable(format = "latex", row.names = FALSE, 
+               caption = "Correlations between train and test active ratios. 95\\% confidence intervals and p-values are shown.", 
+               booktabs = TRUE, label = "cortest-scatter-original") %>%
+    kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+
+
+
+## Other covariates
+
+The effect of the number of interactions of each protein in its corresponding set and fold (figure \@ref(fig:ratio-scatter-ninter)) and the protein length in amino acids (figure \@ref(fig:ratio-scatter-seqlen)) on the test set imbalance was investigated:
+
+* \textcolor{blue}{Proteins with greatest imbalance} (i.e. where `(0.5 - ratio_test)^2` was greatest) \textcolor{blue}{tended to be among those with the least interactions. Linear correlations were significant} (table \@ref(tab:cortest-ninter-original)).
+* \textcolor{blue}{The sequence length had no obvious effect on the protein imbalance. Linear correlations were not significant} (`no_resampling`, `semi_resampling`) or significant but low (`resampling_before_clustering`) \textcolor{magenta}{ not significant in resampling_before_clustering, significant but low in no_resampling, semi_resampling}.
+
+
+```{r, ratio-scatter-ninter, fig.width=8, fig.cap='Data imbalance in the test set as a function of the number of available interactions for each protein.'}
+ggplot(df.clean.nobaseline, 
+       aes(x = log10(n_interactions), y = (.5 - ratio_test)**2, colour = strategy)) +
+  geom_point(size = .2, colour = "gray20") +
+  geom_smooth(
+    aes(colour = strategy), 
+    method = "lm") +
+  scale_colour_manual(values = config$col.strategy) +
+  facet_wrap(~strategy, nrow = 1) +
+  xlab("Number of interactions (log10)") +
+  theme(aspect.ratio = 1, legend.position = "none")
+```
+
+
+```{r, results='asis'}
+df.cor.ratio.ninter <- plyr::mutate(
+  df.clean.nobaseline, imbalance_sq = (0.5 - ratio_test)**2) %>%
+  plyr::ddply(
+  "strategy", 
+  function(df) {
+    r <- cor.test(
+      formula = ~ n_interactions + imbalance_sq, 
+        data = df, method = "pearson", alternative = "two.sided")
+    format_cortest(r)  
+  }
+)
+
+df.cor.ratio.ninter %>% 
+  mutate_at(vars("pvalue"), formatC, format = "e", digits = 2) %>%
+  mutate_at(vars("cor", "ci_lower", "ci_upper"), formatC, format = "f", digits = 3) %>%
+  knitr::kable(format = "latex", row.names = FALSE, 
+               caption = "Correlations between imbalance (as defined above) and number of interactions. 95\\% confidence intervals and p-values are shown.", 
+               booktabs = TRUE, label = "cortest-ninter-original") %>%
+    kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+
+
+```{r ratio-scatter-seqlen, fig.width=8, fig.cap='Data imbalance in the test set as a function of the protein length, in amino acids.'}
+ggplot(df.clean.nobaseline, 
+       aes(x = log10(len_seq), y = (.5 - ratio_test)**2, colour = strategy)) +
+  geom_point(size = .2, colour = "gray20") +
+  geom_smooth(
+    aes(colour = strategy), 
+    method = "lm") +
+  scale_colour_manual(values = config$col.strategy) +
+  facet_wrap(~strategy, nrow = 1) +
+  xlab("Protein length (log10)") +
+  theme(aspect.ratio = 1, legend.position = "none")
+```
+
+```{r}
+df.cor.ratio.seqlen <- plyr::mutate(
+  df.clean.nobaseline, imbalance_sq = (0.5 - ratio_test)**2) %>%
+  plyr::ddply(
+  "strategy", 
+  function(df) {
+    r <- cor.test(
+      formula = ~ len_seq + imbalance_sq, 
+        data = df, method = "pearson", alternative = "two.sided")
+    format_cortest(r)  
+  }
+)
+```
+
+```{r, results='asis'}
+df.cor.ratio.seqlen %>% 
+  mutate_at(vars("pvalue"), formatC, format = "e", digits = 2) %>%
+  mutate_at(vars("cor", "ci_lower", "ci_upper"), formatC, format = "f", digits = 3) %>%
+  knitr::kable(format = "latex", row.names = FALSE, 
+               caption = "Correlations between imbalance (as defined above) and sequence length. 95\\% confidence intervals and p-values are shown.", 
+               booktabs = TRUE, label = "cortest-seqlen-original") %>%
+    kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+
+# Linear models on predicted proportions
+
+The next key question was to narrow down the factor driving the predicted proportion of actives.
+The main options under consideration were: 
+
+1. A constant, global imbalance that the model would learn from the whole dataset.
+2. The protein-wise imbalance that the model would learn in the training set.
+3. A test set-driven imbalance, based on its actual imbalance.
+
+## Distributions of the predicted ratios
+
+After the model predictions in the test set were binarized (actives were those whose probabilities exceeded $0.5$), the ratio of predicted actives was computed by protein. 
+This ratio, shown in figure \@ref(fig:ratio-hist-predicted), suggested that:
+
+* `no_resampling` was noticeably \textcolor{blue}{biased to predict everything as positives}.
+* `resampling_before_clustering` and `semi_resampling` \textcolor{blue}{alleviated the imbalance in the predictions, but still retained a spike of proteins where all the compounds were predicted as positives}.
+* `resampling_after_clustering` \textcolor{blue}{kept a wide and symmetric distribution of predicted actives}.
+
+
+```{r ratio-hist-predicted, fig.width=8, fig.cap='Ratios of the prediction values, after binarization.'}
+ggplot(df.clean.nobaseline, aes(x = ratio_test_predicted, fill = strategy)) +
+  geom_histogram() +
+  facet_wrap(~strategy, nrow = 1, scales = "free_y") +
+  scale_fill_manual(values = config$col.strategy) +
+  xlab("Predicted actives ratio (test set)") +
+  ylab("Count") +
+  theme(aspect.ratio = 1, legend.position = "none")
+```
+
+
+Now, representing together (1) the original training and test ratios, and (2) the predicted ratios in test (figure \@ref(fig:ratio-hist-all)) eased a general qualitative assessment: \textcolor{blue}{the distribution was most resemblant to that of the test proportions to that of the training ones} (except `resampling_after_clustering`, since those proportions are constant). Table \@ref(tab:perc-extremes) displays how `no_resampling` was \textcolor{blue}{highly inclined to predict all positives}, `resampling_before_clustering` and `semi_resampling` \textcolor{blue}{alleviated this phenomenon}, and `resampling_after_clustering` was \textcolor{blue}{essentially balanced}.
+
+```{r ratio-hist-all, fig.width=6, fig.height=8, fig.cap='Distributios of the actives ratio in the training set and in the test set (both original and predicted by the deep learning model).'}
+tidyr::pivot_longer(
+  df.clean.nobaseline, c("ratio_training", "ratio_test", "ratio_test_predicted"), 
+  values_to = "Ratio", names_to = "RatioSet") %>%
+  ggplot(aes(x = Ratio, fill = strategy)) +
+  geom_histogram() +
+  facet_grid(strategy~RatioSet, scales = "free_y") +
+  scale_fill_manual(values = config$col.strategy) +
+  theme(aspect.ratio = 1, legend.position = "none")
+```
+
+```{r, results='asis'}
+tidyr::pivot_longer(
+  df.clean.nobaseline, 
+  c("ratio_training", "ratio_test", "ratio_test_predicted"), 
+  values_to = "Ratio", names_to = "RatioSet") %>% 
+  group_by(strategy, RatioSet) %>%
+  summarise(all_inactives = 100*mean(abs(Ratio) < 1e-6, na.rm = TRUE), 
+            all_actives = 100*mean(abs(Ratio - 1) < 1e-6, na.rm = TRUE), 
+            all_extremes = all_inactives + all_actives) %>%
+  mutate_if(is.numeric, formatC, format = "f", digits = 1) %>%
+  knitr::kable(
+    format = "latex", row.names = FALSE, 
+    caption = "Percentage of extreme cases, i.e. proteins with all actives or inactives.", 
+    booktabs = TRUE, label = "perc-extremes", 
+    linesep = c("", "", "\\addlinespace")) %>%
+  kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+
+
+## Predicted ratios against training ratios
+
+Figure \@ref(fig:ratio-scatter-predicted) puts the predicted ratios in context of the training ratios, elucidating a variety of trends:
+
+* `no_resampling`: \textcolor{blue}{positive trend between the training and the predicted ratio}, but since the training and the test ratio also positively correlated (figure \@ref(fig:ratio-scatter-original)), the latter could be the one driving the predicted ratio of positives.
+* `resampling_after_clustering` had a \textcolor{blue}{constant training ratio}, meaning that the predicted ratio was not explainable by differences in training ratios.
+* `resampling_before_clustering` showed instead a \textcolor{blue}{negative relation between the training and the predicted ratio}. But since the former and the test ratio also anticorrelated (figure \@ref(fig:ratio-scatter-original), the simplest explanation was that the test ratio drove the predicted test ratio.
+* `semi_resampling` showed \textcolor{blue}{no apparent correlation} between the predicted ratio and the training ratio.
+
+The significance of the linear correlation backs up all the claims above (table \@ref(tab:cortest-scatter-predicted)).
+
+```{r, ratio-scatter-predicted, fig.width=8, fig.cap='Predicted ratios, as a function of training ratios.'}
+ggplot(df.clean.nobaseline, 
+       aes(x = ratio_training, y = ratio_test_predicted, colour = strategy)) +
+  geom_point(size = .2, colour = "gray20") +
+  geom_smooth(
+    aes(colour = strategy), 
+    method = "lm") +
+  scale_colour_manual(values = config$col.strategy) +
+  facet_wrap(~strategy, nrow = 1) +
+  xlab("Actives ratio (training set)") +
+  ylab("Predicted actives ratio (test set)") +
+  theme(aspect.ratio = 1, legend.position = "none")
+```
+
+```{r, results='asis'}
+df.cor.ratio.pred <- plyr::ddply(
+  df.clean.nobaseline, "strategy", 
+  function(df) {
+    r <- cor.test(
+      formula = ~ ratio_training + ratio_test_predicted, 
+        data = df, method = "pearson", alternative = "two.sided")
+    format_cortest(r)  
+  }
+)
+
+df.cor.ratio.pred %>% 
+  mutate_at(vars("pvalue"), formatC, format = "e", digits = 2) %>%
+  mutate_at(vars("cor", "ci_lower", "ci_upper"), formatC, format = "f", digits = 3) %>%
+  knitr::kable(format = "latex", row.names = FALSE, 
+               caption = "Correlations between train and predicted test active ratios. 95\\% confidence intervals and p-values are shown.", 
+               booktabs = TRUE, label = "cortest-scatter-predicted") %>%
+    kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+
+## Linear models
+
+The predicted ratio of actives $r_{pred}$ was modelled through the following quasibinomial generalized linear models, stratified by strategy:
+
+$$ r_{pred} \sim r_{training} + r_{test} + 
+    \mathrm{log10}(n_{int}) + \mathrm{log10}(n_{seq}) + k_{fold} $$
+
+The main variables of interest are the actual ratios in the training $r_{training}$ and in test $r_{test}$, both numeric between 0 and 1.
+As additional covariates, the number of interactions $n_{int}$ and the sequence length $n_{seq}$ (numerical) and the fold number $k_{fold}$ (categorical) were also included.
+
+### In semi_resampling or resampling_before_clustering
+
+\textcolor{blue}{Due to the lack of correlation between training and test ratios} (figure \@ref(fig:ratio-scatter-original)), the `semi_resampling` strategy is the \textcolor{blue}{ideal scenario to disentangle their effects} on the predicted ratio of actives (see model in table \@ref(tab:mod-prop-semi-before)).
+This additive model suggests:
+
+* The \textcolor{blue}{test ratio is driving the predicted proportions, rather than the training ratio}.
+* A relevant factor is `n_interactions`: \textcolor{blue}{the more interactions, the less active proportion, suggesting that the extreme cases with all predicted as actives tend to be proteins with few interactions} \textcolor{magenta}{ the term is not significant in NRs}.
+
+Table \@ref(tab:mod-prop-semi-before) also shows the additive model for `resampling_before_clustering`.
+This strategy showed negative correlation between training and test ratios, also providing a reasonably good scenario to distinguish their effects.
+
+* \textcolor{blue}{This model confirms both conclusions from the model} in the `semi_resampling` strategy, with \textcolor{blue}{similar estimates.} \textcolor{magenta}{ number of interactions not significant in NRs.}
+
+```{r}
+lm.prop.semi <- glm(
+  ratio_test_predicted ~ ratio_training + ratio_test + 
+    log10(n_interactions) + log10(len_seq) + fold, 
+  family = quasibinomial(),
+  data = subset(df.clean.nobaseline, strategy == "semi_resampling")
+)
+
+lm.prop.before <- glm(
+  ratio_test_predicted ~ ratio_training + ratio_test + 
+    log10(n_interactions) + log10(len_seq) + fold, 
+  family = quasibinomial(),
+  data = subset(df.clean.nobaseline, strategy == "resampling_before_clustering")
+)
+```
+
+```{r, results='asis'}
+stargazer2(
+  lm.prop.semi, lm.prop.before, 
+  report = "vcs*p",
+  column.labels = c("semi\\_resampling", "resampling\\_before\\_clustering"), 
+  ci = TRUE, ci.level = 0.95, header = FALSE, 
+  single.row = TRUE, omit.table.layout = "mdl", 
+  star.cutoffs = config$star.cutoffs,  
+  label = "tab:mod-prop-semi-before", 
+  title = "Linear models to describe the predicted active ratio for the semi\\_resampling and the resampling\\_before\\_clustering strategies. Significance and 95\\% confidence intervals are included.")
+```
+
+### In no_resampling
+
+The explanatory linear model under the `no_resampling` strategy (table \@ref(tab:mod-prop-nores)) \textcolor{blue}{suffers from the positive correlation between training and test ratios, which can be confounded}.
+
+* Both `training_ratio` and `test_ratio` show a \textcolor{blue}{positive effect} on the predicted fraction of actives. 
+* Although the \textcolor{blue}{estimate is larger and more significant} for `training_ratio`, the \textcolor{blue}{confounding effect and the very skewed distribution of the predicted ratios deems this model inconclusive}.
+
+```{r}
+lm.prop.no <- glm(
+  ratio_test_predicted ~ ratio_training + ratio_test + 
+    log10(n_interactions) + log10(len_seq) + fold, 
+  family = quasibinomial(),
+  data = subset(df.clean.nobaseline, strategy == "no_resampling")
+)
+```
+
+
+```{r, results='asis'}
+stargazer2(
+  lm.prop.no,  
+  report = "vcs*p",
+  column.labels = c("no\\_resampling"), 
+  ci = TRUE, ci.level = 0.95, header = FALSE, 
+  single.row = TRUE, omit.table.layout = "mdl", 
+  star.cutoffs = config$star.cutoffs,  
+  label = "tab:mod-prop-nores", 
+  title = "Linear models to describe the predicted active ratio for the no\\_resampling strategy. Significance and 95\\% confidence intervals are included.")
+```
+
+
+## Conclusions
+
+* Data imbalance exists in all strategies but in `resampling_after_clustering`, where balance is enforced.
+* The correlation between a protein's ratio in train and test is positive in `no_resampling`, negative in `resampling_before_clustering` and null in `semi_resampling` and `resampling_after_clustering`. 
+* The main factor driving the ratio of actives in the model predictions, per protein, is the actual ratio of positives in the test set. Their distributions are resemblant, and linear models confirm the association.
+
+\textcolor{magenta}{All of them apply to NRs.}
+
+# Description of baseline performance
+
+```{r}
+df.clean.foldavg <- group_by(df.clean, DeepAffinity.Protein.ID, strategy, baseline) %>%
+  dplyr::summarise_if(is.numeric, mean)
+```
+
+```{r}
+df.clean.foldavg.long <- tidyr::pivot_longer(
+  df.clean.foldavg, 
+  cols = config$v.metrics, 
+  names_to = "metric", 
+  values_to = "performance")
+```
+
+
+Before evaluating the deep learning model, the performance metrics of the baselines were characterised, in order to pinpoint imbalance-sensitive and insensitive metrics. 
+Metrics were called imbalance-sensitive if the imbalance-aware random baseline exhibited different performances between resampling strategies.
+
+## Descriptive plot
+
+Figure \@ref(fig:perf-boxplot-baseline-foldavg) shows a fold-averaged picture of the metrics by protein. 
+\textcolor{blue}{Visual inspection suggested that accuracy, F1 and possibly balanced accuracy were affected by the data imbalance}.
+\textcolor{blue}{F1 is the most apparent case}, see the quartiles in table \@ref(tab:quartiles-f1-baseline).
+
+```{r, perf-boxplot-baseline-foldavg, fig.width=6, fig.height=5, fig.cap='Performance metrics for imbalance-aware random baselines. Data points correspond to proteins, averaged over folds.'}
+ggplot(subset(df.clean.foldavg.long, grepl("Random", baseline)), 
+       aes(x = strategy, y = performance, fill = strategy)) +
+    geom_boxplot(outlier.size = .5) +
+    scale_fill_manual(values = config$col.strategy) +
+    facet_wrap(~metric, scales = "free_y") +
+    xlab("Resampling strategy") +
+    ylab("Baseline performance") +
+    theme(legend.position = "none", aspect.ratio = 1, 
+          axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+```{r, results='asis'}
+subset(df.clean.foldavg.long, grepl("Random", baseline) & metric == "f1") %>%
+  plyr::ddply("strategy", function(x) summary(x$performance)) %>%
+  mutate_if(is.numeric, formatC, format = "f", digits = 3) %>%
+  knitr::kable(format = "latex", row.names = FALSE, 
+               caption = "Quartiles for the baseline F1-scores.", 
+               booktabs = TRUE, label = "quartiles-f1-baseline") %>%
+    kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+
+
+## Linear models
+
+Formally, each performance metric was described with the following linear model:
+
+$$ \mathrm{metric} \sim \mathrm{strategy} +  
+    \mathrm{log10}(n_{int}) + \mathrm{log10}(n_{seq}) + k_{fold} $$
+
+The response was the quantitative metric of interest (one model per metric), while `strategy` was categorical with the following possibilities: `no_resampling`, `resampling_after_clustering`, `resampling_before_clustering`, `semi_resampling`.
+Additional covariates included the number of interactions $n_{int}$ and the sequence length $n_{seq}$ (numerical) and the fold number $k_{fold}$ (categorical).
+The `strategy` variable was tested with a type 3 ANOVA, being \textcolor{blue}{significant} with $p < 0.05$ for `acc`, `f1` and `balanced_acc` (table \@ref(tab:anova-baseline-strat)). 
+
+
+```{r}
+# # this wont work with stargazer since it parses the call(), which is lazy-evaluated,
+# # and breaks down 
+# list.lm.formulae <- lapply(
+#   setNames(config$v.metrics, config$v.metrics), 
+#   paste0, " ~ strategy + log10(n_interactions) + log10(len_seq) + fold")
+# list.lm.baseline <- lapply(list.lm.formulae, lm, data = df.clean.baseline)
+# 
+# ... doing it with plyr::dlply and always the same formula also fails,
+# since the call is .fun(y~x) instead of lm(y~x)... really...
+
+df.clean.long <- tidyr::pivot_longer(
+  df.clean, cols = config$v.metrics, 
+  names_to = "metricname", values_to = "metric")
+df.clean.baseline.long <- subset(df.clean.long, is_baseline == "True")
+df.clean.nobaseline.long <- subset(df.clean.long, is_baseline == "False")
+
+list.lm.baseline <- plyr::dlply(
+  df.clean.baseline.long, 
+  "metricname", 
+  lm, 
+  formula = "metric ~ strategy + log10(n_interactions) + log10(len_seq) + fold"
+)
+list.anova.baseline <- lapply(list.lm.baseline, car::Anova, type = 3)
+
+df.anova.baseline <- plyr::ldply(
+  list.anova.baseline, tibble::rownames_to_column, 
+  "variable", .id = "strategy")
+
+df.anova.baseline %>% 
+  subset(variable == "strategy") %>%
+  mutate_at(vars("F value", "Pr(>F)"), formatC, format = "e", digits = 2) %>%
+  knitr::kable(format = "latex", row.names = FALSE, 
+               caption = "ANOVA p-values for including the resampling strategy as a regressor. Significant p-values imply that differences exist between resampling strategies.", 
+               booktabs = TRUE, label = "anova-baseline-strat") %>%
+    kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+
+Based on this, metrics were divided in two types:
+
+* Those where the baseline was different between strategies, i.e. imbalance-sensitive: `acc`, `f1` and `balanced_acc`. Therefore, before comparing strategies, the baseline performance needed to be accounted for.
+* Those where the baseline was constant, i.e. imbalance-insensitive: `auroc`, `mcc`. Here we could compare strategies directly.
+
+\textcolor{magenta}{All applies to NRs as well.}
+
+# Description of deep learning model performance
+
+An overview of fold-averaged performances is displayed in figure \@ref(fig:perf-boxplot-strat-foldavg), where strategies are paired with their baselines.
+This illustrates the \textcolor{blue}{issue of direct strategy comparison} with imbalance-sensitive metrics, which was especially visible for the F1-score.
+Some metrics are undefined in edge cases (e.g. AUROC when only actives or only inactives are available); table \@ref(tab:nmetric-nona-strat) summarizes the number of proteins, added over folds, whose metrics were computable.
+
+```{r, results='asis'}
+df.clean.nobaseline[c("strategy", config$v.metrics)] %>% 
+  group_by(strategy) %>% 
+  summarise_all(function(x) sum(!is.na(x))) %>%
+  knitr::kable(format = "latex", 
+               caption = "Number of computable performance measures. AUROC was undefined for proteins with all actives or unactives in the test set, hence its lower counts.", 
+               booktabs = TRUE, label = "nmetric-nona-strat") %>%
+    kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+
+
+```{r perf-boxplot-strat-foldavg, fig.width=6, fig.height=5, fig.cap='Performance metrics for balancing strategies and their corresponding imbalance-aware random baselines. Data points correspond to proteins, averaged over folds.'}
+# ggplot(subset(df.clean.foldavg.long, metric %in% c("auroc", "mcc")), 
+ggplot(df.clean.foldavg.long, 
+       aes(x = strategy, y = performance, fill = strategy, 
+           alpha = baseline, colour = baseline, position = baseline)) +
+    geom_boxplot(outlier.size = .25, lwd = .25) +
+    facet_wrap(~metric, scales = "free_y") +
+    scale_fill_manual(values = config$col.strategy, guide = FALSE) +
+    scale_colour_manual(values = c("gray5", "gray50"), name = "Prediction type") +
+    scale_alpha_manual(values = c(1, .5), name = "Prediction type") +
+    xlab("Strategy") +
+    ylab("Performance") +
+    theme(legend.position = c(.87, .15), aspect.ratio = 1, 
+          axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+
+## Absolute, baseline-naive performance
+
+Anologous to the baseline performance models, absolute metric models (not accounting for baselines) were fitted:
+
+$$ \mathrm{metric} \sim \mathrm{strategy} +  
+    \mathrm{log10}(n_{int}) + \mathrm{log10}(n_{seq}) + k_{fold} $$
+
+The `strategy` covariate was \textcolor{blue}{always significant} in a type 3 ANOVA (table \@ref(tab:anova-perf-strat)). 
+The models, summarized in \@ref(tab:mod-perf-absolute), showed \textcolor{blue}{different behaviour in imbalance-sensitive and insensitive metrics}.
+Pairwise comparisons of the strategy coefficients using Tukey's method would point to \textcolor{blue}{two different pictures} (figure \@ref(fig:perf-tukey-absolute-strat)), further confirmed when prioritizing the strategies according to their expected performance through the linear models (table \@ref(tab:emm-perf-strat) and figure \@ref(fig:perf-ranking-absolute-strat)):
+
+* Accuracy and F1-score suggested that `no_resampling` was the \textcolor{blue}{best strategy}, but this was confounded by the fact that it also held the \textcolor{blue}{highest baselines} \textcolor{magenta}{ (accuracy, balance accuracy and F1-score for NRs)}.
+* AUROC, MCC and balanced accuracy showed instead that `resampling_before_clustering` and `resampling_after_clustering` held the \textcolor{blue}{highest performance estimates} \textcolor{magenta}. {In NRs, AUROC and MCC suggested resampling before clustering as the best strategy}. 
+
+
+```{r}
+# must do it like this for stargazer to work...
+list.lm.strat <- list(
+  acc = lm(acc ~ strategy + log10(n_interactions) + log10(len_seq) + fold, data = df.clean.nobaseline), 
+  auroc = lm(auroc ~ strategy + log10(n_interactions) + log10(len_seq) + fold, data = df.clean.nobaseline), 
+  f1 = lm(f1 ~ strategy + log10(n_interactions) + log10(len_seq) + fold, data = df.clean.nobaseline), 
+  balanced_acc = lm(balanced_acc ~ strategy + log10(n_interactions) + log10(len_seq) + fold, data = df.clean.nobaseline), 
+  mcc = lm(mcc ~ strategy + log10(n_interactions) + log10(len_seq) + fold, data = df.clean.nobaseline)
+)
+list.anova.strat <- lapply(list.lm.strat, car::Anova)
+
+df.anova.strat <- plyr::ldply(list.anova.strat, tibble::rownames_to_column, "variable", .id = "strategy")
+
+df.anova.strat %>% subset(variable == "strategy") %>%
+  mutate_at(vars("F value", "Pr(>F)"), formatC, format = "e", digits = 2) %>%
+  knitr::kable(format = "latex", row.names = FALSE, 
+               caption = "ANOVA p-values for including the resampling strategy as a regressor in the performance models.", 
+               booktabs = TRUE, label = "anova-perf-strat") %>%
+    kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+
+```{r, results='asis'}
+stargazer2(
+  list.lm.strat, 
+  report = "vc*sp",
+  font.size = "scriptsize",
+  column.labels = gsub("_", "\\\\_", names(list.lm.strat)),
+  # ci = TRUE, ci.level = 0.95, 
+  header = FALSE, 
+  model.numbers = TRUE,
+  single.row = FALSE, 
+  omit.table.layout = "mdl", omit.stat=c("LL","ser","f"), 
+  star.cutoffs = config$star.cutoffs,  
+  label = "tab:mod-perf-absolute", 
+  title = "Linear models to describe each performance metric. Standard deviations in parentheses.")
+```
+
+
+```{r}
+# EMMs
+list.emm.strat <- lapply(
+  list.lm.strat, 
+  emmeans::emmeans, 
+  specs = c("strategy"), 
+  data = df.clean.nobaseline)
+
+list.glht.strat <- lapply(
+  list.lm.strat, 
+  multcomp::glht, 
+  linfct = multcomp::mcp(strategy = "Tukey")
+)
+```
+
+```{r}
+plot_corrplot <- function(mod_glht, main, levels = config$v.strategy) {
+  mod_confint <- summary(mod_glht)
+  color_cor <- colorRampPalette(colors = c("#EB6767", "white", "#6797EB"))(100)
+  
+  cols <- names(mod_confint$test$coefficients) %>% 
+    strsplit(split = " - ") %>% plyr::ldply(
+    function(x) c(row = x[1], col = x[2])
+  ) 
+  cols$row <- factor(cols$row, levels)
+  cols$col <- factor(cols$col, levels)
+  cols$estimate <- mod_confint$test$coefficients 
+  cols$pvalue <- mod_confint$test$pvalues
+  
+  e.cor <- reshape2::acast(cols, row~col, value.var = "estimate", fill = 0)
+  p.cor <- reshape2::acast(cols, row~col, value.var = "pvalue", fill = 0)
+  
+  # par(mfrow=c(2,2)) 
+  corrplot::corrplot(
+    title = main, 
+    corr = e.cor, method = "color", type = "lower", number.digits = 3, 
+    addCoef.col = "black", tl.cex = 1, tl.col = "gray10",
+    number.cex = .8, number.font = .8, col = color_cor, 
+    p.mat = p.cor, diag = TRUE, is.corr = FALSE, mar = c(0,0,3,0)) 
+}
+```
+
+```{r perf-tukey-absolute-strat, results='hide', fig.height=8, fig.cap='Pairwise comparison of strategy performance using Tukey method.'}
+par(mfrow = c(3, 2))
+mapply(plot_corrplot, mod_glht = list.glht.strat, main = paste0("Pairwise comparisons for: ", names(list.glht.strat)))
+par(mfrow = c(1, 1))
+```
+
+
+```{r, results='asis'}
+df.metrics.absolute <- plyr::ldply(list.emm.strat, summary, .id = "metric") %>%
+  # ungroup %>%
+  group_by(metric) %>%
+  mutate(z = scale(emmean), 
+         rescaled = emmean/max(emmean), 
+         rank = rank(-emmean), 
+         label = paste0(rank, " (", round(emmean, 3), ")"))
+
+
+dplyr::select(df.metrics.absolute, metric, strategy, emmean, SE, lower.CL, upper.CL) %>%
+  mutate_at(vars("emmean", "lower.CL", "upper.CL"), formatC, format = "f", digits = 3) %>%
+  mutate_at(vars("SE"), formatC, format = "e", digits = 3) %>%
+  knitr::kable(
+    format = "latex", row.names = FALSE, 
+    caption = "Expected absolute performances, by metric and strategy, with 95\\% confidence intervals.", 
+    booktabs = TRUE, label = "emm-perf-strat", 
+    linesep = c(rep("", length(config$v.strategy) - 1), "\\addlinespace")) %>%
+  kableExtra::kable_styling(latex_options = c("hold_position"))
+
+```
+
+```{r perf-ranking-absolute-strat, fig.width=7, fig.height=6, fig.cap='Method ranking according to the linear model predicted performances for each metric. Baseline metrics were ignored.'}
+ggplot(df.metrics.absolute, aes(x = metric, y = strategy, fill = rescaled, label = label)) + 
+  geom_tile(color = "white") + 
+  geom_text(size = 2.75) + 
+  # scale_fill_gradient2(mid = "white", high = "mediumpurple1") + 
+  scale_fill_distiller(palette = "Spectral", direction = -1, name = "Performance rescaled\nby column maximum") +
+  theme_bw() + 
+  coord_fixed() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1), 
+        legend.position = "right") + 
+  xlab("Baseline-naive performance metric") + 
+  ylab("Method") + 
+  ggtitle("Method ranking by absolute performance.", 
+          subtitle = "Lower ranks are better. Expected fold-averaged performances in brackets.")
+```
+
+\FloatBarrier 
+
+## Baseline-adjusted performance
+
+```{r}
+# compute adjusted metrics
+# 
+# arrange by is_baseline (1st False, 2nd True)
+# then group by, make sure there are 2 unique elements (True-False)
+# and subtract the last value
+df.clean.diff <- arrange(df.clean, is_baseline) %>%
+  group_by(DeepAffinity.Protein.ID, strategy, fold) %>%
+  add_count(name = "n_rows") %>%
+  filter(n_rows == 2) %>%
+  mutate_at(config$v.metrics, function(x) x - x[2]) %>%
+  ungroup
+
+# double check that all the metrics in the baseline 
+# are either NA or 0
+subset(df.clean.diff, is_baseline == "True") %>%
+  extract(config$v.metrics) %>% 
+  unlist %>%
+  na.omit %>%
+  magrittr::equals(0) %>%
+  all %>%
+  stopifnot
+
+df.clean.diff.nobaseline <- subset(df.clean.diff, is_baseline == "False")
+
+df.clean.diff.nobaseline.foldavg <- group_by(
+  df.clean.diff.nobaseline, DeepAffinity.Protein.ID, strategy) %>%
+  dplyr::summarise_if(is.numeric, mean)
+
+df.clean.diff.nobaseline.foldavg.long <- tidyr::pivot_longer(
+  df.clean.diff.nobaseline.foldavg, 
+  cols = config$v.metrics, 
+  names_to = "metric", 
+  values_to = "performance")
+```
+
+To address the pitfalls of the direct comparison of metrics whose baselines may differ, baseline-adjusted performance metrics were defined and modelled analogously.
+Specifically:
+
+$$ \textrm{adj\_metric} = \textrm{metric} - \textrm{baseline} $$
+
+A descriptive plot of the the adjusted metrics (figure \@ref(fig:adjperf-boxplot-strat-foldavg)) pointed to a \textcolor{blue}{scenario diffent than that of unadjusted ones} (figure \@ref(fig:perf-boxplot-strat-foldavg)).
+
+```{r adjperf-boxplot-strat-foldavg, fig.width=6, fig.height=5, fig.cap='Baseline-adjusted performance metrics for balancing strategies. Data points correspond to proteins, averaged over folds.'}
+ggplot(df.clean.diff.nobaseline.foldavg.long, 
+       aes(x = strategy, y = performance, fill = strategy)) +
+    geom_hline(yintercept = 0, lty = 2) +
+    geom_boxplot(outlier.size = .5) +
+    scale_fill_manual(values = config$col.strategy, guide = FALSE) +
+    facet_wrap(~metric, scales = "free_y") +
+    xlab("Strategy") +
+    ylab("Baseline-adjusted performance") +
+    theme(legend.position = "bottom", aspect.ratio = 1, 
+          axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+Adjusted performance metrics were described with the following linear model:
+
+$$ \mathrm{adj\_metric} \sim \mathrm{strategy} +  
+    \mathrm{log10}(n_{int}) + \mathrm{log10}(n_{seq}) + k_{fold} $$
+
+Note that while all metrics but `mcc` were non-negative, the adjusted metrics could show negative values when the performance of the DL model was lower than that of the baseline.
+
+Again, `strategy` covariate was \textcolor{blue}{always significant} \textcolor{magenta}{(always significant except for AUROC in NRs)} in a type 3 ANOVA (table \@ref(tab:anova-adjperf-strat)). 
+\textcolor{blue}{Baseline adjustment brought a uniform behaviour across the models} (table \@ref(tab:mod-adjperf-absolute)), further confirmed in pairwise coefficient comparison (Tukey's method, figure \@ref(fig:adjperf-tukey-absolute-strat)) and in their expected performance (table \@ref(tab:emm-adjperf-strat) and figure \@ref(fig:adjperf-ranking-absolute-strat)):
+
+* `resampling_before_clustering` and `resampling_after_clustering` had the \textcolor{blue}{highest performance estimates, followed by} `semi_resampling` and finally by `no_resampling`. \textcolor{magenta}{ In NRs, resampling before clustering was the best performed, followed by a technical tie between semi resampling and no resampling, and resampling after clustering}. 
+* This \textcolor{blue}{picture was analogous to that of the non-adjusted performance metrics that were imbalance-insensitive} (AUROC, MCC). \textcolor{magenta}{ In NRs the statistical significance is lower, but the general picture of resampling before clustering being the best performer and no resampling being sensibly penalised remains}. 
+
+```{r}
+# must do it like this for stargazer to work...
+list.lm.diff.strat <- list(
+  acc = lm(acc ~ strategy + log10(n_interactions) + log10(len_seq) + fold, data = df.clean.diff.nobaseline), 
+  auroc = lm(auroc ~ strategy + log10(n_interactions) + log10(len_seq) + fold, data = df.clean.diff.nobaseline), 
+  f1 = lm(f1 ~ strategy + log10(n_interactions) + log10(len_seq) + fold, data = df.clean.diff.nobaseline), 
+  balanced_acc = lm(balanced_acc ~ strategy + log10(n_interactions) + log10(len_seq) + fold, data = df.clean.diff.nobaseline), 
+  mcc = lm(mcc ~ strategy + log10(n_interactions) + log10(len_seq) + fold, data = df.clean.diff.nobaseline)
+)
+list.anova.diff.strat <- lapply(list.lm.diff.strat, car::Anova)
+
+df.anova.diff.strat <- plyr::ldply(list.anova.diff.strat, tibble::rownames_to_column, "variable", .id = "strategy")
+
+df.anova.diff.strat %>% subset(variable == "strategy") %>%
+  mutate_at(vars("F value", "Pr(>F)"), formatC, format = "e", digits = 2) %>%
+  knitr::kable(format = "latex", row.names = FALSE, 
+               caption = "ANOVA p-values for including the resampling strategy as a regressor in the adjusted performance models.", 
+               booktabs = TRUE, label = "anova-adjperf-strat") %>%
+    kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+
+```{r, results='asis'}
+stargazer2(
+  list.lm.diff.strat, 
+  report = "vc*sp",
+  font.size = "scriptsize", 
+  column.labels = gsub("_", "\\\\_", names(list.lm.strat)),
+  # ci = TRUE, ci.level = 0.95, 
+  header = FALSE, 
+  model.numbers = TRUE,
+  single.row = FALSE, 
+  omit.table.layout = "mdl", omit.stat=c("LL","ser","f"), 
+  star.cutoffs = config$star.cutoffs,  
+  label = "tab:mod-adjperf-absolute", 
+  title = "Linear models to describe each adjusted performance metric. Standard deviations in parentheses.")
+```
+
+
+```{r}
+# EMMs
+list.emm.diff.strat <- lapply(
+  list.lm.diff.strat, 
+  emmeans::emmeans, 
+  specs = c("strategy"), 
+  data = df.clean.diff.nobaseline)
+
+list.glht.diff.strat <- lapply(
+  list.lm.diff.strat, 
+  multcomp::glht, 
+  linfct = multcomp::mcp(strategy = "Tukey")
+)
+```
+
+
+```{r adjperf-tukey-absolute-strat, results='hide', fig.height=8, fig.cap='Pairwise comparison of strategy adjusted performance using Tukey method.'}
+par(mfrow = c(3, 2))
+mapply(plot_corrplot, mod_glht = list.glht.diff.strat, main = paste0("Pairwise comparisons for: ", names(list.glht.strat)))
+par(mfrow = c(1, 1))
+```
+
+
+```{r}
+df.metrics.diff <- plyr::ldply(list.emm.diff.strat, summary, .id = "metric") %>%
+  # ungroup %>%
+  group_by(metric) %>%
+  mutate(z = scale(emmean), 
+         rescaled = emmean/max(emmean), 
+         rank = rank(-emmean), 
+         label = paste0(rank, " (", round(emmean, 3), ")"))
+
+dplyr::select(df.metrics.diff, metric, strategy, emmean, SE, lower.CL, upper.CL) %>%
+  mutate_at(vars("emmean", "lower.CL", "upper.CL"), formatC, format = "f", digits = 3) %>%
+  mutate_at(vars("SE"), formatC, format = "e", digits = 3) %>%
+  knitr::kable(
+    format = "latex", row.names = FALSE, 
+    caption = "Expected adjusted performances, by metric and strategy, with 95\\% confidence intervals.", 
+    booktabs = TRUE, label = "emm-adjperf-strat", 
+    linesep = c(rep("", length(config$v.strategy) - 1), "\\addlinespace")) %>%
+  kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+
+```{r adjperf-ranking-absolute-strat, fig.width=8, fig.height=6, fig.cap='Method ranking according to the linear model predicted adjusted performances for each metric. Baseline metrics were taken into account in the adjustment. For a direct comparison, the same ranking using the absolute metrics was kept side by side.'}
+df.metrics.both <- dplyr::bind_rows(
+  mutate(df.metrics.absolute, modtype = "Absolute metrics"), 
+  mutate(df.metrics.diff, modtype = "Baseline-adjusted metrics")
+)
+
+ggplot(df.metrics.both, aes(x = strategy, y = metric, fill = rescaled, label = label)) + 
+  geom_tile(color = "white") + 
+  geom_text(size = 2.75) + 
+  # scale_fill_gradient2(mid = "white", high = "mediumpurple1") + 
+  scale_fill_distiller(palette = "Spectral", direction = -1, name = "Performance rescaled by\neach block row maximum") +
+  facet_wrap(~modtype, nrow = 1) +
+  coord_fixed() +
+  xlab("Strategy") + 
+  ylab("Performance metric") + 
+  ggtitle("Method ranking by adjusted performance.", 
+          subtitle = "Lower ranks are better. Expected fold-averaged performances in brackets.") +
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1), 
+        legend.position = "right")
+```
+
+Conclusions drawn from the baseline-adjusted performance analysis:
+
+* The largest impact in performance estimates was the application of **data augmentation to the test set**: `resampling_before_clustering` and `resampling_after_clustering` tended to outperform `semi_resampling` and `no_resampling` (Tukey's method, $p < 0.05$, figure \@ref(fig:adjperf-tukey-absolute-strat)). However, augmenting the test set might not faithfully reflect new data anymore, and could **artificially inflate the peformance estimates**. \textcolor{magenta}{In NRs, resampling after clustering and semi resampling are technically tied}.
+* `semi_resampling` outperformed `no_resampling` in \textcolor{blue}{four out of five metrics} (Tukey's method, $p < 0.05$, figure \@ref(fig:adjperf-tukey-absolute-strat)), which **supports data augmentation usefulness** even if the data balance in the test set differs from that of the training set. \textcolor{magenta}{In NRs, the almost six-fold reduction in number of samples compared to kinases probably limited the statistical power. Tukey's method gave no significant differences at $p < 0.05$. However, the model coefficient of semi resampling was significantly greater than the reference level (no resampling) in MCC ($p = 0.033$), but not in balanced accuracy ($p = 0.067$) or accuracy ($p = 0.111$), despite the positive estimates}, see table \@ref(tab:mod-adjperf-absolute). This was \textcolor{blue}{consistent with the observation that the predicted proportion of positives of the PCM model was mainly driven by the actual data balance in the test set, rather than that of the training set. Combined with the healthier distributions of predicted active ratios} of `semi_resampling` against `no_resampling`, this made a \textcolor{blue}{case in favour of the former}.
+* In \textcolor{blue}{four} \textcolor{magenta}{five} out of five metrics, **proteins with more interactions were better predicted** (table \@ref(tab:mod-adjperf-absolute)).
+
+\FloatBarrier 
+
+
+<!-- # Summary -->
+
+<!-- This section is a copy-paste of conclusions and remarks scattered over this report. -->
+
+<!-- * Code: [K] kinases, [G] GPCR, [KG] claims that hold for both, [KG?] holds in K, looks like it holds in G, but needs model/test to confirm. -->
+<!-- * In general, both families agree - the main conclusions remain unaffected. -->
+<!-- * Differences of GPCR compared to kinases: -->
+<!--   - `semi_resampling` is missing more baseline metrics (23%, up from 6%), and its train ratio is NA more often (30%, up from 7%) -->
+<!--   - `resampling_after_clustering` only has DL performance metrics for 80% of the proteins (down from 100%) -->
+<!--   - They seem a bit more imbalance towards the actives, can this cause such differences? -->
+
+<!-- ## Data balance -->
+
+<!-- ### Distribution of actives -->
+
+<!-- * [KG] `no_resampling` keeps similar data imbalance in training and test. -->
+<!-- * [KG] `resampling_before_clustering` and `semi_resampling` lead to a more balanced training set, but not so much for the test set. -->
+<!-- * [KG] `resampling_after_clustering` kept balanced proteins in both training and test sets. -->
+
+<!-- ### Comparing train and test imbalance -->
+
+<!-- * [KG] `no_resampling` showed a positive relation between both, i.e. proteins were prone to keep their (im)balance in train and test. -->
+<!-- * [KG] `resampling_before_clustering` showed an inverse relationship instead. This was expected since this strategy started from globally balanced proteins, and after the clustering, an imbalance in one direction in the training set entailed an inverse imbalance in the test set. -->
+<!-- * [K] `semi_resampling` led to independent train and test balances, expected since the train set was resampled, breaking any correlation with the test set balance. [G]: certain degree of positive correlation (test?). -->
+<!-- * [KG] `resampling_after_clustering` always kept balanced proteins, by design. -->
+
+<!-- ### Other covariates -->
+
+<!-- * [KG] Proteins with greatest imbalance (i.e. where `(0.5 - ratio_test)^2` was greatest) tended to be among those with the least interactions. -->
+<!-- * [K] The sequence length had no obvious effect on the protein imbalance. [G]: slightly negative slope (test?). -->
+
+<!-- ## Predicted proportions -->
+
+<!-- ### Distributions of the predicted ratios -->
+
+<!-- * [KG] `no_resampling` was noticeably biased to predict everything as positives. -->
+<!-- * [KG] `resampling_before_clustering` and `semi_resampling` alleviated the imbalance in the predictions, but still retained a spike of proteins where all the compounds were predicted as positives. -->
+<!-- * [KG] `resampling_after_clustering` kept a wide and symmetric distribution of predicted actives. -->
+
+<!-- ### Predicted ratios against training ratios -->
+
+<!-- * [KG] `no_resampling`: positive trend between the training and the predicted ratio, but since the training and the test ratio also positively correlated (figure \@ref(fig:ratio-scatter-original)), the latter could be the one driving the predicted ratio of positives. -->
+<!-- * [KG] `resampling_after_clustering` had a contant training ratio, meaning that the predicted ratio was not explainable by differences in training ratios. -->
+<!-- * [KG] `resampling_before_clustering` showed instead a negative relation between the training and the predicted ratio. But since the former and the test ratio also anticorrelated (figure \@ref(fig:ratio-scatter-original), the simplest explanation was that the test ratio drove the predicted test ratio. -->
+<!-- * [KG] `semi_resampling` showed no apparent correlation between the predicted ratio and the training ratio. -->
+
+<!-- ### lm: semi_resampling -->
+
+<!-- * [KG] The **test_ratio is driving the predicted proportions**, rather than the training ratio. -->
+<!-- * [K] A relevant factor is **n_interactions**: the more interactions, the less active proportion, suggesting that the extreme cases with all predicted as actives tend to be proteins with few interactions. [G]: the term was not significant, although it significantly affects performance later on. -->
+
+<!-- ### lm: resampling_before_clustering -->
+
+<!-- * [K] This model **confirms both conclusions** from the model in the `semi_resampling` strategy, with similar estimates. [G]: estimates not that similar, but conclusions still supported, including that of n_interactions. -->
+
+<!-- ## Baseline performance -->
+
+<!-- ### Linear models -->
+
+<!-- * [KG] Those where the baseline was different between strategies, i.e. imbalance-sensitive: `acc`, `f1` and `balanced_acc`. Therefore, before comparing strategies, the baseline performance needed to be accounted for. -->
+<!-- * [KG] Those where the baseline was constant, i.e. imbalance-insensitive: `auroc`, `mcc`. Here we could compare strategies directly. -->
+
+<!-- ## DL model performance -->
+
+<!-- ### Absolute, baseline-naive -->
+
+<!-- * [KG?] Accuracy and F1-score suggested that `no_resampling` was the best strategy, but this was confounded by the fact that it also held the highest baselines. -->
+<!-- * [KG] AUROC, MCC and balanced accuracy showed instead that `resampling_before_clustering` and `resampling_after_clustering` held the highest performance estimates.  -->
+
+<!-- ### Baseline-adjusted -->
+
+<!-- * [KG] The largest impact in performance estimates was the application of **data augmentation to the test set**: `resampling_before_clustering` and `resampling_after_clustering` tended to outperform `semi_resampling` and `no_resampling` (Tukey's method, $p < 0.05$, figure \@ref(fig:adjperf-tukey-absolute-strat)). However, augmenting the test set might not faithfully reflect new data anymore, and could **artificially inflate the peformance estimates**.  -->
+<!-- * [KG?] `semi_resampling` outperformed `no_resampling` in four out of five metrics (Tukey's method, $p < 0.05$, figure \@ref(fig:adjperf-tukey-absolute-strat)), which **supports data augmentation usefulness** even if the data balance in the test set differs from that of the training set. This was consistent with the observation that the predicted proportion of positives of the PCM model was mainly driven by the actual data balance in the test set, rather than that of the training set. Combined with the healthier distributions of predicted active ratios of `semi_resampling` against `no_resampling`, this made a case in favour of the former. -->
+<!-- * [KG] In four out of five metrics, **proteins with more interactions were better predicted** (table \@ref(tab:mod-adjperf-absolute)). -->
+
+# Reproducibility
+
+```{r, results='asis'}
+utils::toLatex(sessionInfo())
+```
+
