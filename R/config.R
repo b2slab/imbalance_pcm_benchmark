@@ -24,3 +24,5 @@ dir.interim <- "data-interim"
 if (!dir.exists(dir.interim)) dir.create(dir.interim)
 file.cleanperf <- paste0(dir.interim, "/ratios_df_clean.csv")
 file.cleanperf.gpcr <- paste0(dir.interim, "/ratios_df_clean_gpcr.csv")
+file.cleanperf.nr <- paste0(dir.interim, "/ratios_df_clean_nr.csv")
+file.cleanperf.reglin <- paste0(dir.interim, "/ratios_df_clean_reglin.csv")
