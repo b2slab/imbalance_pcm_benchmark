@@ -5,6 +5,11 @@ RSCRIPT := Rscript
 all: supplement.zip
 
 ## steps
+## 
+# 0: data summary
+10_overview_allfamilies_foldavg.tex: 10_overview_allfamilies.Rmd
+	$(RSCRIPT) -e "require(rmarkdown); render('$<');";
+
 # 1: data cleaning
 data-interim/ratios_df_clean.csv: 12_performance_explorer.Rmd
 	$(RSCRIPT) -e "require(rmarkdown); render('$<');";
@@ -19,9 +24,10 @@ data-interim/ratios_df_clean_nr.csv: 14_performance_explorer_nr.Rmd
 22_supplement_nr.pdf: 22_supplement_nr.Rmd data-interim/ratios_df_clean_nr.csv
 
 # 3: zip files
-supplement.zip: 20_supplement_kinases.pdf 21_supplement_gpcr.pdf 22_supplement_nr.pdf
+supplement.zip: 10_overview_allfamilies_foldavg.tex 20_supplement_kinases.pdf 21_supplement_gpcr.pdf 22_supplement_nr.pdf
 	rm -f supplement.zip;
 	zip -9 -r supplement.zip \
+		10_overview_allfamilies_foldavg.tex \
 		20_supplement_kinases.pdf 20_supplement_kinases.tex 20_supplement_kinases_files \
 		21_supplement_gpcr.pdf 21_supplement_gpcr.tex 21_supplement_gpcr_files \
 		22_supplement_nr.pdf 22_supplement_nr.tex 22_supplement_nr_files;
