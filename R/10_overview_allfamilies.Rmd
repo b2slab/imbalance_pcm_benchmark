@@ -81,6 +81,7 @@ dict_to_label <- function(x) {
 df.clean <- mutate_at(
   df.raw, c("training", "validation", "test"), dict_to_label
 ) %>%
+  mutate(protein_type = factor(protein_type, levels = config$v.families)) %>%
   select(protein_type, strategy, fold, training, validation, test)
 ```
 

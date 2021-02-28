@@ -4,6 +4,8 @@ gg_theme <- ggplot2::theme_bw() +
 gg_45 <- ggplot2::theme(
     axis.text.x = ggplot2::element_text(angle = 45, vjust = 1, hjust = 1))
 
+v.families <- c("kinases", "GPCRs", "nuclear_receptors", "proteases")
+
 v.metrics <- c("acc", "auroc", "f1", "balanced_acc", "mcc")
 
 v.strategy <- c(
