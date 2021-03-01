@@ -1,7 +1,7 @@
 ---
-title: "Exploring NR performance"
+title: "Exploring PR performance"
 author: "Sergio Picart-Armada and Angela Lopez del Rio"
-date: "27/02/2021"
+date: "01/03/2021"
 output:
   html_document:
     toc: true
@@ -26,7 +26,7 @@ library(magrittr)
 library(corrplot)
 library(emmeans)
 
-df.raw <- read.csv("performances/ratios_df_rdm_baseline_NR.csv")
+df.raw <- read.csv("performances/ratios_df_rdm_baseline_proteases.csv")
 v.strategy <- levels(df.raw$strategy)
 df.raw.nobaseline <- subset(df.raw, is_baseline == "False")
 
@@ -209,7 +209,7 @@ dim(df.clean.nobaseline)
 Save clean table
 
 ```{r}
-write.csv(df.clean, file = config$file.cleanperf.nr)
+write.csv(df.clean, file = config$file.cleanperf.pr)
 ```
 
 
