@@ -206,7 +206,8 @@ Pairs in original data
 
 ```{r}
 df.original <- subset(df.total.avg, strategy == "no_resampling") %>%
-  dplyr::select(-strategy)
+  dplyr::select(-strategy) %>%
+  mutate(proportion_act = round(total_act/total, 2))
 
 df.original
 ```
@@ -216,7 +217,7 @@ Export to latex:
 ```{r}
 tex.original <-  knitr::kable(
   df.original, format = "latex", 
-  caption = "Number of protein-compound pairs in each protein family (actives, inactives, total).", 
+  caption = "Number of protein-compound pairs in each protein family (actives, inactives, total) and proportion of actives.", 
   linesep = c("", "", "", "\\addlinespace"), 
   booktabs = TRUE, label = "npairs-original") %>%
     kableExtra::kable_styling(latex_options = c("scale_down", "hold_position"))
