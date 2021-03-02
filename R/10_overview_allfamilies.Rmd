@@ -135,6 +135,19 @@ average_character <- function(char, ...) {
   )
 }
 
+# # sum values (for total counts)
+# sum_character <- function(char, ...) {
+#   sp <- strsplit(char, "/") 
+#   actives <- as.numeric(sapply(sp, head, 1))
+#   inactives <- as.numeric(sapply(sp, tail, 1))
+#   
+#   paste0(
+#     round(sum(actives), ...), 
+#     "/", 
+#     round(sum(inactives), ...)
+#   )
+# }
+
 average_character(df.clean$training, digits = 1)
 
 df.foldavg <- dplyr::group_by(df.clean, protein_type, strategy) %>%
@@ -161,6 +174,55 @@ tex.foldavg <-  knitr::kable(
 writeLines(tex.foldavg, "10_overview_allfamilies_foldavg.tex")
 ```
 
+
+### Global table
+
+When counting the overall number of pairs, we find some expected features (constant across folds in no resampling, which is the original data, and in resampling before clustering; slightly variable in resampling after clustering and in semi resampling).
+
+```{r}
+df.total <- df.clean %>%
+  tidyr::separate(training, into =  c("training_act", "training_in"), sep = "/") %>%
+  tidyr::separate(validation, into =  c("validation_act", "validation_in"), sep = "/") %>%
+  tidyr::separate(test, into =  c("test_act", "test_in"), sep = "/") %>%
+  mutate_at(vars(training_act:test_in), as.numeric) %>%
+  mutate(total_act = training_act+validation_act+test_act, 
+         total_in = training_in+validation_in+test_in, 
+         total = total_act + total_in) %>%
+  dplyr::select(protein_type, fold, strategy, total_act, total_in, total)
+
+df.total
+```
+
+Averaged numbers
+
+```{r}
+df.total.avg <- dplyr::select(df.total, -fold) %>%
+  group_by(protein_type, strategy) %>%
+  summarize_if(is.numeric, function(x) round(mean(x)))
+df.total.avg
+```
+
+Pairs in original data
+
+```{r}
+df.original <- subset(df.total.avg, strategy == "no_resampling") %>%
+  dplyr::select(-strategy)
+
+df.original
+```
+
+Export to latex:
+
+```{r}
+tex.original <-  knitr::kable(
+  df.original, format = "latex", 
+  caption = "Number of protein-compound pairs in each protein family (actives, inactives, total).", 
+  linesep = c("", "", "", "\\addlinespace"), 
+  booktabs = TRUE, label = "npairs-original") %>%
+    kableExtra::kable_styling(latex_options = c("scale_down", "hold_position"))
+
+writeLines(tex.original, "10_overview_allfamilies_original.tex")
+```
 
 # Reproducibility
 

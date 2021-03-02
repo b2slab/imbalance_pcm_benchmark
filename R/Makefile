@@ -30,7 +30,7 @@ data-interim/ratios_df_clean_pr.csv: 15_performance_explorer_pr.Rmd
 supplement.zip: 10_overview_allfamilies_foldavg.tex 20_supplement_kinases.pdf 21_supplement_gpcr.pdf 22_supplement_nr.pdf 23_supplement_pr.pdf
 	rm -f supplement.zip;
 	zip -9 -r supplement.zip \
-		10_overview_allfamilies_foldavg.tex \
+		10_overview_allfamilies_foldavg.tex 10_overview_allfamilies_original.tex \
 		20_supplement_kinases.pdf 20_supplement_kinases.tex 20_supplement_kinases_files \
 		21_supplement_gpcr.pdf 21_supplement_gpcr.tex 21_supplement_gpcr_files \
 		22_supplement_nr.pdf 22_supplement_nr.tex 22_supplement_nr_files \
