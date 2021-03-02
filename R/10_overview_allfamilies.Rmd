@@ -1,0 +1,232 @@
+---
+title: "Data overview, by strategy, for all protein families"
+author: "Sergio Picart-Armada and Angela Lopez del Rio"
+date: "28/02/2021"
+output:
+  html_document:
+    toc: true
+    theme: united
+    toc_float: true
+    number_sections: true
+    highlight: textmate
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+options(knitr.kable.NA = '')
+```
+
+# Load files
+
+```{r}
+library(tidyverse)
+library(magrittr)
+library(corrplot)
+library(emmeans)
+
+df.raw <- read.csv("performances/data_count_df.csv")
+v.strategy <- levels(df.raw$strategy)
+
+summary(df.raw)
+
+config <- new.env()
+source("config.R", local = config)
+```
+
+## Overview
+
+Data dimensions:
+
+```{r}
+dim(df.raw)
+```
+
+Column names:
+
+```{r}
+colnames(df.raw)
+```
+
+
+First rows:
+
+```{r}
+head(df.raw, 3)
+```
+
+Number of rows for each resampling scheme, separated by protein type.
+Each square should equal to the number of folds (10):
+
+```{r}
+table(df.raw$strategy, df.raw$protein_type)
+```
+
+## Clean data frame format
+
+```{r}
+# convert the Counter({0: 53086, 1: 49628}) format to actives/inactives
+# watchout! sometime counter starts with 1: and then 0:
+dict_to_label <- function(x) {
+  # look for 1:
+  actives <- gsub("(.+1: )([0-9]+)([^0-9].+)", "\\2", x)
+  # look for 0:
+  inactives <- gsub("(.+0: )([0-9]+)([^0-9].+)", "\\2", x)
+  
+  paste0(actives, "/", inactives)
+}
+
+# dict_to_label(df.raw$training) 
+
+df.clean <- mutate_at(
+  df.raw, c("training", "validation", "test"), dict_to_label
+) %>%
+  mutate(protein_type = factor(protein_type, levels = config$v.families)) %>%
+  select(protein_type, strategy, fold, training, validation, test)
+```
+
+
+```{r}
+# check some random values
+# 
+# gpcr, fold 5, resampling_before_clustering, validation, inactives
+# Counter({1: 17324, 0: 17274})
+rnd.1 <- subset(
+  df.clean, 
+  fold == "5" & 
+    protein_type == "GPCRs" & 
+    strategy == "resampling_before_clustering")$validation
+stopifnot(rnd.1 == "17324/17274")
+
+# proteases, fold 8, resampling_before_clustering, training, active: 50987
+# Counter({0: 51930, 1: 50987})
+rnd.2 <- subset(
+  df.clean, 
+  fold == "8" & 
+    protein_type == "proteases" & 
+    strategy == "resampling_before_clustering")$training
+stopifnot(rnd.2 == "50987/51930")
+```
+
+## Export table
+
+### Full table
+
+```{r}
+df.clean
+```
+
+The table is interesting, but would be too large to fit in the supplement.
+It makes more sense to aggregate over folds.
+
+### Fold-averaged table
+
+```{r}
+# average a column
+average_character <- function(char, ...) {
+  sp <- strsplit(char, "/") 
+  actives <- as.numeric(sapply(sp, head, 1))
+  inactives <- as.numeric(sapply(sp, tail, 1))
+  
+  paste0(
+    round(mean(actives), ...), 
+    "/", 
+    round(mean(inactives), ...)
+  )
+}
+
+# # sum values (for total counts)
+# sum_character <- function(char, ...) {
+#   sp <- strsplit(char, "/") 
+#   actives <- as.numeric(sapply(sp, head, 1))
+#   inactives <- as.numeric(sapply(sp, tail, 1))
+#   
+#   paste0(
+#     round(sum(actives), ...), 
+#     "/", 
+#     round(sum(inactives), ...)
+#   )
+# }
+
+average_character(df.clean$training, digits = 1)
+
+df.foldavg <- dplyr::group_by(df.clean, protein_type, strategy) %>%
+  summarize_at(c("training", "validation", "test"), average_character)
+```
+
+Table:
+
+```{r}
+df.foldavg
+```
+
+Export to latex:
+
+
+```{r}
+tex.foldavg <-  knitr::kable(
+  df.foldavg, format = "latex", 
+  caption = "Total number of protein-compound pairs in each strategy and protein family, displayed in the actives/inactives format. Number of actives and inactives were averaged over the 10 folds.", 
+  linesep = c("", "", "", "\\addlinespace"), 
+  booktabs = TRUE, label = "npairs-avg-strat") %>%
+    kableExtra::kable_styling(latex_options = c("scale_down", "hold_position"))
+
+writeLines(tex.foldavg, "10_overview_allfamilies_foldavg.tex")
+```
+
+
+### Global table
+
+When counting the overall number of pairs, we find some expected features (constant across folds in no resampling, which is the original data, and in resampling before clustering; slightly variable in resampling after clustering and in semi resampling).
+
+```{r}
+df.total <- df.clean %>%
+  tidyr::separate(training, into =  c("training_act", "training_in"), sep = "/") %>%
+  tidyr::separate(validation, into =  c("validation_act", "validation_in"), sep = "/") %>%
+  tidyr::separate(test, into =  c("test_act", "test_in"), sep = "/") %>%
+  mutate_at(vars(training_act:test_in), as.numeric) %>%
+  mutate(total_act = training_act+validation_act+test_act, 
+         total_in = training_in+validation_in+test_in, 
+         total = total_act + total_in) %>%
+  dplyr::select(protein_type, fold, strategy, total_act, total_in, total)
+
+df.total
+```
+
+Averaged numbers
+
+```{r}
+df.total.avg <- dplyr::select(df.total, -fold) %>%
+  group_by(protein_type, strategy) %>%
+  summarize_if(is.numeric, function(x) round(mean(x)))
+df.total.avg
+```
+
+Pairs in original data
+
+```{r}
+df.original <- subset(df.total.avg, strategy == "no_resampling") %>%
+  dplyr::select(-strategy)
+
+df.original
+```
+
+Export to latex:
+
+```{r}
+tex.original <-  knitr::kable(
+  df.original, format = "latex", 
+  caption = "Number of protein-compound pairs in each protein family (actives, inactives, total).", 
+  linesep = c("", "", "", "\\addlinespace"), 
+  booktabs = TRUE, label = "npairs-original") %>%
+    kableExtra::kable_styling(latex_options = c("scale_down", "hold_position"))
+
+writeLines(tex.original, "10_overview_allfamilies_original.tex")
+```
+
+# Reproducibility
+
+```{r}
+sessionInfo()
+```
+

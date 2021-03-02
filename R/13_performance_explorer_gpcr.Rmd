@@ -209,7 +209,7 @@ dim(df.clean.nobaseline)
 Save clean table
 
 ```{r}
-write.csv(df.clean, file = "data-interim/ratios_df_clean_gpcr.csv")
+write.csv(df.clean, file = config$file.cleanperf.gpcr)
 ```
 
 

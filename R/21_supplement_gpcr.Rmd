@@ -568,7 +568,7 @@ Based on this, metrics were divided in two types:
 * Those where the baseline was different between strategies, i.e. imbalance-sensitive: `acc`, `f1` and `balanced_acc`. Therefore, before comparing strategies, the baseline performance needed to be accounted for.
 * Those where the baseline was constant, i.e. imbalance-insensitive: `auroc`, `mcc`. Here we could compare strategies directly.
 
-\textcolor{magenta}{All applies to GPRCs as well.}
+\textcolor{magenta}{All applies to GPCRs as well.}
 
 # Description of deep learning model performance
 

@@ -4,6 +4,8 @@ gg_theme <- ggplot2::theme_bw() +
 gg_45 <- ggplot2::theme(
     axis.text.x = ggplot2::element_text(angle = 45, vjust = 1, hjust = 1))
 
+v.families <- c("kinases", "GPCRs", "nuclear_receptors", "proteases")
+
 v.metrics <- c("acc", "auroc", "f1", "balanced_acc", "mcc")
 
 v.strategy <- c(
@@ -24,3 +26,6 @@ dir.interim <- "data-interim"
 if (!dir.exists(dir.interim)) dir.create(dir.interim)
 file.cleanperf <- paste0(dir.interim, "/ratios_df_clean.csv")
 file.cleanperf.gpcr <- paste0(dir.interim, "/ratios_df_clean_gpcr.csv")
+file.cleanperf.nr <- paste0(dir.interim, "/ratios_df_clean_nr.csv")
+file.cleanperf.pr <- paste0(dir.interim, "/ratios_df_clean_pr.csv")
+file.cleanperf.reglin <- paste0(dir.interim, "/ratios_df_clean_reglin.csv")

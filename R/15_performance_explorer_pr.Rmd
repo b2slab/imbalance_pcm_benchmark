@@ -1,0 +1,246 @@
+---
+title: "Exploring PR performance"
+author: "Sergio Picart-Armada and Angela Lopez del Rio"
+date: "01/03/2021"
+output:
+  html_document:
+    toc: true
+    theme: united
+    toc_float: true
+    number_sections: true
+    highlight: textmate
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+options(knitr.kable.NA = '')
+```
+
+## Load files
+
+
+```{r}
+library(tidyverse)
+library(magrittr)
+library(corrplot)
+library(emmeans)
+
+df.raw <- read.csv("performances/ratios_df_rdm_baseline_proteases.csv")
+v.strategy <- levels(df.raw$strategy)
+df.raw.nobaseline <- subset(df.raw, is_baseline == "False")
+
+summary(df.raw)
+
+config <- new.env()
+source("config.R", local = config)
+```
+
+Data dimensions:
+
+```{r}
+dim(df.raw)
+```
+
+Column names:
+
+```{r}
+colnames(df.raw)
+```
+
+
+First rows:
+
+```{r}
+head(df.raw, 3)
+```
+
+Number of rows for each resampling scheme, separated by baseline or not:
+
+```{r}
+table(df.raw$strategy, df.raw$is_baseline)
+```
+
+NAs in training positives ratio?
+
+```{r}
+table(df.raw.nobaseline$strategy, is.na(df.raw.nobaseline$ratio_training))
+```
+
+```{r}
+table(df.raw.nobaseline$strategy, is.finite(df.raw.nobaseline$ratio_test))
+```
+
+Resampling after clustering has less proteins in all the folds?
+No, it happens the same way in all the folds:
+
+```{r}
+table(df.raw.nobaseline$strategy, df.raw.nobaseline$fold, df.raw.nobaseline$is_baseline)
+```
+
+Is it always the same proteins?
+
+```{r}
+# split(df.raw, df.raw$fold) %>%
+#   mapply(VennDiagram::venn.diagram, 
+#          x = split(.$Protein, .$strategy), 
+#          filename = paste0(head(.$fold, 1), "_venn.png"))
+```
+
+
+Test set: how often do we have proteins with a ratio of 0, or 1? 
+Does this explain why resampling after clustering has way less proteins?
+
+```{r}
+eps <- 1e-6
+table(df.raw.nobaseline$strategy, cut(df.raw.nobaseline$ratio_test, 
+                                      breaks = c(-eps, 0, 1-eps, Inf)))
+```
+
+Number of familites (should be only one):
+
+```{r}
+table(df.raw.nobaseline$family)
+```
+
+
+Summary of metrics by scheme:
+
+```{r}
+df.raw.nobaseline %>%
+  by(., .$strategy, function(x) summary(x[c("auroc", "f1")]))
+```
+
+### Sanity check - duplicated proteins
+
+Are the row numbers unique? Now they are:
+
+```{r}
+sum(duplicated(df.raw$X))
+```
+
+And in the non-baseline?
+
+```{r}
+sum(duplicated(df.raw.nobaseline$X))
+```
+
+
+Check that every protein ID appears at most once in every `strategy` and `fold`.
+
+```{r}
+df.raw.nobaseline %>%
+    group_by(strategy, fold) %>%
+    summarise(max_occurrences = max(table(DeepAffinity.Protein.ID)))
+```
+
+There are proteins occurring more than once in every strategy.
+Which ones?
+
+```{r}
+df.duplicated <- df.raw %>%
+    group_by(strategy, fold, is_baseline) %>%
+    mutate(is_dup = duplicated(DeepAffinity.Protein.ID)) %>%
+    filter(is_dup)
+df.duplicated
+```
+
+List of unique identifiers:
+
+```{r}
+prot.duplicated.id <- unique(df.duplicated$DeepAffinity.Protein.ID) %>% 
+  as.character
+prot.duplicated.id
+```
+
+
+Are those actually duplicates in all the rows? Apparently not, but the difference is far from obvious
+
+```{r}
+dim(df.raw.nobaseline)
+
+select(df.raw.nobaseline, -X) %>% unique %>% dim
+```
+
+All the affected rows:
+
+```{r}
+subset(df.raw, DeepAffinity.Protein.ID %in% prot.duplicated.id)
+```
+
+Decision: take out the second occurrence in each one
+
+```{r}
+df.clean <- df.raw %>%
+    group_by(strategy, fold, is_baseline) %>%
+    mutate(is_dup = duplicated(DeepAffinity.Protein.ID)) %>%
+    filter(!is_dup) %>%
+    ungroup %>%
+    mutate(fold = as.factor(fold), 
+           baseline = ifelse(is_baseline == "False", "DL model", "Random baseline"))
+```
+
+Sanity check: is the issue fixed now?
+
+```{r}
+df.clean %>%
+    group_by(strategy, fold, is_baseline) %>%
+    summarise(max_occurrences = max(table(DeepAffinity.Protein.ID))) %>%
+    extract2("max_occurrences") %>% 
+    all(. == 1L) %>%
+    stopifnot
+
+df.clean.nobaseline <- subset(df.clean, is_baseline == "False")
+df.clean.baseline <- subset(df.clean, is_baseline == "True")
+```
+
+Dimensions of final data
+
+```{r}
+dim(df.clean)
+```
+
+Competitive methods only:
+
+```{r}
+dim(df.clean.nobaseline)
+```
+
+Save clean table
+
+```{r}
+write.csv(df.clean, file = config$file.cleanperf.pr)
+```
+
+
+# Boxplots with metrics overview
+
+### F1
+
+```{r}
+ggplot(df.clean, aes(x = strategy, y = f1, fill = strategy)) +
+    geom_boxplot() +
+    facet_wrap(~baseline) +
+    scale_fill_manual(values = config$col.strategy) +
+    theme(aspect.ratio = 1, legend.position = "none") +
+    config$gg_45
+```
+
+### AUC
+
+```{r}
+ggplot(df.clean, aes(x = strategy, y = auroc, fill = strategy)) +
+    geom_boxplot() +
+    facet_wrap(~baseline) +
+    scale_fill_manual(values = config$col.strategy) +
+    theme(aspect.ratio = 1, legend.position = "none") +
+    config$gg_45
+```
+
+
+# Reproducibility
+
+```{r}
+sessionInfo()
+```
+
