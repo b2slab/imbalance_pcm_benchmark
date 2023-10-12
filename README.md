@@ -2,6 +2,8 @@
 
 In this study we aim to analyse the effect of different balancing strategies in deep learning proteochemometrics models. The balancing strategies are (1) no resampling, (2) resampling after clustering, (3) resampling before clustering and (4) semi-resampling.
 
+The findings of this study are explained in Balancing Data on Deep Learning-Based Proteochemometric Activity Classification. Angela Lopez-del Rio, Sergio Picart-Armada, and Alexandre Perera-Lluna. Journal of Chemical Information and Modeling 2021 61 (4), 1657-1669. DOI: 10.1021/acs.jcim.1c00086
+
 ## Material
 
 We are using activity data from Karimi, M., Wu, D., Wang, Z., & Shen, Y. (n.d.). DeepAffinity: Interpretable Deep Learning of Compound-Protein Affinity through 
